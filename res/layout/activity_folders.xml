@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".FoldersActivity" >
+
+        <Button
+	       android:id="@+id/btnLogo"
+	       android:layout_width="130dp"
+	       android:layout_height="40dp"
+	       android:text="Logo a Inicio" 
+	       android:textSize="13sp"/>
+        
+        <Button
+	       android:id="@+id/btnPlayFolder"
+	       android:layout_width="230dp"
+	       android:layout_height="40dp"
+	       android:text="Reproducir Carpeta" 
+	       android:textSize="13sp"
+	       android:layout_toRightOf="@id/btnLogo"/>
+
+        <TextView
+            android:id="@+id/txtDir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnLogo"
+            android:text="nada"
+            android:textSize="12sp" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDir"
+            android:layout_alignParentBottom="true" >
+        </ListView>
+
+
+</RelativeLayout>
