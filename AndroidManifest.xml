@@ -43,9 +43,11 @@
         <activity
             android:name="com.arcusapp.arcusmusic.ArtistsActivity"
             android:label="@string/title_activity_artists" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.app.ListActivity" />
+            <intent-filter>
+                <action android:name="com.arcusapp.arcusmusic.ARTISTS_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

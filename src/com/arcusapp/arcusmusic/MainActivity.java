@@ -23,6 +23,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         button.setOnClickListener(this);
         button = (Button)findViewById(R.id.btnSongs);
         button.setOnClickListener(this);
+        button = (Button)findViewById(R.id.btnArtists);
+        button.setOnClickListener(this);
 	}
 
 	@Override
@@ -43,9 +45,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			testActivityIntent.setAction("com.arcusapp.arcusmusic.FOLDERS_ACTIVITY");
 			startActivity(testActivityIntent);
 		}
-		else if(v.getId() == R.id.btnPlayAllRandom){
-			//Todos Random
-		}
 		else if(v.getId() == R.id.btnPlayLists){
 			//Listas de Reproduccion
 		}
@@ -55,11 +54,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			startActivity(testActivityIntent);
 		}
 		else if(v.getId() == R.id.btnArtists){
-			//Artistas
+			testActivityIntent = new Intent();
+			testActivityIntent.setAction("com.arcusapp.arcusmusic.ARTISTS_ACTIVITY");
+			startActivity(testActivityIntent);
 			
-		}
-		else if(v.getId() == R.id.btnAlbums){
-			//Albumes
 		}
 		
 		

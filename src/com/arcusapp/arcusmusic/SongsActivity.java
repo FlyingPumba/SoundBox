@@ -20,12 +20,7 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 
 	/** Variables iniciales */
 	private Button btnLogo2;
-	private File file;
-	private List<String> myList;
-	public boolean musicaFound;
-    private GenericFilter myFilter;
-    private String root_sd;
-    List<File> allMp3Files;
+	private SongsHandler sh;
 	  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,65 +31,12 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 		btnLogo2 = (Button)findViewById(R.id.btnLogo2);
 		btnLogo2.setOnClickListener(this);
 
-		//inicializo el ListView	 
-		myList = new ArrayList<String>();  
-		myFilter = new GenericFilter();
-
-		root_sd = Environment.getExternalStorageDirectory().toString();
-	    file = new File( root_sd + "/Musica" ) ;
+		sh = new SongsHandler();
 	    
-	    //obtengo los archivos y directorios, y los ordeno
-	    File list[] = file.listFiles(myFilter);
-	    
-	    if(list != null)
-	    {
-		    allMp3Files = new ArrayList<File>();
-		    //allMp3Files.addAll(Arrays.asList(list));
-		    SurfFolders(list);
-		    
-		    
-		    //ordeno la lista por nombre
-		    Collections.sort(allMp3Files, new SortFileName());
-		    
-		    //esto es para pasar todos los archivos a la lista final
-		    int cant = allMp3Files.size();
-		    for( int i=0; i< cant; i++)
-		    {
-		        myList.add(allMp3Files.get(i).getName() );
-		    }
-		    musicaFound = true;
-		    
-	    }
-	    else
-	    {
-	    	myList.add("/Musica not Found !");
-	    	musicaFound = false;
-	    	
-	    }
-	    
-
 	    setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, myList ));
+	            android.R.layout.simple_list_item_1, sh.getAllSongs() ));
 	}
 	
-	private void SurfFolders(File list[])
-	{
-		if(list!=null)
-		{
-			for(int i = 0; i < list.length; i++)
-			{
-				if(list[i].isFile())
-				{
-					allMp3Files.add(list[i]);
-				}
-				else
-				{
-					File newList[] = list[i].listFiles(myFilter);
-					SurfFolders(newList);
-				}
-			}
-		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,52 +45,24 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 		return true;
 	}
 	
-	  protected void onListItemClick(ListView l, View v, int position, long id) 
-	    {
-	        super.onListItemClick(l, v, position, id);
+	protected void onListItemClick(ListView l, View v, int position, long id) 
+    {
+        super.onListItemClick(l, v, position, id);
 
-	        if(musicaFound == true)
-	        {
-		        //reproducir cancion elegida y poner todas las canciones en una lista de reproduccion temporal
-	        }
-	    }
-		    
-	    @Override
-		public void onBackPressed() 
-	    {
-	    	finish();
-	    }
+	     //reproducir cancion elegida y poner todas las canciones en una lista de reproduccion temporal
+    }
+	    
+    @Override
+	public void onBackPressed() 
+    {
+    	finish();
+    }
 
-		@Override
-		public void onClick(View v) {
-			if(v.getId() == R.id.btnLogo2)
-			{
-				finish();
-			}
+	@Override
+	public void onClick(View v) {
+		if(v.getId() == R.id.btnLogo2)
+		{
+			finish();
 		}
-		
-		//sorts based on the files name
-		public class SortFileName implements Comparator<File> {
-		    @Override
-		    public int compare(File f1, File f2) {
-		          return f1.getName().compareTo(f2.getName());
-		    }
-		}
-		
-		// inner class, generic extension filter
-		public class GenericFilter implements FileFilter {
-
-			@Override
-			public boolean accept(File pathname) {
-				if(pathname.isDirectory())
-	             {
-	                return true;
-	             }
-	             else
-	             {
-	                 return pathname.getName().endsWith(".mp3");
-	             }
-			}
-
-		}
+	}
 }

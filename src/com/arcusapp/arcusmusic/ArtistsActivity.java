@@ -1,32 +1,24 @@
 package com.arcusapp.arcusmusic;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.view.View;
+import android.widget.Button;
 
-public class ArtistsActivity extends Activity {
+public class ArtistsActivity extends Activity implements View.OnClickListener {
 
+	private Button btnLogo3;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_artists);
-		// Show the Up button in the action bar.
-		setupActionBar();
+		
+		btnLogo3 = (Button)findViewById(R.id.btnLogo3);
+		btnLogo3.setOnClickListener(this);
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -34,22 +26,34 @@ public class ArtistsActivity extends Activity {
 		getMenuInflater().inflate(R.menu.artists, menu);
 		return true;
 	}
+	/* Codigo para sacar los metadatos de las canciones:
+	 * 
+	 String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+     String[] projection = { MediaStore.Audio.Media._ID,
+             MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.TITLE,
+             MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME,
+             MediaStore.Audio.Media.DURATION};
+
+     cursor = this.managedQuery(
+             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection,null, null);
+
+     private List<String> songs = new ArrayList<String>();
+
+     while(cursor.moveToNext()){
+         songs.add(cursor.getString(0) + "||" + cursor.getString(1) + "||" +
+                 cursor.getString(2) + "||" + cursor.getString(3) + "||" +
+                 cursor.getString(4) + "||" + cursor.getString(5));
+     }
+	 */
+
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+	public void onClick(View v) {
+		if(v.getId() == R.id.btnLogo3)
+		{
+			finish();
 		}
-		return super.onOptionsItemSelected(item);
+		
 	}
 
 }
