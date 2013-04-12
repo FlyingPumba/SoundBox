@@ -1,4 +1,4 @@
 ArcusMusic
 ==========
 
-Music Player
+Android Music Player
