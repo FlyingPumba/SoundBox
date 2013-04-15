@@ -43,12 +43,12 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 		btnPlayFolder = (Button)findViewById(R.id.btnPlayFolder);
 		btnPlayFolder.setOnClickListener(this);
 		
-		sh = new SongsHandler();
+		sh = new SongsHandler(this);
 		actualDir = sh.musicDirectory;
 		txtDir.setText("Musica/");
 		
 		setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, sh.getSongsInAFolder(sh.musicDirectory, true) ));
+	            android.R.layout.simple_list_item_1, sh.getSongsInAFolder(sh.musicDirectory, true, true) ));
 	    
 	}
 	
@@ -73,7 +73,7 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
             txtDir.setText(actualDir.toString().split(sh.root_sd)[1]);
 			
             setListAdapter(new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, sh.getSongsInAFolder(actualDir, true) ));
+                    android.R.layout.simple_list_item_1, sh.getSongsInAFolder(actualDir, true, true) ));
 
         }
         else
@@ -91,7 +91,7 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 	        txtDir.setText(actualDir.toString().split(sh.root_sd)[1]);
 			
 	        setListAdapter(new ArrayAdapter<String>(this,
-	                android.R.layout.simple_list_item_1, sh.getSongsInAFolder(actualDir, true) ));
+	                android.R.layout.simple_list_item_1, sh.getSongsInAFolder(actualDir, true, true) ));
 		}
 		else
 		{

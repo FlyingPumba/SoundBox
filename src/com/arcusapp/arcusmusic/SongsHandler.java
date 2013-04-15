@@ -6,94 +6,123 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 
 public class SongsHandler {
 	
-	private List<String> myList;
-    private GenericFilter myFilter;
+    private OnlyDirsFilter myFilter;
     public String root_sd;
     public File musicDirectory;
-    private List<File> Mp3Files;
     
-    public SongsHandler()
+    
+	private Cursor musiccursor;
+	private List<String> songs;
+    private Context _context;
+    
+    public SongsHandler(Context cont)
     {
     	//constructor
-		myFilter = new GenericFilter(); // filtro para solo carpetas y *.mp3
+		myFilter = new OnlyDirsFilter(); // filtro para solo carpetas
 
 		root_sd = Environment.getExternalStorageDirectory().toString(); //raiz del sd
 		musicDirectory = new File( root_sd + "/Musica" ) ;
+		_context = cont;
 		
 		checkIfMusicDirectoryExist();
     }
     
-    public List<String> getSongsInAFolder(File dir, boolean withDirs)
+    public List<String> getSongsInAFolder(File dir, boolean withDirs, boolean mp3Format)
     {
-    	File list[] = dir.listFiles(myFilter);
-    	myList = new ArrayList<String>(); 
-    	if(list != null)
-	    {
-	    	//inicializo las variables
-		    Mp3Files = new ArrayList<File>();
-		    
-		    // cargo los archivos en MP3Files
-		    for(int i = 0; i < list.length; i++)
-			{
-				if(list[i].isFile())
-				{
-					Mp3Files.add(list[i]);
-				}
-				else
-				{
-					if(withDirs)
-						Mp3Files.add(list[i]);
-				}
-			}
-		    
-		    
-		    //ordeno los archivos por nombre
-		    Collections.sort(Mp3Files, new SortFileName());
-		    if(withDirs)
-		    	Collections.sort(Mp3Files, new SortFolder());
-		    
-		    //paso todos los archivos a la lista final
-		    int cant = Mp3Files.size();
-		    for( int i=0; i< cant; i++)
-		    {
-		        myList.add(Mp3Files.get(i).getName() );
-		    }
-		    
-	    }
-	    return myList;
+    	songs = new ArrayList<String>();
+    	String folder = dir.getPath();
+    	if(withDirs)
+    	{
+    		File list[] = dir.listFiles(myFilter);
+        	if(list != null)
+    	    {
+    	    	//inicializo las variables
+        		List<File> Dirs = new ArrayList<File>();
+    		    
+    		    // cargo los archivos en MP3Files
+    		    for(int i = 0; i < list.length; i++)
+    			{
+    		    	Dirs.add(list[i]);
+    			}
+    		    
+    		    //ordeno los archivos por nombre
+    		    Collections.sort(Dirs, new SortFileName());
+    		    
+    		    //paso todos los archivos a la lista final
+    		    int cant = Dirs.size();
+    		    for( int i=0; i< cant; i++)
+    		    {
+    		    	songs.add(Dirs.get(i).getName() );
+    		    }
+    		    
+    	    }
+    	}
+    	
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +
+    					"SUBSTR("+MediaStore.Audio.Media.DATA+",0 , LENGTH('"+folder+"')+1) = '"+folder+"' AND " +
+    			 		"SUBSTR("+MediaStore.Audio.Media.DATA+",LENGTH('"+folder+"')+1, 200) LIKE '/%.mp3' AND " +
+    			 		"SUBSTR("+MediaStore.Audio.Media.DATA+",LENGTH('"+folder+"')+1, 200) NOT LIKE '/%/%.mp3'";
+    	
+    	if(!mp3Format)
+    	{           
+    		String[] projection = { MediaStore.Audio.Media.TITLE};
+    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(folder), projection, selection, null, MediaStore.Audio.Media.TITLE);
+   	     	musiccursor = cl.loadInBackground();
+    	}
+    	else
+    	{
+    		String[] projection = { MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA};
+    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(folder), projection, selection, null, MediaStore.Audio.Media.DISPLAY_NAME);
+    		musiccursor = cl.loadInBackground();
+    	}
+    	String data;
+	     while(musiccursor.moveToNext()){
+	    	 data =  musiccursor.getString(1);
+
+	    	songs.add(musiccursor.getString(0));
+	     }
+	     return songs;
     }
     
-    public List<String> getAllSongs()
+    public List<String> getAllSongs(boolean mp3Format)
     {
-    	//obtengo los archivos
-	    File list[] = musicDirectory.listFiles(myFilter);
-	    
-	    myList = new ArrayList<String>(); 
-	    if(list != null)
-	    {
-	    	//inicializo las variables
-		    Mp3Files = new ArrayList<File>();
-		    
-		    // cargo los archivos en MP3Files
-		    SurfFolders(list);
-		    
-		    
-		    //ordeno los archivos por nombre
-		    Collections.sort(Mp3Files, new SortFileName());
-		    
-		    //paso todos los archivos a la lista final
-		    int cant = Mp3Files.size();
-		    for( int i=0; i< cant; i++)
-		    {
-		        myList.add(Mp3Files.get(i).getName() );
-		    }
-		    
-	    }
-	    return myList;
+    	/*String[] projection = { MediaStore.Audio.Media._ID,
+  	             MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.TITLE,
+  	             MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME,
+  	             MediaStore.Audio.Media.DURATION};*/
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
+    	if(!mp3Format)
+    	{
+    		String[] projection = { MediaStore.Audio.Media.TITLE};
+    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media.TITLE);
+   	     	musiccursor = cl.loadInBackground();
+    	}
+    	else
+    	{
+    		String[] projection = { MediaStore.Audio.Media.DISPLAY_NAME};
+    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media.DISPLAY_NAME);
+    		musiccursor = cl.loadInBackground();
+    	}
+
+	     songs = new ArrayList<String>();
+
+	     while(musiccursor.moveToNext()){
+	         songs.add(musiccursor.getString(0));
+	     }
+	     
+	     return songs;
     }
     
     private void checkIfMusicDirectoryExist() 
@@ -103,25 +132,6 @@ public class SongsHandler {
         	musicDirectory.mkdirs();
         }    
     }
-    
-    private void SurfFolders(File list[])
-	{
-		if(list!=null)
-		{
-			for(int i = 0; i < list.length; i++)
-			{
-				if(list[i].isFile())
-				{
-					Mp3Files.add(list[i]);
-				}
-				else
-				{
-					File newList[] = list[i].listFiles(myFilter);
-					SurfFolders(newList);
-				}
-			}
-		}
-	}
     
     //sorts based on a file or folder. folders will be listed first
   	private class SortFolder implements Comparator<File> {
@@ -145,19 +155,12 @@ public class SongsHandler {
 	}
 	
 	// inner class, generic extension filter
-	private class GenericFilter implements FileFilter {
+		private class OnlyDirsFilter implements FileFilter {
 
-		@Override
-		public boolean accept(File pathname) {
-			if(pathname.isDirectory())
-             {
-                return true;
-             }
-             else
-             {
-                 return pathname.getName().endsWith(".mp3");
-             }
+			@Override
+			public boolean accept(File pathname) {				
+				return pathname.isDirectory();
+			}
+
 		}
-
-	}
 }

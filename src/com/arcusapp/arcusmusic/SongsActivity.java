@@ -31,10 +31,10 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 		btnLogo2 = (Button)findViewById(R.id.btnLogo2);
 		btnLogo2.setOnClickListener(this);
 
-		sh = new SongsHandler();
+		sh = new SongsHandler(this);
 	    
 	    setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, sh.getAllSongs() ));
+	            android.R.layout.simple_list_item_1, sh.getAllSongs(true) ));
 	}
 	
 
