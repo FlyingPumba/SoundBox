@@ -37,6 +37,37 @@ public class SongsHandler {
 		checkIfMusicDirectoryExist();
     }
     
+    public List<String> getAllArtists()
+    {
+    	List<String> artists = new ArrayList<String>();
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +MediaStore.Audio.Artists.ARTIST+" not null ";
+		String[] projection = { "DISTINCT "+MediaStore.Audio.Artists.ARTIST};
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Artists.ARTIST+" ASC");
+		musiccursor = cl.loadInBackground();
+
+	     while(musiccursor.moveToNext()){
+	    	 artists.add(musiccursor.getString(0));
+	     }
+    	return artists;
+    }
+    
+    public List<String> getArtisAlbums(String artist)
+    {
+    	List<String> albums = new ArrayList<String>();
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +MediaStore.Audio.Artists.ARTIST + " = '"+artist+"'";
+
+		String[] projection = { "DISTINCT "+MediaStore.Audio.Artists.Albums.ALBUM};
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Artists.Albums.ALBUM+" ASC");
+		musiccursor = cl.loadInBackground();
+
+	     while(musiccursor.moveToNext()){
+	    	 albums.add(musiccursor.getString(0));
+	     }
+    	return albums;
+    }
+    
     public List<String> getSongsInAFolder(File dir, boolean withDirs, boolean mp3Format)
     {
     	songs = new ArrayList<String>();
@@ -155,7 +186,7 @@ public class SongsHandler {
 	}
 	
 	// inner class, generic extension filter
-		private class OnlyDirsFilter implements FileFilter {
+	private class OnlyDirsFilter implements FileFilter {
 
 			@Override
 			public boolean accept(File pathname) {				
