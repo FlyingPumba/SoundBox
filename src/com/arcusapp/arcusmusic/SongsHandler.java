@@ -9,7 +9,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
@@ -20,9 +19,7 @@ public class SongsHandler {
     public String root_sd;
     public File musicDirectory;
     
-    
 	private Cursor musiccursor;
-	private List<String> songs;
     private Context _context;
     
     public SongsHandler(Context cont)
@@ -43,7 +40,7 @@ public class SongsHandler {
     	CursorLoader cl;
     	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +MediaStore.Audio.Artists.ARTIST+" not null ";
 		String[] projection = { "DISTINCT "+MediaStore.Audio.Artists.ARTIST};
-		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Artists.ARTIST+" ASC");
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Artists.ARTIST);
 		musiccursor = cl.loadInBackground();
 
 	     while(musiccursor.moveToNext()){
@@ -59,7 +56,7 @@ public class SongsHandler {
     	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +MediaStore.Audio.Artists.ARTIST + " = '"+artist+"'";
 
 		String[] projection = { "DISTINCT "+MediaStore.Audio.Artists.Albums.ALBUM};
-		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Artists.Albums.ALBUM+" ASC");
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Artists.Albums.ALBUM);
 		musiccursor = cl.loadInBackground();
 
 	     while(musiccursor.moveToNext()){
@@ -70,7 +67,7 @@ public class SongsHandler {
     
     public List<String> getSongsInAFolder(File dir, boolean withDirs, boolean mp3Format)
     {
-    	songs = new ArrayList<String>();
+    	List<String> songs = new ArrayList<String>();
     	String folder = dir.getPath();
     	if(withDirs)
     	{
@@ -126,37 +123,90 @@ public class SongsHandler {
 	     return songs;
     }
     
-    public List<String> getAllSongs(boolean mp3Format)
+    public List<SongEntry> getAllSongsWithDisplay(String projection)
     {
-    	/*String[] projection = { MediaStore.Audio.Media._ID,
-  	             MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.TITLE,
-  	             MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME,
-  	             MediaStore.Audio.Media.DURATION};*/
+    	List<SongEntry> allSongsDisplay = new ArrayList<SongEntry>();
+    	
     	CursorLoader cl;
     	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
-    	if(!mp3Format)
-    	{
-    		String[] projection = { MediaStore.Audio.Media.TITLE};
-    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media.TITLE);
-   	     	musiccursor = cl.loadInBackground();
-    	}
-    	else
-    	{
-    		String[] projection = { MediaStore.Audio.Media.DISPLAY_NAME};
-    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media.DISPLAY_NAME);
-    		musiccursor = cl.loadInBackground();
-    	}
+		
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), new String[]{MediaStore.Audio.Media._ID, projection}, selection, null, MediaStore.Audio.Media._ID);
+     	musiccursor = cl.loadInBackground();
 
-	     songs = new ArrayList<String>();
-
-	     while(musiccursor.moveToNext()){
-	         songs.add(musiccursor.getString(0));
+     	 while(musiccursor.moveToNext()){
+     		allSongsDisplay.add(new SongEntry(musiccursor.getInt(0), musiccursor.getString(1)));
 	     }
 	     
-	     return songs;
+	     Collections.sort(allSongsDisplay);
+	     
+	     return allSongsDisplay;
     }
     
-    private void checkIfMusicDirectoryExist() 
+    public List<String> getAllSongsNOTUSED()
+    {
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
+		String[] projection = { MediaStore.Audio.Media._ID};
+		
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media._ID);
+     	musiccursor = cl.loadInBackground();
+     	List<String> songsID = new ArrayList<String>();
+
+	     while(musiccursor.moveToNext()){
+	    	 songsID.add(musiccursor.getString(0));
+	     }
+	     
+	     return songsID;
+    }
+    
+    public List<SongEntry> getDisplayForSongsNOTUSED(List<String> songsID, String projection)
+    {    	
+    	List<SongEntry> songsDisplay = new ArrayList<SongEntry>();
+    	CursorLoader cl;
+
+    	String[] ids = new String[songsID.size()];
+    	ids = songsID.toArray(ids);
+    	
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND "+MediaStore.Audio.Media._ID+" IN (";
+    	for(int i = 0; i < songsID.size()-1;i++)
+    		selection+="?, ";
+    	
+    	selection+="?)";
+    	
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), new String[]{MediaStore.Audio.Media._ID, projection}, selection, ids, MediaStore.Audio.Media._ID);
+     	musiccursor = cl.loadInBackground();
+
+	     while(musiccursor.moveToNext()){
+	    	 songsDisplay.add(new SongEntry(musiccursor.getInt(0), musiccursor.getString(1)));
+	     }
+	     
+	     Collections.sort(songsDisplay);
+	     
+	     return songsDisplay;
+    }
+    
+    public List<String> getInformationFromSong(String songID, String[] projection)
+    {
+    	CursorLoader cl;
+    	
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND "+MediaStore.Audio.Media._ID+" = ?";
+
+    	cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, new String[]{songID}, null);
+     	musiccursor = cl.loadInBackground();
+     	
+     	List<String> information = new ArrayList<String>();
+
+	     while(musiccursor.moveToNext()){
+	    	 for(int i = 0; i< musiccursor.getColumnCount(); i++)
+	    		 information.add(musiccursor.getString(i));
+	     }
+	     
+	     return information;
+    }
+    
+    
+
+	private void checkIfMusicDirectoryExist() 
     {
         if(!musicDirectory.exists())
         {
@@ -188,10 +238,10 @@ public class SongsHandler {
 	// inner class, generic extension filter
 	private class OnlyDirsFilter implements FileFilter {
 
-			@Override
-			public boolean accept(File pathname) {				
-				return pathname.isDirectory();
-			}
-
+		@Override
+		public boolean accept(File pathname) {				
+			return pathname.isDirectory();
 		}
+
+	}
 }

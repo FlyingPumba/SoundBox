@@ -5,18 +5,14 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.TextView;
 
 public class ArtistsActivity extends Activity implements View.OnClickListener {
@@ -101,7 +97,12 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	        textView.setText(displayTabArtist+getGroup(groupPosition).toString());
 	        textView.setTextSize(25);
 	        textView.setTextColor(Color.BLACK);
+	        if(isExpanded)
+	        	textView.setBackgroundColor(Color.YELLOW);
+	        else
+	        	textView.setBackgroundColor(Color.WHITE);
 	        return textView;
+		
 		}
 
 		@Override

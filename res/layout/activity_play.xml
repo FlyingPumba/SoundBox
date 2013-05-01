@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".PlayActivity" >
+    
+    <Button
+        android:id="@+id/btnLogo4"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:text="Logo a Inicio" 
+        android:textSize="13sp"/>
+    
+    <Button
+        android:id="@+id/btnActualPlayList"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:text="List" 
+        android:textSize="13sp"
+        android:layout_toLeftOf="@+id/btnSwichRandom"/>
+    
+    <Button
+        android:id="@+id/btnSwichRandom"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:text="Random" 
+        android:textSize="13sp"
+        android:layout_toLeftOf="@+id/btnSwichRepeat"/>
+    
+    <Button
+        android:id="@+id/btnSwichRepeat"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:text="Repeat" 
+        android:textSize="13sp"
+        android:layout_alignParentRight="true"/>
+    
+    <TextView
+        android:id="@+id/txtActualSongTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogo4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10sp"
+        android:text="Titulo"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/txtActualSongFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtActualSongTitle"
+        android:layout_alignParentLeft="true"
+        android:text="Archivo"
+        android:textSize="16sp" />
+            
+     <TextView
+        android:id="@+id/txtActualSongArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtActualSongFile"
+        android:layout_alignParentLeft="true"
+        android:text="Artista"
+        android:textSize="16sp" />
+     
+     <TextView
+        android:id="@+id/txtActualSongAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtActualSongArtist"
+        android:layout_alignParentLeft="true"
+        android:text="Album"
+        android:textSize="16sp" />
+     
+     <Button
+        android:id="@+id/btnPrevSong"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:text="Back" 
+        android:textSize="13sp"
+        android:layout_below="@id/txtActualSongAlbum"
+        android:layout_marginTop="7sp"
+        android:layout_alignParentLeft="true"/>
+     
+     <Button
+        android:id="@+id/btnPlayPause"
+        android:layout_width="90dp"
+        android:layout_height="35dp"
+        android:text="Play/Pause" 
+        android:textSize="13sp"
+        android:layout_below="@id/txtActualSongAlbum"
+        android:layout_marginTop="7sp"
+        android:layout_centerInParent="true"/>
+     
+     <Button
+        android:id="@+id/btnNextSong"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:text="Next" 
+        android:textSize="13sp"
+        android:layout_below="@id/txtActualSongAlbum"
+        android:layout_marginTop="7sp"
+        android:layout_alignParentRight="true"/>
+     
+      <TextView
+        android:id="@+id/txtTimePast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnPrevSong"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="3sp"
+        android:text="#0"
+        android:textSize="16sp" />
+      
+      <TextView
+        android:id="@+id/txtTimeTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnNextSong"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="3sp"
+        android:text="#1"
+        android:textSize="16sp" />
+      
+      <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="match_parent"
+        android:layout_height="20sp"
+        android:layout_below="@id/txtTimePast"
+        android:layout_centerHorizontal="true"
+        android:max="50" />
+
+</RelativeLayout>

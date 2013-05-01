@@ -1,27 +1,26 @@
 package com.arcusapp.arcusmusic;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class SongsActivity extends ListActivity implements View.OnClickListener{
 
 	/** Variables iniciales */
 	private Button btnLogo2;
 	private SongsHandler sh;
-	  
+	private Intent PlayActivityIntent;
+	private List<SongEntry> Songs;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,8 +32,11 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 
 		sh = new SongsHandler(this);
 	    
+	    String projection = MediaStore.Audio.Media.TITLE;
+	    Songs = sh.getAllSongsWithDisplay(projection);
+	    
 	    setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, sh.getAllSongs(true) ));
+	            android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
 	}
 	
 
@@ -50,6 +52,19 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
         super.onListItemClick(l, v, position, id);
 
 	     //reproducir cancion elegida y poner todas las canciones en una lista de reproduccion temporal
+        //Creamos el Intent
+        PlayActivityIntent = new Intent(this, PlayActivity.class);
+
+        //Creamos la información a pasar entre actividades
+        Bundle b = new Bundle();
+        TextView textView = (TextView)v;
+        b.putString("id", Songs.get(position).getKey().toString());
+         
+        //Añadimos la información al intent
+        PlayActivityIntent.putExtras(b);
+
+        //Iniciamos la nueva actividad
+        startActivity(PlayActivityIntent);
     }
 	    
     @Override

@@ -1,18 +1,9 @@
 package com.arcusapp.arcusmusic;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import com.arcusapp.arcusmusic.R;
 
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;

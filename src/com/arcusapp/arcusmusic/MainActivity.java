@@ -1,7 +1,5 @@
 package com.arcusapp.arcusmusic;
 
-import com.arcusapp.arcusmusic.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +23,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         button.setOnClickListener(this);
         button = (Button)findViewById(R.id.btnArtists);
         button.setOnClickListener(this);
+        button = (Button)findViewById(R.id.btnPlaying);
+        button.setOnClickListener(this);
 	}
 
 	@Override
@@ -37,7 +37,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.btnPlaying){
-			//En Reproduccion
+			testActivityIntent = new Intent();
+			testActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
+			startActivity(testActivityIntent);
 		}
 		else if(v.getId() == R.id.btnSeeFolders)
 		{
