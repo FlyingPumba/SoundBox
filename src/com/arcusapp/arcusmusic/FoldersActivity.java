@@ -1,6 +1,7 @@
 package com.arcusapp.arcusmusic;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -48,7 +49,7 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 		Songs = sh.getSongsInAFolder(actualDir, true, projection);
 		
 		setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
+	            android.R.layout.simple_list_item_1, SongEntry.getValuesList(Songs)));
 	    
 	}
 	
@@ -64,7 +65,7 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
     {
         super.onListItemClick(l, v, position, id);
         
-        if(Songs.get(position).getKey() == -1)
+        if(Songs.get(position).getKey() == "-1")
         {
         	TextView txt = (TextView)v;
         	File temp_file = new File(actualDir, txt.getText().toString());  
@@ -77,7 +78,7 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 	            Songs = sh.getSongsInAFolder(actualDir, true, projection);
 	            
 	            setListAdapter(new ArrayAdapter<String>(this,
-	                    android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
+	                    android.R.layout.simple_list_item_1, SongEntry.getValuesList(Songs)));
 	        }
 
         }
@@ -89,8 +90,10 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 
             //Creamos la informaci�n a pasar entre actividades
             Bundle b = new Bundle();
+            //cancion actual:
             b.putString("id", Songs.get(position).getKey().toString());
-             
+            //demas canciones de ESTA carpeta
+            b.putStringArrayList("songs", new ArrayList<String>(SongEntry.getKeysList(Songs)));
             //A�adimos la informaci�n al intent
             PlayActivityIntent.putExtras(b);
 
@@ -111,7 +114,7 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
         	Songs = sh.getSongsInAFolder(actualDir, true, projection);
             
             setListAdapter(new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
+                    android.R.layout.simple_list_item_1, SongEntry.getValuesList(Songs)));
 		}
 		else
 		{

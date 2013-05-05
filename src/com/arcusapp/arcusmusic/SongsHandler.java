@@ -90,7 +90,7 @@ public class SongsHandler {
     		    int cant = Dirs.size();
     		    for( int i=0; i< cant; i++)
     		    {
-    		    	songs.add(new SongEntry(-1, Dirs.get(i).getName()));
+    		    	songs.add(new SongEntry("-1", Dirs.get(i).getName()));
     		    }
     		    
     	    }
@@ -108,7 +108,7 @@ public class SongsHandler {
 
 	     while(musiccursor.moveToNext()){
 
-	    	songs.add(new SongEntry(musiccursor.getInt(0), musiccursor.getString(1)));
+	    	songs.add(new SongEntry(musiccursor.getString(0), musiccursor.getString(1)));
 	     }
 	     return songs;
     }
@@ -124,7 +124,7 @@ public class SongsHandler {
      	musiccursor = cl.loadInBackground();
 
      	 while(musiccursor.moveToNext()){
-     		allSongsDisplay.add(new SongEntry(musiccursor.getInt(0), musiccursor.getString(1)));
+     		allSongsDisplay.add(new SongEntry(musiccursor.getString(0), musiccursor.getString(1)));
 	     }
 	     
 	     Collections.sort(allSongsDisplay);
@@ -167,7 +167,7 @@ public class SongsHandler {
      	musiccursor = cl.loadInBackground();
 
 	     while(musiccursor.moveToNext()){
-	    	 songsDisplay.add(new SongEntry(musiccursor.getInt(0), musiccursor.getString(1)));
+	    	 songsDisplay.add(new SongEntry(musiccursor.getString(0), musiccursor.getString(1)));
 	     }
 	     
 	     Collections.sort(songsDisplay);

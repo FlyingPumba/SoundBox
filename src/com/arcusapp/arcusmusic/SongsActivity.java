@@ -1,5 +1,6 @@
 package com.arcusapp.arcusmusic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -37,7 +38,7 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 	    Songs = sh.getAllSongsWithDisplay(projection);
 	    
 	    setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
+	            android.R.layout.simple_list_item_1, SongEntry.getValuesList(Songs)));
 	}
 	
 
@@ -58,8 +59,11 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 
         //Creamos la informaci�n a pasar entre actividades
         Bundle b = new Bundle();
+        //cancion actual:
         b.putString("id", Songs.get(position).getKey().toString());
-         
+        //todas las demas canciones:
+        b.putStringArrayList("songs", new ArrayList<String>(SongEntry.getKeysList(Songs)));
+        
         //A�adimos la informaci�n al intent
         PlayActivityIntent.putExtras(b);
 
