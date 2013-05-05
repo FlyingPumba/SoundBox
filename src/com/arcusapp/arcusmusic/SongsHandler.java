@@ -65,9 +65,9 @@ public class SongsHandler {
     	return albums;
     }
     
-    public List<String> getSongsInAFolder(File dir, boolean withDirs, boolean mp3Format)
+    public List<SongEntry> getSongsInAFolder(File dir, boolean withDirs, String projection)
     {
-    	List<String> songs = new ArrayList<String>();
+    	List<SongEntry> songs = new ArrayList<SongEntry>();
     	String folder = dir.getPath();
     	if(withDirs)
     	{
@@ -90,7 +90,7 @@ public class SongsHandler {
     		    int cant = Dirs.size();
     		    for( int i=0; i< cant; i++)
     		    {
-    		    	songs.add(Dirs.get(i).getName() );
+    		    	songs.add(new SongEntry(-1, Dirs.get(i).getName()));
     		    }
     		    
     	    }
@@ -102,23 +102,13 @@ public class SongsHandler {
     			 		"SUBSTR("+MediaStore.Audio.Media.DATA+",LENGTH('"+folder+"')+1, 200) LIKE '/%.mp3' AND " +
     			 		"SUBSTR("+MediaStore.Audio.Media.DATA+",LENGTH('"+folder+"')+1, 200) NOT LIKE '/%/%.mp3'";
     	
-    	if(!mp3Format)
-    	{           
-    		String[] projection = { MediaStore.Audio.Media.TITLE};
-    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(folder), projection, selection, null, MediaStore.Audio.Media.TITLE);
-   	     	musiccursor = cl.loadInBackground();
-    	}
-    	else
-    	{
-    		String[] projection = { MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA};
-    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(folder), projection, selection, null, MediaStore.Audio.Media.DISPLAY_NAME);
-    		musiccursor = cl.loadInBackground();
-    	}
-    	String data;
-	     while(musiccursor.moveToNext()){
-	    	 data =  musiccursor.getString(1);
 
-	    	songs.add(musiccursor.getString(0));
+    		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(folder),  new String[]{MediaStore.Audio.Media._ID, projection}, selection, null, MediaStore.Audio.Media._ID);
+   	     	musiccursor = cl.loadInBackground();
+
+	     while(musiccursor.moveToNext()){
+
+	    	songs.add(new SongEntry(musiccursor.getInt(0), musiccursor.getString(1)));
 	     }
 	     return songs;
     }

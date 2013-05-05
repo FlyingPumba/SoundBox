@@ -36,23 +36,35 @@ public class PlayActivity extends Activity implements OnClickListener{
 		btnPlayPause = (Button)findViewById(R.id.btnPlayPause);
 		btnPlayPause.setOnClickListener(this);
 		
-		 //Recuperamos la información pasada en el intent
-        Bundle bundle = this.getIntent().getExtras();
-        String actualID = bundle.getString("id");
-        
-        String[] projection = new String[]{MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM};
-        
-        List<String> infoSong = sh.getInformationFromSong(actualID, projection);
-        //Construimos el mensaje a mostrar
-        File file = new File(infoSong.get(1));
-        txtTitle.setText(infoSong.get(0));
-        txtFile.setText("Filename: "+file.getName());
-        txtArtist.setText("Artist: "+infoSong.get(2));
-        txtAlbum.setText("Album: "+infoSong.get(3));
-        
-        Uri uri = Uri.fromFile(file);
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-        mediaPlayer.start();
+		 /*este try-catch es porque podemos entrar directamente al PlayActivity desde el MainActivity, y en ese caso el bundle.getString tira una excepcion, porque
+		  * no encuentra el extra "id". En el futuro, siempre tiene que haber una cancion en el reproductor.
+		  */
+		try
+		{
+			//Recuperamos la informaciï¿½n pasada en el intent
+	        Bundle bundle = this.getIntent().getExtras();
+	        String actualID = bundle.getString("id");
+	        if(actualID != null && actualID != "")
+	        {
+		        String[] projection = new String[]{MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM};
+		        
+		        List<String> infoSong = sh.getInformationFromSong(actualID, projection);
+		        //Construimos el mensaje a mostrar
+		        File file = new File(infoSong.get(1));
+		        txtTitle.setText(infoSong.get(0));
+		        txtFile.setText("Filename: "+file.getName());
+		        txtArtist.setText("Artist: "+infoSong.get(2));
+		        txtAlbum.setText("Album: "+infoSong.get(3));
+		        
+		        Uri uri = Uri.fromFile(file);
+		        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+		        mediaPlayer.start();
+	        }
+		}
+		catch(Exception ex)
+		{
+			
+		}
 
 	}
 

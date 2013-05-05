@@ -20,6 +20,7 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 	private SongsHandler sh;
 	private Intent PlayActivityIntent;
 	private List<SongEntry> Songs;
+	String projection;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 
 		sh = new SongsHandler(this);
 	    
-	    String projection = MediaStore.Audio.Media.TITLE;
+	    projection = MediaStore.Audio.Media.TITLE;
 	    Songs = sh.getAllSongsWithDisplay(projection);
 	    
 	    setListAdapter(new ArrayAdapter<String>(this,
@@ -55,12 +56,11 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
         //Creamos el Intent
         PlayActivityIntent = new Intent(this, PlayActivity.class);
 
-        //Creamos la información a pasar entre actividades
+        //Creamos la informaciï¿½n a pasar entre actividades
         Bundle b = new Bundle();
-        TextView textView = (TextView)v;
         b.putString("id", Songs.get(position).getKey().toString());
          
-        //Añadimos la información al intent
+        //Aï¿½adimos la informaciï¿½n al intent
         PlayActivityIntent.putExtras(b);
 
         //Iniciamos la nueva actividad

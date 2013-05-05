@@ -1,9 +1,12 @@
 package com.arcusapp.arcusmusic;
 
 import java.io.File;
+import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,8 +21,11 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 	private TextView txtDir;
 	private Button btnLogo, btnPlayFolder;
 	private SongsHandler sh;
+	private Intent PlayActivityIntent;
 	
 	private File actualDir;
+	private List<SongEntry> Songs;
+	String projection;
 	  
 	@Override
     public void onCreate(Bundle savedInstanceState) 
@@ -38,8 +44,11 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 		actualDir = sh.musicDirectory;
 		txtDir.setText("Musica/");
 		
+		projection = MediaStore.Audio.Media.TITLE;
+		Songs = sh.getSongsInAFolder(actualDir, true, projection);
+		
 		setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, sh.getSongsInAFolder(sh.musicDirectory, true, true) ));
+	            android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
 	    
 	}
 	
@@ -54,22 +63,40 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
     protected void onListItemClick(ListView l, View v, int position, long id) 
     {
         super.onListItemClick(l, v, position, id);
-        TextView txt = (TextView)v;
-
-        File temp_file = new File(actualDir, txt.getText().toString());  
-
-        if( !temp_file.isFile())        
+        
+        if(Songs.get(position).getKey() == -1)
         {
-        	actualDir = temp_file;
-            txtDir.setText(actualDir.toString().split(sh.root_sd)[1]);
-			
-            setListAdapter(new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, sh.getSongsInAFolder(actualDir, true, true) ));
+        	TextView txt = (TextView)v;
+        	File temp_file = new File(actualDir, txt.getText().toString());  
+
+	        if( !temp_file.isFile())        
+	        {
+	        	actualDir = temp_file;
+	            txtDir.setText(actualDir.toString().split(sh.root_sd)[1]);
+	            
+	            Songs = sh.getSongsInAFolder(actualDir, true, projection);
+	            
+	            setListAdapter(new ArrayAdapter<String>(this,
+	                    android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
+	        }
 
         }
         else
         {
         	//reproducir cancion y agregar canciones de la carpeta a una lista de reproduccion temporal
+        	//Creamos el Intent
+            PlayActivityIntent = new Intent(this, PlayActivity.class);
+
+            //Creamos la informaci�n a pasar entre actividades
+            Bundle b = new Bundle();
+            b.putString("id", Songs.get(position).getKey().toString());
+             
+            //A�adimos la informaci�n al intent
+            PlayActivityIntent.putExtras(b);
+
+            //Iniciamos la nueva actividad
+            startActivity(PlayActivityIntent);
+        	
         }
     }
 	    
@@ -81,8 +108,10 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 			actualDir = actualDir.getParentFile();
 	        txtDir.setText(actualDir.toString().split(sh.root_sd)[1]);
 			
-	        setListAdapter(new ArrayAdapter<String>(this,
-	                android.R.layout.simple_list_item_1, sh.getSongsInAFolder(actualDir, true, true) ));
+        	Songs = sh.getSongsInAFolder(actualDir, true, projection);
+            
+            setListAdapter(new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, SongEntry.getStringList(Songs)));
 		}
 		else
 		{
