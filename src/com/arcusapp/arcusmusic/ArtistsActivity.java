@@ -5,14 +5,20 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.TextView;
 
 public class ArtistsActivity extends Activity implements View.OnClickListener {
@@ -21,10 +27,16 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	private ExpandableListView expList;
 	private String displayTabArtist = "  ";
 	private String displayTabAlbum = "      ";
+	
+	private SongsHandler sh;
+	private Intent PlayActivityIntent;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_artists);
+		
+		sh = new SongsHandler(this);
+		 PlayActivityIntent = new Intent(this, PlayActivity.class);
 		
 		btnLogo3 = (Button)findViewById(R.id.btnLogo3);
 		btnLogo3.setOnClickListener(this);
@@ -32,6 +44,57 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		expList = (ExpandableListView)findViewById(R.id.expandableListArtists);
 		expList.setGroupIndicator(null);//le quito la flechita para abajo en los grupos/artistas
 		
+		expList.setOnItemLongClickListener(new OnItemLongClickListener() {
+		    @Override
+		    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		        if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+
+		            TextView vi = (TextView)view;
+					Bundle b = new Bundle();
+					 
+					//todas las canciones del artista:
+					 List<String> ids = sh.getArtistSongs(vi.getText().toString().replaceFirst(displayTabArtist, ""));
+		            b.putStringArrayList("songs", new ArrayList<String>(ids)); 
+		           
+		            //primera cancion
+		            b.putString("id", ids.get(0));
+		            
+		            //A�adimos la informaci�n al intent
+		            PlayActivityIntent.putExtras(b);
+
+		            //Iniciamos la nueva actividad
+		            startActivity(PlayActivityIntent);
+		            
+		            return true;
+		        }
+
+		        return false;
+		    }
+		});
+		
+		expList.setOnChildClickListener(new OnChildClickListener(){
+			@Override
+			public boolean onChildClick (ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+				TextView vi = (TextView)v;
+				Bundle b = new Bundle();
+				 
+				//todas las canciones del album:
+				 List<String> ids = sh.getAlbumSongs(vi.getText().toString().replaceFirst(displayTabAlbum, ""));
+	            b.putStringArrayList("songs", new ArrayList<String>(ids)); 
+	           
+	            //primera cancion
+	            b.putString("id", ids.get(0));
+	            
+	            //A�adimos la informaci�n al intent
+	            PlayActivityIntent.putExtras(b);
+
+	            //Iniciamos la nueva actividad
+	            startActivity(PlayActivityIntent);
+	            
+				return false;
+			}
+			
+		});
 		
 		//agrego este listener para que solo haya un grupo abierto a la vez
 		/*
@@ -67,6 +130,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		}
 		
 	}
+	
 	public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
 		private List<String> mArtists;
@@ -81,7 +145,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	        //para cada artista de mArtists obtengo los Albumes en mAlbums
 	        for(int i = 0; i<mArtists.size(); i++)
 	        {
-	        	mAlbums.add(sh.getArtisAlbums(mArtists.get(i).toString()));
+	        	mAlbums.add(sh.getArtistAlbums(mArtists.get(i).toString()));
 	        }
 	        boolean pepe = true;
 	        pepe = false;
@@ -101,6 +165,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	        	textView.setBackgroundColor(Color.YELLOW);
 	        else
 	        	textView.setBackgroundColor(Color.WHITE);
+	        
 	        return textView;
 		
 		}

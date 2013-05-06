@@ -49,7 +49,7 @@ public class SongsHandler {
     	return artists;
     }
     
-    public List<String> getArtisAlbums(String artist)
+    public List<String> getArtistAlbums(String artist)
     {
     	List<String> albums = new ArrayList<String>();
     	CursorLoader cl;
@@ -63,6 +63,38 @@ public class SongsHandler {
 	    	 albums.add(musiccursor.getString(0));
 	     }
     	return albums;
+    }
+    
+    public List<String> getArtistSongs(String artist)
+    {
+    	List<String> ids = new ArrayList<String>();
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +MediaStore.Audio.Artists.ARTIST + " = '"+artist+"'";
+
+		String[] projection = {MediaStore.Audio.Media._ID};
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media._ID);
+		musiccursor = cl.loadInBackground();
+
+	     while(musiccursor.moveToNext()){
+	    	 ids.add(musiccursor.getString(0));
+	     }
+    	return ids;
+    }
+    
+    public List<String> getAlbumSongs(String album)
+    {
+    	List<String> ids = new ArrayList<String>();
+    	CursorLoader cl;
+    	String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = '"+album+"'";
+
+    	String[] projection = {MediaStore.Audio.Media._ID};
+		cl = new CursorLoader(_context, MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath()), projection, selection, null, MediaStore.Audio.Media._ID);
+		musiccursor = cl.loadInBackground();
+
+	     while(musiccursor.moveToNext()){
+	    	 ids.add(musiccursor.getString(0));
+	     }
+    	return ids;
     }
     
     public List<SongEntry> getSongsInAFolder(File dir, boolean withDirs, String projection)
