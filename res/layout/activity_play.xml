@@ -9,7 +9,7 @@
     
     <Button
         android:id="@+id/btnLogo4"
-        android:layout_width="130dp"
+        android:layout_width="110dp"
         android:layout_height="40dp"
         android:text="Logo a Inicio" 
         android:textSize="13sp"/>
@@ -20,19 +20,19 @@
         android:layout_height="40dp"
         android:text="List" 
         android:textSize="13sp"
-        android:layout_toLeftOf="@+id/btnSwichRandom"/>
+        android:layout_toLeftOf="@+id/btnSwitchRandom"/>
     
     <Button
-        android:id="@+id/btnSwichRandom"
-        android:layout_width="90dp"
+        android:id="@+id/btnSwitchRandom"
+        android:layout_width="110dp"
         android:layout_height="40dp"
         android:text="Random" 
         android:textSize="13sp"
-        android:layout_toLeftOf="@+id/btnSwichRepeat"/>
+        android:layout_toLeftOf="@+id/btnSwitchRepeat"/>
     
     <Button
-        android:id="@+id/btnSwichRepeat"
-        android:layout_width="70dp"
+        android:id="@+id/btnSwitchRepeat"
+        android:layout_width="90dp"
         android:layout_height="40dp"
         android:text="Repeat" 
         android:textSize="13sp"
