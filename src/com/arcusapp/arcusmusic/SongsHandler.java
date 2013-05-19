@@ -29,7 +29,7 @@ public class SongsHandler {
 
 		root_sd = Environment.getExternalStorageDirectory().toString(); //raiz del sd
 		musicDirectory = new File( root_sd + "/Musica" ) ;
-		_context = cont;
+		this._context = cont;
 		
 		checkIfMusicDirectoryExist();
     }
