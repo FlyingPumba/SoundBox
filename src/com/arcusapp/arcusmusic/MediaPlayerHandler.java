@@ -36,14 +36,19 @@ public class MediaPlayerHandler implements OnCompletionListener {
 		songsList = songs;
 		repeatList = songs;
 		
-		//the order here is important, the method setInfo() is getting the File for the song that will use the InitializeMediaPlayer()
-		mediaPlayer = new MediaPlayer();
-		sh = songsHandler;
-		setInfo();
-		InitializeMediaPlayer();
-
+		//the order here is important, the method setInfo() is getting the File for the song that will use the InitializeMediaPlayer(),
+		// and also, the setInfo() method is firing the onSongChanged method from the listener
 		this.context = context;
 		this.mphl = listener;
+		mediaPlayer = new MediaPlayer();
+		sh = songsHandler;
+	}
+	
+	// Primer metodo para prender el reproductor
+	public void TurnOnMediaPlayer(){
+		setInfo();
+		InitializeMediaPlayer();
+		mediaPlayer.start();
 	}
 	
 	public String getActualSongID(){
@@ -91,7 +96,7 @@ public class MediaPlayerHandler implements OnCompletionListener {
 		    mediaPlayer.start();
 		}
 		else{
-			mediaPlayer.stop();
+			mediaPlayer.pause();
 		}
 	}
 	public void NextSong(){
@@ -111,7 +116,7 @@ public class MediaPlayerHandler implements OnCompletionListener {
 			}
 			else{
 				//le sumo uno;
-				if(index != songsList.size()){
+				if(index+1 != songsList.size()){
 					actualID = songsList.get(index+1);
 				}
 				else{
@@ -146,7 +151,7 @@ public class MediaPlayerHandler implements OnCompletionListener {
 				actualID = songsList.get(index-1);
 			}
 			else{
-				actualID = songsList.get(songsList.size());
+				actualID = songsList.get(songsList.size()-1);
 			}
 		}
 		

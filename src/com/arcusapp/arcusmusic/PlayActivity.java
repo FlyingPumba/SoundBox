@@ -61,7 +61,10 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 	        List<String> temp_songs = bundle.getStringArrayList("songs");
 	        
 	        if(actualID != null && actualID != "")
+	        {
 	        	mph = new MediaPlayerHandler(this,this, actualID, temp_songs, sh);
+	        	mph.TurnOnMediaPlayer();
+	        }
 		}
 		catch(Exception ex)
 		{
