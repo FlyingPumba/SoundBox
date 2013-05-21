@@ -144,10 +144,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	        for(int i = 0; i<mArtists.size(); i++)
 	        {
 	        	mAlbums.add(sh.getArtistAlbums(mArtists.get(i).toString()));
-	        }
-	        boolean pepe = true;
-	        pepe = false;
-	        
+	        }	        
 	    }
 
 		@Override

@@ -181,7 +181,7 @@ public class SongsHandler {
 	     return songsID;
     }
     
-    public List<SongEntry> getDisplayForSongsNOTUSED(List<String> songsID, String projection)
+    public List<SongEntry> getDisplayForSongs(List<String> songsID, String projection)
     {    	
     	List<SongEntry> songsDisplay = new ArrayList<SongEntry>();
     	CursorLoader cl;

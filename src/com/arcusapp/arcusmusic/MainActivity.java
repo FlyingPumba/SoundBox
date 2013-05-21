@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-	Intent testActivityIntent;
+	Intent activityIntent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,28 +37,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.btnPlaying){
-			testActivityIntent = new Intent();
-			testActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
-			startActivity(testActivityIntent);
+			activityIntent = new Intent();
+			activityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
+			startActivity(activityIntent);
 		}
 		else if(v.getId() == R.id.btnSeeFolders)
 		{
-			testActivityIntent = new Intent();
-			testActivityIntent.setAction("com.arcusapp.arcusmusic.FOLDERS_ACTIVITY");
-			startActivity(testActivityIntent);
+			activityIntent = new Intent();
+			activityIntent.setAction("com.arcusapp.arcusmusic.FOLDERS_ACTIVITY");
+			startActivity(activityIntent);
 		}
 		else if(v.getId() == R.id.btnPlayLists){
-			//Listas de Reproduccion
+			activityIntent = new Intent();
+			activityIntent.setAction("com.arcusapp.arcusmusic.PLAYLISTS_ACTIVITY");
+			startActivity(activityIntent);
 		}
 		else if(v.getId() == R.id.btnSongs){
-			testActivityIntent = new Intent();
-			testActivityIntent.setAction("com.arcusapp.arcusmusic.SONGS_ACTIVITY");
-			startActivity(testActivityIntent);
+			activityIntent = new Intent();
+			activityIntent.setAction("com.arcusapp.arcusmusic.SONGS_ACTIVITY");
+			startActivity(activityIntent);
 		}
 		else if(v.getId() == R.id.btnArtists){
-			testActivityIntent = new Intent();
-			testActivityIntent.setAction("com.arcusapp.arcusmusic.ARTISTS_ACTIVITY");
-			startActivity(testActivityIntent);
+			activityIntent = new Intent();
+			activityIntent.setAction("com.arcusapp.arcusmusic.ARTISTS_ACTIVITY");
+			startActivity(activityIntent);
 			
 		}
 		

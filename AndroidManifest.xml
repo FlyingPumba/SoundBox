@@ -59,6 +59,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.arcusapp.arcusmusic.SongsListActivity"
+            android:label="@string/title_activity_songs_list" >
+            <intent-filter>
+                <action android:name="com.arcusapp.arcusmusic.SONGSLIST_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.arcusapp.arcusmusic.PlayListsActivity"
+            android:label="@string/title_activity_play_lists" >
+            <intent-filter>
+                <action android:name="com.arcusapp.arcusmusic.PLAYLISTS_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

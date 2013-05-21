@@ -71,6 +71,10 @@ public class MediaPlayerHandler implements OnCompletionListener {
 		return actualTitle;
 	}
 	
+	public List<String> getSongsList(){
+		return songsList;
+	}
+	
 	public boolean ChangeRandom(){
 		randomState = !randomState;
 		return randomState;

@@ -1,8 +1,10 @@
 package com.arcusapp.arcusmusic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -113,10 +115,21 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 			
 		}
 		else if(v.getId() == R.id.btnActualPlayList){
-			
+			Intent intent = new Intent();
+			intent.setAction("com.arcusapp.arcusmusic.SONGSLIST_ACTIVITY");
+			//Creamos la informacion a pasar entre actividades
+	        Bundle b = new Bundle();
+	        //cancion actual:
+	        b.putString("id", mph.getActualSongID());
+	        //todas las demas canciones:
+	        b.putStringArrayList("songs", new ArrayList<String>(mph.getSongsList()));
+	        
+	        //Anadimos la informacion al intent
+	        intent.putExtras(b);
+			startActivity(intent);
 		}
 		else if(v.getId() == R.id.btnLogo4){
-			
+			finish();
 		}
 	}
 	

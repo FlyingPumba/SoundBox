@@ -54,16 +54,17 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 
 	     //reproducir cancion elegida y poner todas las canciones en una lista de reproduccion temporal
         //Creamos el Intent
-        PlayActivityIntent = new Intent(this, PlayActivity.class);
-
-        //Creamos la informaci�n a pasar entre actividades
+        PlayActivityIntent = new Intent();
+        PlayActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
+        
+        //Creamos la informacion a pasar entre actividades
         Bundle b = new Bundle();
         //cancion actual:
         b.putString("id", Songs.get(position).getKey().toString());
         //todas las demas canciones:
         b.putStringArrayList("songs", new ArrayList<String>(SongEntry.getKeysList(Songs)));
         
-        //A�adimos la informaci�n al intent
+        //Anadimos la informacion al intent
         PlayActivityIntent.putExtras(b);
 
         //Iniciamos la nueva actividad

@@ -8,5 +8,9 @@
     <string name="title_activity_songs">SongsActivity</string>
     <string name="title_activity_artists">ArtistsActivity</string>
     <string name="title_activity_play">PlayActivity</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_play_list">PlayListActivity</string>
+    <string name="title_activity_songs_list">SongsListActivity</string>
+    <string name="title_activity_play_lists">PlayListsActivity</string>
 
 </resources>
