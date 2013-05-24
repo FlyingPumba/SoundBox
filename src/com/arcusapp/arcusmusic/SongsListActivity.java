@@ -24,6 +24,7 @@ public class SongsListActivity extends ListActivity implements View.OnClickListe
 		sh = new SongsHandler(this);		
 		//Recuperamos la informacion pasada en el intent
         Bundle bundle = this.getIntent().getExtras();
+        // ojo con este actualID, puede ser un id cualquiera o -1 (Un playlist mostrando las canciones), en caso de que no fuera -1 tendria que resaltarlo.
         actualID = bundle.getString("id");
         songsIDs = bundle.getStringArrayList("songs");
         
@@ -62,7 +63,6 @@ public class SongsListActivity extends ListActivity implements View.OnClickListe
 	public void onBackPressed() 
     {
     	finish();
-    	//aca deberia volver al PlayActivity
     }
 	
 	@Override

@@ -64,7 +64,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 	        
 	        if(actualID != null && actualID != "")
 	        {
-	        	mph = new MediaPlayerHandler(this,this, actualID, temp_songs, sh);
+	        	if(actualID.equals("-1")){
+	        		mph = new MediaPlayerHandler(this,this, temp_songs.get(0), temp_songs, sh);
+	        	}
+	        	else{
+	        		mph = new MediaPlayerHandler(this,this, actualID, temp_songs, sh);
+	        	}
 	        	mph.TurnOnMediaPlayer();
 	        }
 		}

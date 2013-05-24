@@ -35,6 +35,7 @@ public class MediaPlayerHandler implements OnCompletionListener {
 		actualID = actualSong;
 		songsList = songs;
 		repeatList = songs;
+		repeatState = RepeatState.Off;
 		
 		//the order here is important, the method setInfo() is getting the File for the song that will use the InitializeMediaPlayer(),
 		// and also, the setInfo() method is firing the onSongChanged method from the listener
@@ -192,6 +193,8 @@ public class MediaPlayerHandler implements OnCompletionListener {
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
+		try
+		{
 		//pasar a la siguiente cancion, esto depende del estado del repeat y del random
 		if(repeatState == RepeatState.One)
 		{
@@ -205,11 +208,11 @@ public class MediaPlayerHandler implements OnCompletionListener {
 			int index = repeatList.indexOf(actualID);
 			
 			//me fijo que no haya llegado al tope.
-			if(index != repeatList.size())
+			if(index+1 != repeatList.size())
 			{
 				//elijo un nuevo elemento, random o no.
 				if(randomState){
-					Random rnd = new Random();
+					rnd = new Random();
 					int newindex = index;
 					while(newindex == index)
 						newindex = rnd.nextInt(repeatList.size());
@@ -229,22 +232,29 @@ public class MediaPlayerHandler implements OnCompletionListener {
 				{
 					repeatList = songsList;
 					if(randomState){
-						Random rnd = new Random();
+						rnd = new Random();
 						int newindex = rnd.nextInt(repeatList.size());
 						actualID = repeatList.get(newindex);
 					}
 					else
 						actualID = repeatList.get(0);
+					
+					setInfo();
+			        InitializeMediaPlayer();
+			        mediaPlayer.start();
 				}
 				else //repeat es off y llegamos al final de la lista
 					mediaPlayer.stop();
 			}
 			
-			setInfo();
-	        InitializeMediaPlayer();
-	        mediaPlayer.start();
 		}
-		
+		}
+		catch(Exception ex){
+			String pepe = ex.getMessage();
+			boolean asd;
+			if(pepe == "nada")
+				asd = false;
+		}
 	}
 		
 }
