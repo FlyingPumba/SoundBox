@@ -193,8 +193,6 @@ public class MediaPlayerHandler implements OnCompletionListener {
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		try
-		{
 		//pasar a la siguiente cancion, esto depende del estado del repeat y del random
 		if(repeatState == RepeatState.One)
 		{
@@ -225,6 +223,9 @@ public class MediaPlayerHandler implements OnCompletionListener {
 					repeatList.remove(index);
 				}
 				
+				setInfo();
+		        InitializeMediaPlayer();
+		        mediaPlayer.start();
 			}
 			else{
 				//vuelvo a repetir todo o paro el reproductor
@@ -246,15 +247,6 @@ public class MediaPlayerHandler implements OnCompletionListener {
 				else //repeat es off y llegamos al final de la lista
 					mediaPlayer.stop();
 			}
-			
-		}
-		}
-		catch(Exception ex){
-			String pepe = ex.getMessage();
-			boolean asd;
-			if(pepe == "nada")
-				asd = false;
 		}
 	}
-		
 }
