@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class SongsActivity extends ListActivity implements View.OnClickListener{
+public class SongsActivity extends ListActivity implements View.OnClickListener {
 
 	/** Variables iniciales */
 	private Button btnLogo2;
@@ -21,25 +21,25 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 	private Intent PlayActivityIntent;
 	private List<SongEntry> Songs;
 	String projection;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_songs);
-		
-		//inicializo los controles
-		btnLogo2 = (Button)findViewById(R.id.btnLogo2);
+
+		// inicializo los controles
+		btnLogo2 = (Button) findViewById(R.id.btnLogo2);
 		btnLogo2.setOnClickListener(this);
 
 		sh = new SongsHandler(this);
-	    
-	    projection = MediaStore.Audio.Media.TITLE;
-	    Songs = sh.getAllSongsWithDisplay(projection);
-	    
-	    setListAdapter(new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, SongEntry.getValuesList(Songs)));
+
+		projection = MediaStore.Audio.Media.TITLE;
+		Songs = sh.getAllSongsWithDisplay(projection);
+
+		setListAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1,
+				SongEntry.getValuesList(Songs)));
 	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,41 +47,40 @@ public class SongsActivity extends ListActivity implements View.OnClickListener{
 		getMenuInflater().inflate(R.menu.songs, menu);
 		return true;
 	}
-	
+
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) 
-    {
-        super.onListItemClick(l, v, position, id);
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
 
-	     //reproducir cancion elegida y poner todas las canciones en una lista de reproduccion temporal
-        //Creamos el Intent
-        PlayActivityIntent = new Intent();
-        PlayActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
-        
-        //Creamos la informacion a pasar entre actividades
-        Bundle b = new Bundle();
-        //cancion actual:
-        b.putString("id", Songs.get(position).getKey().toString());
-        //todas las demas canciones:
-        b.putStringArrayList("songs", new ArrayList<String>(SongEntry.getKeysList(Songs)));
-        
-        //Anadimos la informacion al intent
-        PlayActivityIntent.putExtras(b);
+		// reproducir cancion elegida y poner todas las canciones en una lista
+		// de reproduccion temporal
+		// Creamos el Intent
+		PlayActivityIntent = new Intent();
+		PlayActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
 
-        //Iniciamos la nueva actividad
-        startActivity(PlayActivityIntent);
-    }
-	    
-    @Override
-	public void onBackPressed() 
-    {
-    	finish();
-    }
+		// Creamos la informacion a pasar entre actividades
+		Bundle b = new Bundle();
+		// cancion actual:
+		b.putString("id", Songs.get(position).getKey().toString());
+		// todas las demas canciones:
+		b.putStringArrayList("songs",
+				new ArrayList<String>(SongEntry.getKeysList(Songs)));
+
+		// Anadimos la informacion al intent
+		PlayActivityIntent.putExtras(b);
+
+		// Iniciamos la nueva actividad
+		startActivity(PlayActivityIntent);
+	}
+
+	@Override
+	public void onBackPressed() {
+		finish();
+	}
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId() == R.id.btnLogo2)
-		{
+		if (v.getId() == R.id.btnLogo2) {
 			finish();
 		}
 	}

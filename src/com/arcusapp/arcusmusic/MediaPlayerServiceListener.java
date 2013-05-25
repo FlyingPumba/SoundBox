@@ -1,5 +1,5 @@
 package com.arcusapp.arcusmusic;
 
-public interface MediaPlayerHandlerListener {
+public interface MediaPlayerServiceListener {
 	public void onSongChanged();
 }
