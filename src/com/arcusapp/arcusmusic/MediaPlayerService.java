@@ -13,8 +13,11 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.util.Log;
 
 public class MediaPlayerService extends Service implements OnCompletionListener {
+
+	private static final String TAG = "MediaPlayerService";
 
 	private String actualID;
 	private List<String> songsList;
@@ -44,6 +47,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// We want this service to continue running until it is explicitly
 		// stopped, so return sticky.
+
 		return Service.START_STICKY;
 	}
 
@@ -64,14 +68,13 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		}
 	}
 
-	public boolean SetUp(String actualID, List<String> songs,
+	public boolean SetUp(String actual, List<String> songs,
 			SongsHandler songsHandler, MediaPlayerServiceListener listener) {
-		if (actualID != null)
-			this.actualID = actualID;
-		if (songs != null) {
+
+		if (actual != null) {
+			this.actualID = actual;
 			this.songsList = songs;
 			repeatList = songs;
-			repeatState = RepeatState.Off;
 		}
 
 		if (mphl == null)
@@ -81,7 +84,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		if (sh == null)
 			sh = songsHandler;
 
-		if (actualID == null && songs == null)
+		// la id que mando el playList Activity es null, significa que no tiene
+		// cancion y no va a llamar al TurnOnMediaPlayer
+		if (actual == null)
 			mphl.onSongChanged();
 
 		return true;
@@ -90,8 +95,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	// Primer metodo para prender el reproductor
 	public void TurnOnMediaPlayer() {
 		setInfo();
-		InitializeMediaPlayer();
-		mediaPlayer.start();
+		ChangeSong();
 	}
 
 	public String getActualSongID() {
@@ -180,8 +184,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 			}
 
 			setInfo();
-			InitializeMediaPlayer();
-			mediaPlayer.start();
+			ChangeSong();
 		}
 	}
 
@@ -211,17 +214,23 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		}
 
 		setInfo();
-		InitializeMediaPlayer();
-		mediaPlayer.start();
+		ChangeSong();
 	}
 
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		if (mediaPlayer != null) {
 			mediaPlayer.stop();
 			mediaPlayer.release();
 			mediaPlayer = null;
 		}
+	}
+
+	@Override
+	public void onCreate() {
+		super.onDestroy();
+		repeatState = RepeatState.Off;
 	}
 
 	private void setInfo() {
@@ -233,14 +242,19 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		actualTitle = infoSong.get(0);
 		actualArtist = infoSong.get(2);
 		actualAlbum = infoSong.get(3);
-
-		mphl.onSongChanged();
 	}
 
-	private void InitializeMediaPlayer() {
+	private void ChangeSong() {
 		Uri uri = Uri.fromFile(actualFile);
+		if (mediaPlayer != null)
+			if (mediaPlayer.isPlaying())
+				mediaPlayer.stop();
 		mediaPlayer = MediaPlayer.create(context, uri);
+		Log.d(TAG, "Creating media player, file is: " + actualFile.getName());
 		mediaPlayer.setOnCompletionListener(this);
+		mediaPlayer.start();
+
+		mphl.onSongChanged();
 	}
 
 	@Override
@@ -274,8 +288,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 				}
 
 				setInfo();
-				InitializeMediaPlayer();
-				mediaPlayer.start();
+				ChangeSong();
 			}
 			else {
 				// vuelvo a repetir todo o paro el reproductor
@@ -290,8 +303,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 						actualID = repeatList.get(0);
 
 					setInfo();
-					InitializeMediaPlayer();
-					mediaPlayer.start();
+					ChangeSong();
 				}
 				else
 					// repeat es off y llegamos al final de la lista

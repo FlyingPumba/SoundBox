@@ -112,8 +112,10 @@ public class PlayListsActivity extends ListActivity implements
 	}
 
 	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-
+	public void onClick(View v) {
+		if (v.getId() == R.id.btnLogo6) {
+			Intent activityIntent = new Intent(this, MainActivity.class);
+			startActivity(activityIntent);
+		}
 	}
 }

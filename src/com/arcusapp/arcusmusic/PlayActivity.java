@@ -38,21 +38,46 @@ public class PlayActivity extends Activity implements OnClickListener,
 			Toast.makeText(PlayActivity.this, "Service Conectado",
 					Toast.LENGTH_SHORT).show();
 
-			if (actualID != null && temp_songs != null) {
-				if (actualID.equals("-1")) {
+			// el service estaba apagado
+			if (ms.getActualSongID() == null) {
+				if (actualID == null) {
+					// aca tendria que estar lo del XML, para cuando entras al
+					// play list desde el menu princpial y el servicio estaba
+					// apagado
+					ms.SetUp(null, null, sh, PlayActivity.this);
+				}
+				else {
+					// asignamos la nueva información, si actualID es -1
+					// significa que no hay una cancion actual reproduciendose,
+					// así que le mandamos la primera de la lista
+					if (actualID.equals("-1")) {
+						ms.SetUp(temp_songs.get(0), temp_songs, sh,
+								PlayActivity.this);
+					}
+					else {
+						ms.SetUp(actualID, temp_songs, sh, PlayActivity.this);
+					}
+					ms.TurnOnMediaPlayer();
+				}
+			}
+			else {
+				// el service estaba prendido, y le asginamos la nueva
+				// informacion
+				if (actualID == null) {
+					// play list desde el menu princpial y el servicio estaba
+					// prendido
+					getInformationFromMediaService();
+				}
+				else if (actualID.equals("-1")) {
 					ms.SetUp(temp_songs.get(0), temp_songs, sh,
 							PlayActivity.this);
+					ms.TurnOnMediaPlayer();
 				}
 				else {
 					ms.SetUp(actualID, temp_songs, sh, PlayActivity.this);
+					ms.TurnOnMediaPlayer();
 				}
-
-				ms.TurnOnMediaPlayer();
 			}
-			else {
-				ms.SetUp(null, null, sh, PlayActivity.this);
-			}
-
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -109,8 +134,8 @@ public class PlayActivity extends Activity implements OnClickListener,
 		}
 
 		Intent intent = new Intent(this, MediaPlayerService.class);
-		startService(intent);
-		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		this.startService(intent);
+		this.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
 	}
 
@@ -168,7 +193,8 @@ public class PlayActivity extends Activity implements OnClickListener,
 			startActivity(intent);
 		}
 		else if (v.getId() == R.id.btnLogo4) {
-			finish();
+			Intent activityIntent = new Intent(this, MainActivity.class);
+			startActivity(activityIntent);
 		}
 	}
 
@@ -181,6 +207,10 @@ public class PlayActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onSongChanged() {
+		getInformationFromMediaService();
+	}
+
+	private void getInformationFromMediaService() {
 		txtTitle.setText(ms.getActualTitle());
 		txtFile.setText(ms.getActualFileName());
 		txtArtist.setText(ms.getActualArtist());

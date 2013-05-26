@@ -1,17 +1,22 @@
 package com.arcusapp.arcusmusic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class SongsListActivity extends ListActivity implements
 		View.OnClickListener {
+
+	private Button btnLogo5;
 
 	String actualID;
 	List<String> songsIDs;
@@ -22,6 +27,10 @@ public class SongsListActivity extends ListActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_songs_list);
+
+		// inicializo los controles
+		btnLogo5 = (Button) findViewById(R.id.btnLogo5);
+		btnLogo5.setOnClickListener(this);
 
 		sh = new SongsHandler(this);
 		// Recuperamos la informacion pasada en el intent
@@ -58,7 +67,8 @@ public class SongsListActivity extends ListActivity implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnLogo5) {
-			finish();
+			Intent activityIntent = new Intent(this, MainActivity.class);
+			startActivity(activityIntent);
 		}
 
 	}
@@ -72,27 +82,22 @@ public class SongsListActivity extends ListActivity implements
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		/*
-		 * El siguiente codigo anda pero hace que haya varios PlayActivity
-		 * reproduciendo música al mismo tiempo, cuando MediaPlayerHandler sea
-		 * un servicio, terminar de implementar.
-		 * 
-		 * //reproducir cancion elegida y poner todas las canciones en una lista
-		 * de reproduccion temporal //Creamos el Intent Intent
-		 * PlayActivityIntent = new Intent();
-		 * PlayActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY"
-		 * );
-		 * 
-		 * //Creamos la informacion a pasar entre actividades Bundle b = new
-		 * Bundle(); //cancion actual: b.putString("id",
-		 * songs.get(position).getKey().toString()); //todas las demas
-		 * canciones: b.putStringArrayList("songs", new
-		 * ArrayList<String>(songsIDs));
-		 * 
-		 * //Anadimos la informacion al intent PlayActivityIntent.putExtras(b);
-		 * 
-		 * //Iniciamos la nueva actividad startActivity(PlayActivityIntent);
-		 */
+		// Creamos el Intent
+		Intent PlayActivityIntent = new Intent();
+		PlayActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
+
+		// Creamos la informacion a pasar entre actividades
+		Bundle b = new Bundle();
+		// cancion actual:
+		b.putString("id", songs.get(position).getKey().toString());
+		// todas las demas canciones:
+		b.putStringArrayList("songs", new ArrayList<String>(songsIDs));
+
+		// Anadimos la informacion al intent
+		PlayActivityIntent.putExtras(b);
+
+		// Iniciamos la nueva actividad
+		startActivity(PlayActivityIntent);
 	}
 
 }
