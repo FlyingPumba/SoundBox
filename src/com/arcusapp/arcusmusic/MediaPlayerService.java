@@ -38,7 +38,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 			MediaStore.Audio.Media.ALBUM };
 
 	private MediaPlayer mediaPlayer;
-	private MediaPlayerServiceListener mphl;
+	private MediaPlayerServiceListener mpsl;
 	private Context context;
 
 	private final IBinder mBinder = new MyBinder();
@@ -58,7 +58,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
 	@Override
 	public boolean onUnbind(Intent arg0) {
-		mphl = null;
+		mpsl = null;
 		return true;
 	}
 
@@ -77,8 +77,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 			repeatList = songs;
 		}
 
-		if (mphl == null)
-			mphl = listener;
+		if (mpsl == null)
+			mpsl = listener;
 		if (mediaPlayer == null)
 			mediaPlayer = new MediaPlayer();
 		if (sh == null)
@@ -87,7 +87,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		// la id que mando el playList Activity es null, significa que no tiene
 		// cancion y no va a llamar al TurnOnMediaPlayer
 		if (actual == null)
-			mphl.onSongChanged();
+			mpsl.onSongChanged();
 
 		return true;
 	}
@@ -254,7 +254,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		mediaPlayer.setOnCompletionListener(this);
 		mediaPlayer.start();
 
-		mphl.onSongChanged();
+		mpsl.onSongChanged();
 	}
 
 	@Override
