@@ -45,14 +45,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		}
 		else if (v.getId() == R.id.btnSeeFolders) {
 			activityIntent = new Intent();
-			activityIntent
-					.setAction("com.arcusapp.arcusmusic.FOLDERS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.arcusmusic.FOLDERS_ACTIVITY");
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnPlayLists) {
 			activityIntent = new Intent();
-			activityIntent
-					.setAction("com.arcusapp.arcusmusic.PLAYLISTS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.arcusmusic.PLAYLISTS_ACTIVITY");
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnSongs) {
@@ -62,8 +60,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		}
 		else if (v.getId() == R.id.btnArtists) {
 			activityIntent = new Intent();
-			activityIntent
-					.setAction("com.arcusapp.arcusmusic.ARTISTS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.arcusmusic.ARTISTS_ACTIVITY");
 			startActivity(activityIntent);
 
 		}
