@@ -1,4 +1,4 @@
-ArcusMusic
+SoundBox
 ==========
 
 Android Music Player
