@@ -1,7 +1,9 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.arcusapp.soundbox.R;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -84,7 +86,7 @@ public class SongsListActivity extends ListActivity implements
 
 		// Creamos el Intent
 		Intent PlayActivityIntent = new Intent();
-		PlayActivityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
+		PlayActivityIntent.setAction("com.arcusapp.soundbox.PLAY_ACTIVITY");
 
 		// Creamos la informacion a pasar entre actividades
 		Bundle b = new Bundle();

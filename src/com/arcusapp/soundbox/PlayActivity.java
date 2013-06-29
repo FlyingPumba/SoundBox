@@ -1,7 +1,9 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.arcusapp.soundbox.R;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -179,7 +181,7 @@ public class PlayActivity extends Activity implements OnClickListener,
 		}
 		else if (v.getId() == R.id.btnActualPlayList) {
 			Intent intent = new Intent();
-			intent.setAction("com.arcusapp.arcusmusic.SONGSLIST_ACTIVITY");
+			intent.setAction("com.arcusapp.soundbox.SONGSLIST_ACTIVITY");
 			// Creamos la informacion a pasar entre actividades
 			Bundle b = new Bundle();
 			// cancion actual:

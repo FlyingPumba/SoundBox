@@ -1,4 +1,6 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
+
+import com.arcusapp.soundbox.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,27 +42,27 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnPlaying) {
 			activityIntent = new Intent();
-			activityIntent.setAction("com.arcusapp.arcusmusic.PLAY_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.soundbox.PLAY_ACTIVITY");
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnSeeFolders) {
 			activityIntent = new Intent();
-			activityIntent.setAction("com.arcusapp.arcusmusic.FOLDERS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.soundbox.FOLDERS_ACTIVITY");
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnPlayLists) {
 			activityIntent = new Intent();
-			activityIntent.setAction("com.arcusapp.arcusmusic.PLAYLISTS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.soundbox.PLAYLISTS_ACTIVITY");
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnSongs) {
 			activityIntent = new Intent();
-			activityIntent.setAction("com.arcusapp.arcusmusic.SONGS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.soundbox.SONGS_ACTIVITY");
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnArtists) {
 			activityIntent = new Intent();
-			activityIntent.setAction("com.arcusapp.arcusmusic.ARTISTS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.soundbox.ARTISTS_ACTIVITY");
 			startActivity(activityIntent);
 
 		}

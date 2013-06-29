@@ -1,4 +1,4 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,8 +151,9 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		@Override
 		// in this method you must set the text to see the parent/group on the
 		// list
-		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
+				public
+				View getGroupView(int groupPosition, boolean isExpanded,
+						View convertView, ViewGroup parent) {
 
 			TextView textView = new TextView(getApplicationContext());
 			textView.setText(displayTabArtist
@@ -170,8 +171,9 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 		@Override
 		// in this method you must set the text to see the children on the list
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
+				public
+				View getChildView(int groupPosition, int childPosition,
+						boolean isLastChild, View convertView, ViewGroup parent) {
 
 			TextView textView = new TextView(getApplicationContext());
 			textView.setText(displayTabAlbum
@@ -183,27 +185,31 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 		@Override
 		// gets the title of each parent/group
-		public Object getGroup(int groupPosition) {
+				public
+				Object getGroup(int groupPosition) {
 			return mArtists.get(groupPosition).toString();
 		}
 
 		@Override
 		// gets the name of each item
-		public Object getChild(int groupPosition, int childPosition) {
+				public
+				Object getChild(int groupPosition, int childPosition) {
 			return mAlbums.get(groupPosition).get(childPosition).toString();
 		}
 
 		@Override
 		// counts the number of group/parent items so the list knows how many
 		// times calls getGroupView() method
-		public int getGroupCount() {
+				public
+				int getGroupCount() {
 			return mArtists.size();
 		}
 
 		@Override
 		// counts the number of children items so the list knows how many times
 		// calls getChildView() method
-		public int getChildrenCount(int groupPosition) {
+				public
+				int getChildrenCount(int groupPosition) {
 			return mAlbums.get(groupPosition).size();
 		}
 

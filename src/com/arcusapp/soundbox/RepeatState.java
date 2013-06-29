@@ -1,4 +1,4 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
 
 public enum RepeatState {
 	Off, All, One

@@ -1,4 +1,4 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,10 @@
-package com.arcusapp.arcusmusic;
+package com.arcusapp.soundbox;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.arcusapp.soundbox.R;
 
 import android.app.ListActivity;
 import android.content.Intent;
