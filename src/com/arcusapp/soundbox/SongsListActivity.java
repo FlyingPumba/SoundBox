@@ -3,8 +3,6 @@ package com.arcusapp.soundbox;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.arcusapp.soundbox.R;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,7 +46,7 @@ public class SongsListActivity extends ListActivity implements
 
 		setListAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
-				SongEntry.getValuesList(songs)));
+				SongEntryHelper.getValuesList(songs)));
 
 		// coloreo de amarillo la cancion actual
 		/*
@@ -91,7 +89,7 @@ public class SongsListActivity extends ListActivity implements
 		// Creamos la informacion a pasar entre actividades
 		Bundle b = new Bundle();
 		// cancion actual:
-		b.putString("id", songs.get(position).getKey().toString());
+		b.putString("id", songs.get(position).getID().toString());
 		// todas las demas canciones:
 		b.putStringArrayList("songs", new ArrayList<String>(songsIDs));
 

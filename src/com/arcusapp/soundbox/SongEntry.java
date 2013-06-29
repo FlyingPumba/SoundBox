@@ -1,49 +1,33 @@
 package com.arcusapp.soundbox;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Data class to store the id of a song associated with a specific string value for that song (For example: Name, Artist, Album, Filename, etc.)
+ * Implements Comparable to allow sorting in SongEntry lists.
+ */
 public class SongEntry implements Comparable<SongEntry> {
 	private String id;
-	private String info;
+	private String value;
 
 	public SongEntry(String id, String info) {
 		this.id = id;
-		this.info = info;
+		this.value = info;
 	}
 
-	public String getKey() {
+	public String getID() {
 		return id;
 	}
 
 	public String getValue() {
-		return info;
+		return value;
 	}
 
-	public void setValue(String newInfo) {
-		this.info = newInfo;
+	public void setValue(String newValue) {
+		this.value = newValue;
 	}
 
 	@Override
 	public int compareTo(SongEntry another) {
-		return this.info.compareToIgnoreCase(another.getValue());
+		return this.value.compareToIgnoreCase(another.getValue());
 	}
 
-	public static List<String> getValuesList(List<SongEntry> lista) {
-		List<String> values = new ArrayList<String>();
-		for (SongEntry se : lista) {
-			values.add(se.getValue());
-		}
-
-		return values;
-	}
-
-	public static List<String> getKeysList(List<SongEntry> lista) {
-		List<String> keys = new ArrayList<String>();
-		for (SongEntry se : lista) {
-			keys.add(se.getKey());
-		}
-
-		return keys;
-	}
 }

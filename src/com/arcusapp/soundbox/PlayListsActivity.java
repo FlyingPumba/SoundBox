@@ -3,8 +3,6 @@ package com.arcusapp.soundbox;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.arcusapp.soundbox.R;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,7 +54,7 @@ public class PlayListsActivity extends ListActivity implements
 				// -1 porque no hay una cancion actual:
 				b.putString("id", "-1");
 				// pasamos todas las canciones del playlist clickeado:
-				String playlistID = playLists.get(pos).getKey();
+				String playlistID = playLists.get(pos).getID();
 				b.putStringArrayList(
 						"songs",
 						new ArrayList<String>(sh
@@ -76,7 +74,7 @@ public class PlayListsActivity extends ListActivity implements
 
 		setListAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
-				SongEntry.getValuesList(playLists)));
+				SongEntryHelper.getValuesList(playLists)));
 
 	}
 
@@ -102,7 +100,7 @@ public class PlayListsActivity extends ListActivity implements
 		// Creamos la informacion a pasar entre actividades
 		Bundle b = new Bundle();
 
-		String playlistID = playLists.get(position).getKey();
+		String playlistID = playLists.get(position).getID();
 		b.putStringArrayList("songs",
 				new ArrayList<String>(sh.getSongsFromPlayList(playlistID)));
 

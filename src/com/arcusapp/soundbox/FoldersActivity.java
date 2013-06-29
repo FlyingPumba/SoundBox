@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.arcusapp.soundbox.R;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,7 +49,7 @@ public class FoldersActivity extends ListActivity implements
 
 		setListAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
-				SongEntry.getValuesList(Songs)));
+				SongEntryHelper.getValuesList(Songs)));
 
 	}
 
@@ -66,7 +64,7 @@ public class FoldersActivity extends ListActivity implements
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		if (Songs.get(position).getKey() == "-1") {
+		if (Songs.get(position).getID() == "-1") {
 			TextView txt = (TextView) v;
 			File temp_file = new File(actualDir, txt.getText().toString());
 
@@ -78,7 +76,7 @@ public class FoldersActivity extends ListActivity implements
 
 				setListAdapter(new ArrayAdapter<String>(this,
 						android.R.layout.simple_list_item_1,
-						SongEntry.getValuesList(Songs)));
+						SongEntryHelper.getValuesList(Songs)));
 			}
 
 		}
@@ -91,10 +89,10 @@ public class FoldersActivity extends ListActivity implements
 			// Creamos la informaci�n a pasar entre actividades
 			Bundle b = new Bundle();
 			// cancion actual:
-			b.putString("id", Songs.get(position).getKey().toString());
+			b.putString("id", Songs.get(position).getID().toString());
 			// demas canciones de ESTA carpeta
 			b.putStringArrayList("songs",
-					new ArrayList<String>(SongEntry.getKeysList(Songs)));
+					new ArrayList<String>(SongEntryHelper.getIDsList(Songs)));
 			// A�adimos la informaci�n al intent
 			PlayActivityIntent.putExtras(b);
 
@@ -114,7 +112,7 @@ public class FoldersActivity extends ListActivity implements
 
 			setListAdapter(new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1,
-					SongEntry.getValuesList(Songs)));
+					SongEntryHelper.getValuesList(Songs)));
 		}
 		else {
 			finish();

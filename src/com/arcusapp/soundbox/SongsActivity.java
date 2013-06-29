@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.arcusapp.soundbox.R;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,7 +41,7 @@ public class SongsActivity extends ListActivity implements View.OnClickListener 
 
 		setListAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
-				SongEntry.getValuesList(Songs)));
+				SongEntryHelper.getValuesList(Songs)));
 	}
 
 	@Override
@@ -56,27 +54,27 @@ public class SongsActivity extends ListActivity implements View.OnClickListener 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menuFileNameProjection:
-			projection = MediaStore.Audio.Media.DATA;
-			Songs = sh.getAllSongsWithDisplay(projection);
-			for (SongEntry se : Songs) {
-				String val = se.getValue();
-				se.setValue(new File(val).getName());
-			}
-			Collections.sort(Songs);
-			setListAdapter(new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1,
-					SongEntry.getValuesList(Songs)));
-			return true;
-		case R.id.menuTitleProjection:
-			projection = MediaStore.Audio.Media.TITLE;
-			Songs = sh.getAllSongsWithDisplay(projection);
-			setListAdapter(new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1,
-					SongEntry.getValuesList(Songs)));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.menuFileNameProjection:
+				projection = MediaStore.Audio.Media.DATA;
+				Songs = sh.getAllSongsWithDisplay(projection);
+				for (SongEntry se : Songs) {
+					String val = se.getValue();
+					se.setValue(new File(val).getName());
+				}
+				Collections.sort(Songs);
+				setListAdapter(new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1,
+						SongEntryHelper.getValuesList(Songs)));
+				return true;
+			case R.id.menuTitleProjection:
+				projection = MediaStore.Audio.Media.TITLE;
+				Songs = sh.getAllSongsWithDisplay(projection);
+				setListAdapter(new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1,
+						SongEntryHelper.getValuesList(Songs)));
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -93,10 +91,10 @@ public class SongsActivity extends ListActivity implements View.OnClickListener 
 		// Creamos la informacion a pasar entre actividades
 		Bundle b = new Bundle();
 		// cancion actual:
-		b.putString("id", Songs.get(position).getKey().toString());
+		b.putString("id", Songs.get(position).getID().toString());
 		// todas las demas canciones:
 		b.putStringArrayList("songs",
-				new ArrayList<String>(SongEntry.getKeysList(Songs)));
+				new ArrayList<String>(SongEntryHelper.getIDsList(Songs)));
 
 		// Anadimos la informacion al intent
 		PlayActivityIntent.putExtras(b);
