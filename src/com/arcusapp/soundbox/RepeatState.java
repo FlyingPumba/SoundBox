@@ -3,7 +3,7 @@ package com.arcusapp.soundbox;
 /**
  * Enum with the 3 differents ways in which the MediaPlayer can handle repetition.
  * The repetetition refers to the whole list, and not to the individual tracks.
- * Unless RandomState is set to Party, the MediaPlayer will play all the songs in the list. Otherwise, this state won't matter.
+ * Unless RandomState is set to Random, the MediaPlayer will play all the songs in the list. Otherwise, this state won't matter.
  */
 public enum RepeatState {
 	/**
