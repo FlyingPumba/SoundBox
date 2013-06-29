@@ -1,7 +1,5 @@
 package com.arcusapp.soundbox;
 
-import com.arcusapp.soundbox.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,22 +16,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// asigno el listener a los botones
-		Button button = (Button) findViewById(R.id.btnSeeFolders);
-		button.setOnClickListener(this);
-		button = (Button) findViewById(R.id.btnSongs);
-		button.setOnClickListener(this);
-		button = (Button) findViewById(R.id.btnArtists);
-		button.setOnClickListener(this);
-		button = (Button) findViewById(R.id.btnPlaying);
-		button.setOnClickListener(this);
-		button = (Button) findViewById(R.id.btnPlayLists);
-		button.setOnClickListener(this);
+		initializeUIComponents();
+
+		SoundBoxApplication.setInitialContext(getApplicationContext());
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
@@ -64,9 +53,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			activityIntent = new Intent();
 			activityIntent.setAction("com.arcusapp.soundbox.ARTISTS_ACTIVITY");
 			startActivity(activityIntent);
-
 		}
+	}
 
+	private void initializeUIComponents() {
+		Button button = (Button) findViewById(R.id.btnSeeFolders);
+		button.setOnClickListener(this);
+		button = (Button) findViewById(R.id.btnSongs);
+		button.setOnClickListener(this);
+		button = (Button) findViewById(R.id.btnArtists);
+		button.setOnClickListener(this);
+		button = (Button) findViewById(R.id.btnPlaying);
+		button.setOnClickListener(this);
+		button = (Button) findViewById(R.id.btnPlayLists);
+		button.setOnClickListener(this);
 	}
 
 }
