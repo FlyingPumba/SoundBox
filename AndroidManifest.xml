@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.ArtistsActivitysActivity"
+            android:name="com.arcusapp.soundbox.activity.ArtistsActivity"
             android:label="@string/title_activity_artists" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.ARTISTS_ACTIVITY" />
