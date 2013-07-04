@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.PlayListsActivityname"
+            android:name="com.arcusapp.soundbox.activity.PlaylistsActivity"
             android:label="@string/title_activity_play_lists" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.PLAYLISTS_ACTIVITY" />
