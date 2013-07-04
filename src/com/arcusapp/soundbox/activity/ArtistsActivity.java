@@ -3,12 +3,6 @@ package com.arcusapp.soundbox.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.arcusapp.soundbox.MediaProvider;
-import com.arcusapp.soundbox.R;
-import com.arcusapp.soundbox.R.id;
-import com.arcusapp.soundbox.R.layout;
-import com.arcusapp.soundbox.R.menu;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,23 +19,29 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 
+import com.arcusapp.soundbox.MediaProvider;
+import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.model.BundleExtra;
+
 public class ArtistsActivity extends Activity implements View.OnClickListener {
 
+	// TODO: set the OnClick method on the layout xml
 	private Button btnLogo3;
 	private ExpandableListView expList;
+	// XXX: make a proper adapter and do not use this variables.
 	private String displayTabArtist = "  ";
 	private String displayTabAlbum = "      ";
 
-	private MediaProvider sh;
-	private Intent PlayActivityIntent;
+	private MediaProvider media;
+	private Intent playActivityIntent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_artists);
 
-		sh = new MediaProvider();
-		PlayActivityIntent = new Intent(this, PlayActivity.class);
+		media = new MediaProvider();
+		playActivityIntent = new Intent(this, PlayActivity.class);
 
 		btnLogo3 = (Button) findViewById(R.id.btnLogo3);
 		btnLogo3.setOnClickListener(this);
@@ -57,21 +57,14 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 				if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
 
 					TextView vi = (TextView) view;
+
 					Bundle b = new Bundle();
+					List<String> ids = media.getSongsFromArtist(vi.getText().toString().replaceFirst(displayTabArtist, ""));
+					b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(ids));
+					b.putString(BundleExtra.CURRENT_ID, ids.get(0));
+					playActivityIntent.putExtras(b);
 
-					// todas las canciones del artista:
-					List<String> ids = sh.getSongsFromArtist(vi.getText()
-							.toString().replaceFirst(displayTabArtist, ""));
-					b.putStringArrayList("songs", new ArrayList<String>(ids));
-
-					// primera cancion
-					b.putString("id", ids.get(0));
-
-					// A�adimos la informaci�n al intent
-					PlayActivityIntent.putExtras(b);
-
-					// Iniciamos la nueva actividad
-					startActivity(PlayActivityIntent);
+					startActivity(playActivityIntent);
 
 					return true;
 				}
@@ -87,19 +80,12 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 				TextView vi = (TextView) v;
 				Bundle b = new Bundle();
 
-				// todas las canciones del album:
-				List<String> ids = sh.getSongsFromAlbum(vi.getText().toString()
-						.replaceFirst(displayTabAlbum, ""));
-				b.putStringArrayList("songs", new ArrayList<String>(ids));
+				List<String> ids = media.getSongsFromAlbum(vi.getText().toString().replaceFirst(displayTabAlbum, ""));
+				b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(ids));
+				b.putString(BundleExtra.CURRENT_ID, ids.get(0));
 
-				// primera cancion
-				b.putString("id", ids.get(0));
-
-				// A�adimos la informaci�n al intent
-				PlayActivityIntent.putExtras(b);
-
-				// Iniciamos la nueva actividad
-				startActivity(PlayActivityIntent);
+				playActivityIntent.putExtras(b);
+				startActivity(playActivityIntent);
 
 				return false;
 			}
@@ -124,7 +110,6 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.artists, menu);
 		return true;
 	}
@@ -134,88 +119,74 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		if (v.getId() == R.id.btnLogo3) {
 			finish();
 		}
-
 	}
 
 	public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
 		private List<String> mArtists;
 		private List<List<String>> mAlbums;
-		private MediaProvider sh;
 
 		public MyExpandableListAdapter(Context context) {
-			sh = new MediaProvider();
-			// obtener los artistas del MediaStore
-			mArtists = sh.getAllArtists();
+			// get all the Artists
+			mArtists = media.getAllArtists();
+
+			// get the Albums foreach Artist
 			mAlbums = new ArrayList<List<String>>();
-			// para cada artista de mArtists obtengo los Albumes en mAlbums
 			for (int i = 0; i < mArtists.size(); i++) {
-				mAlbums.add(sh.getAlbumsFromArtist(mArtists.get(i).toString()));
+				mAlbums.add(media.getAlbumsFromArtist(mArtists.get(i).toString()));
 			}
 		}
 
 		@Override
-		// in this method you must set the text to see the parent/group on the
-		// list
-				public
-				View getGroupView(int groupPosition, boolean isExpanded,
-						View convertView, ViewGroup parent) {
+		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+			// in this method you must set the text to see the parent/group on the list
 
 			TextView textView = new TextView(getApplicationContext());
-			textView.setText(displayTabArtist
-					+ getGroup(groupPosition).toString());
+			textView.setText(displayTabArtist + getGroup(groupPosition).toString());
 			textView.setTextSize(25);
 			textView.setTextColor(Color.BLACK);
-			if (isExpanded)
+			if (isExpanded) {
 				textView.setBackgroundColor(Color.YELLOW);
-			else
+			} else {
 				textView.setBackgroundColor(Color.WHITE);
+			}
 
 			return textView;
-
 		}
 
 		@Override
-		// in this method you must set the text to see the children on the list
-				public
-				View getChildView(int groupPosition, int childPosition,
-						boolean isLastChild, View convertView, ViewGroup parent) {
-
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+			// in this method you must set the text to see the children on the list
 			TextView textView = new TextView(getApplicationContext());
-			textView.setText(displayTabAlbum
-					+ getChild(groupPosition, childPosition).toString());
+			textView.setText(displayTabAlbum + getChild(groupPosition, childPosition).toString());
 			textView.setTextSize(20);
 			textView.setTextColor(Color.BLACK);
 			return textView;
 		}
 
 		@Override
-		// gets the title of each parent/group
-				public
-				Object getGroup(int groupPosition) {
+		public Object getGroup(int groupPosition) {
+			// gets the title of each parent/group
 			return mArtists.get(groupPosition).toString();
 		}
 
 		@Override
-		// gets the name of each item
-				public
-				Object getChild(int groupPosition, int childPosition) {
+		public Object getChild(int groupPosition, int childPosition) {
+			// gets the name of each item
 			return mAlbums.get(groupPosition).get(childPosition).toString();
 		}
 
 		@Override
-		// counts the number of group/parent items so the list knows how many
-		// times calls getGroupView() method
-				public
-				int getGroupCount() {
+		public int getGroupCount() {
+			// counts the number of group/parent items so the list knows how many
+			// times calls getGroupView() method
 			return mArtists.size();
 		}
 
 		@Override
-		// counts the number of children items so the list knows how many times
-		// calls getChildView() method
-				public
-				int getChildrenCount(int groupPosition) {
+		public int getChildrenCount(int groupPosition) {
+			// counts the number of children items so the list knows how many times
+			// calls getChildView() method
 			return mAlbums.get(groupPosition).size();
 		}
 
@@ -238,6 +209,5 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		public boolean isChildSelectable(int groupPosition, int childPosition) {
 			return true;
 		}
-
 	}
 }
