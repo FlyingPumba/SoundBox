@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,23 +14,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class PlayListsActivity extends ListActivity implements
+import com.arcusapp.soundbox.MediaProvider;
+import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.PlaylistEntry;
+import com.arcusapp.soundbox.util.MediaEntryHelper;
+
+public class PlaylistsActivity extends ListActivity implements
 		View.OnClickListener {
 
 	private Button btnLogo6;
 	private ListView listView;
-	private SongsHandler sh;
-	private Intent PlayActivityIntent;
-	private List<SongEntry> playLists;
+	private MediaProvider media;
+	private MediaEntryHelper<PlaylistEntry> mediaEntryHelper;
+	private Intent playActivityIntent;
+	private List<PlaylistEntry> playLists;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play_lists);
 
-		sh = new SongsHandler(this);
+		media = new MediaProvider();
+		mediaEntryHelper = new MediaEntryHelper<PlaylistEntry>();
 
-		// inicializo los controles
+		// TODO: set the onClick method on the layout xml
 		btnLogo6 = (Button) findViewById(R.id.btnLogo6);
 		btnLogo6.setOnClickListener(this);
 
@@ -45,36 +53,27 @@ public class PlayListsActivity extends ListActivity implements
 				// we directly play all the playlist
 
 				// Creamos el Intent
-				PlayActivityIntent = new Intent();
-				PlayActivityIntent
-						.setAction("com.arcusapp.soundbox.PLAY_ACTIVITY");
+				playActivityIntent = new Intent();
+				playActivityIntent.setAction("com.arcusapp.soundbox.PLAY_ACTIVITY");
 
-				// Creamos la informacion a pasar entre actividades
 				Bundle b = new Bundle();
-				// -1 porque no hay una cancion actual:
-				b.putString("id", "-1");
-				// pasamos todas las canciones del playlist clickeado:
+
+				// we play directly the playlist so we dont have a specific first song
+				b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+
 				String playlistID = playLists.get(pos).getID();
-				b.putStringArrayList(
-						"songs",
-						new ArrayList<String>(sh
-								.getSongsFromPlayList(playlistID)));
+				b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getSongsFromPlaylist(playlistID)));
 
-				// Anadimos la informacion al intent
-				PlayActivityIntent.putExtras(b);
-
-				// Iniciamos la nueva actividad
-				startActivity(PlayActivityIntent);
+				playActivityIntent.putExtras(b);
+				startActivity(playActivityIntent);
 
 				return true;
 			}
 		});
 
-		playLists = sh.getAllPlayLists();
+		playLists = media.getAllPlayLists();
 
-		setListAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1,
-				SongEntryHelper.getValuesList(playLists)));
+		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(playLists)));
 
 	}
 
@@ -93,22 +92,21 @@ public class PlayListsActivity extends ListActivity implements
 		// SongsListActivity
 
 		// Creamos el Intent
-		PlayActivityIntent = new Intent();
-		PlayActivityIntent
-				.setAction("com.arcusapp.soundbox.SONGSLIST_ACTIVITY");
+		playActivityIntent = new Intent();
+		playActivityIntent.setAction("com.arcusapp.soundbox.SONGSLIST_ACTIVITY");
 
 		// Creamos la informacion a pasar entre actividades
 		Bundle b = new Bundle();
 
 		String playlistID = playLists.get(position).getID();
 		b.putStringArrayList("songs",
-				new ArrayList<String>(sh.getSongsFromPlayList(playlistID)));
+				new ArrayList<String>(media.getSongsFromPlaylist(playlistID)));
 
 		// Anadimos la informacion al intent
-		PlayActivityIntent.putExtras(b);
+		playActivityIntent.putExtras(b);
 
 		// Iniciamos la nueva actividad
-		startActivity(PlayActivityIntent);
+		startActivity(playActivityIntent);
 	}
 
 	@Override

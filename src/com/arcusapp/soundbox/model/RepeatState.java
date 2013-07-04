@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.model;
 
 /**
  * Enum with the 3 differents ways in which the MediaPlayer can handle repetition.

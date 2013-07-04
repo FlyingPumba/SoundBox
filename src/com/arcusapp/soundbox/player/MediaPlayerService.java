@@ -1,8 +1,12 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.player;
 
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+
+import com.arcusapp.soundbox.MediaPlayerServiceListener;
+import com.arcusapp.soundbox.MediaProvider;
+import com.arcusapp.soundbox.model.RepeatState;
 
 import android.app.Service;
 import android.content.Context;
@@ -32,7 +36,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	private String actualArtist;
 	private String actualAlbum;
 
-	private SongsHandler sh;
+	private MediaProvider sh;
 	String[] defaultProjection = new String[] { MediaStore.Audio.Media.TITLE,
 			MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ARTIST,
 			MediaStore.Audio.Media.ALBUM };
@@ -45,9 +49,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// We want this service to continue running until it is explicitly
-		// stopped, so return sticky.
-
+		// We want this service to continue running until it is explicitly stopped, so return sticky.
 		return Service.START_STICKY;
 	}
 
@@ -63,13 +65,13 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	}
 
 	public class MyBinder extends Binder {
-		MediaPlayerService getService() {
+		public MediaPlayerService getService() {
 			return MediaPlayerService.this;
 		}
 	}
 
 	public boolean SetUp(String actual, List<String> songs,
-			SongsHandler songsHandler, MediaPlayerServiceListener listener) {
+			MediaProvider songsHandler, MediaPlayerServiceListener listener) {
 
 		if (actual != null) {
 			this.actualID = actual;
@@ -235,8 +237,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
 	private void setInfo() {
 		// Recuperamos cierta informacion para mostrar en el reproductor
-		List<String> infoSong = sh.getInformationFromSong(actualID,
-				defaultProjection);
+		// FIXME: MediaPlayerService, shouldn't know the defaultprojection.
+		List<String> infoSong = sh.getValuesFromSong(actualID, defaultProjection);
 		// Construimos el mensaje a mostrar
 		actualFile = new File(infoSong.get(1));
 		actualTitle = infoSong.get(0);

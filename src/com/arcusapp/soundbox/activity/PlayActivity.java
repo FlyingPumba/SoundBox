@@ -1,9 +1,17 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.activity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.arcusapp.soundbox.MediaPlayerServiceListener;
+import com.arcusapp.soundbox.MediaProvider;
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.R.id;
+import com.arcusapp.soundbox.R.layout;
+import com.arcusapp.soundbox.R.menu;
+import com.arcusapp.soundbox.model.RepeatState;
+import com.arcusapp.soundbox.player.MediaPlayerService;
+import com.arcusapp.soundbox.player.MediaPlayerService.MyBinder;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -26,7 +34,7 @@ public class PlayActivity extends Activity implements OnClickListener,
 	Button btnPlayPause, btnPrev, btnNext, btnLogo4, btnSwitchRandom,
 			btnSwitchRepeat, btnList;
 
-	private SongsHandler sh;
+	private MediaProvider sh;
 	// private MediaPlayerHandler mph;
 	private MediaPlayerService ms;
 
@@ -92,7 +100,7 @@ public class PlayActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 
-		sh = new SongsHandler(this);
+		sh = new MediaProvider();
 
 		txtTitle = (TextView) findViewById(R.id.txtActualSongTitle);
 		txtFile = (TextView) findViewById(R.id.txtActualSongFile);

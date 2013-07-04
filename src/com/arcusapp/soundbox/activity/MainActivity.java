@@ -1,4 +1,6 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.activity;
+
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+
+import com.arcusapp.soundbox.MediaProvider;
+import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.model.BundleExtra;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -46,7 +53,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		}
 		else if (v.getId() == R.id.btnSongs) {
 			activityIntent = new Intent();
-			activityIntent.setAction("com.arcusapp.soundbox.SONGS_ACTIVITY");
+			activityIntent.setAction("com.arcusapp.soundbox.SONGSLIST_ACTIVITY");
+
+			MediaProvider media = new MediaProvider();
+			Bundle bundle = new Bundle();
+			bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
+
 			startActivity(activityIntent);
 		}
 		else if (v.getId() == R.id.btnArtists) {
@@ -57,6 +69,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	}
 
 	private void initializeUIComponents() {
+		// TODO: set the onClick method on the layout xml
 		Button button = (Button) findViewById(R.id.btnSeeFolders);
 		button.setOnClickListener(this);
 		button = (Button) findViewById(R.id.btnSongs);

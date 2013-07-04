@@ -1,7 +1,13 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.arcusapp.soundbox.MediaProvider;
+import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.R.id;
+import com.arcusapp.soundbox.R.layout;
+import com.arcusapp.soundbox.R.menu;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,7 +32,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	private String displayTabArtist = "  ";
 	private String displayTabAlbum = "      ";
 
-	private SongsHandler sh;
+	private MediaProvider sh;
 	private Intent PlayActivityIntent;
 
 	@Override
@@ -34,7 +40,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_artists);
 
-		sh = new SongsHandler(this);
+		sh = new MediaProvider();
 		PlayActivityIntent = new Intent(this, PlayActivity.class);
 
 		btnLogo3 = (Button) findViewById(R.id.btnLogo3);
@@ -54,7 +60,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 					Bundle b = new Bundle();
 
 					// todas las canciones del artista:
-					List<String> ids = sh.getArtistSongs(vi.getText()
+					List<String> ids = sh.getSongsFromArtist(vi.getText()
 							.toString().replaceFirst(displayTabArtist, ""));
 					b.putStringArrayList("songs", new ArrayList<String>(ids));
 
@@ -82,7 +88,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 				Bundle b = new Bundle();
 
 				// todas las canciones del album:
-				List<String> ids = sh.getAlbumSongs(vi.getText().toString()
+				List<String> ids = sh.getSongsFromAlbum(vi.getText().toString()
 						.replaceFirst(displayTabAlbum, ""));
 				b.putStringArrayList("songs", new ArrayList<String>(ids));
 
@@ -135,16 +141,16 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 		private List<String> mArtists;
 		private List<List<String>> mAlbums;
-		private SongsHandler sh;
+		private MediaProvider sh;
 
 		public MyExpandableListAdapter(Context context) {
-			sh = new SongsHandler(context);
+			sh = new MediaProvider();
 			// obtener los artistas del MediaStore
 			mArtists = sh.getAllArtists();
 			mAlbums = new ArrayList<List<String>>();
 			// para cada artista de mArtists obtengo los Albumes en mAlbums
 			for (int i = 0; i < mArtists.size(); i++) {
-				mAlbums.add(sh.getArtistAlbums(mArtists.get(i).toString()));
+				mAlbums.add(sh.getAlbumsFromArtist(mArtists.get(i).toString()));
 			}
 		}
 
