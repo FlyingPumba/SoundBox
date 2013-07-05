@@ -8,6 +8,12 @@ import android.content.Context;
 public abstract class SoundBoxApplication {
 	private static Context appContext;
 
+	public static final String ACTION_FOLDERS_ACTIVITY = "com.arcusapp.soundbox.action.FOLDERS_ACTIVITY";
+	public static final String ACTION_ARTISTS_ACTIVITY = "com.arcusapp.soundbox.action.ARTISTS_ACTIVITY";
+	public static final String ACTION_PLAY_ACTIVITY = "com.arcusapp.soundbox.action.PLAY_ACTIVITY";
+	public static final String ACTION_SONGLIST_ACTIVITY = "com.arcusapp.soundbox.action.SONGLIST_ACTIVITY";
+	public static final String ACTION_PLAYLISTS_ACTIVITY = "com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY";
+
 	public static void setInitialContext(Context context) {
 		appContext = context;
 	}

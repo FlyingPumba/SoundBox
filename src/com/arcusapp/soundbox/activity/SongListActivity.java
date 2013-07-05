@@ -48,7 +48,7 @@ public class SongListActivity extends ListActivity implements View.OnClickListen
 		String projection = MediaStore.Audio.Media.TITLE;
 		songs = mediaProvider.getValueFromSongs(songsIDs, projection);
 
-		// TODO: make a proper adapter
+		// XXX: make a proper adapter
 		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
 	}
 

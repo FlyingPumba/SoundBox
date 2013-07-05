@@ -27,7 +27,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="En Reproducción" />
+                android:text="En Reproducción"
+                android:onClick="onClick" />
 
         </TableRow>
 
@@ -41,14 +42,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ver Carpetas" />
+                android:text="Ver Carpetas"
+                android:onClick="onClick" />
 
 			<Button
                 android:id="@+id/btnPlayLists"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Listas de Repr." />
+                android:text="Listas de Repr."
+                android:onClick="onClick" />
 
         </TableRow>
 
@@ -62,14 +65,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Artistas y Álbumes" />
+                android:text="Artistas y Álbumes"
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/btnSongs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Canciones" />
+                android:text="Canciones"
+                android:onClick="onClick" />
 
         </TableRow>
 
