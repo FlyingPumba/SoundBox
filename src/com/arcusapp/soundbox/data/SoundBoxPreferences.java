@@ -11,14 +11,14 @@ import android.preference.PreferenceManager;
 
 public class SoundBoxPreferences {
 
-	private static String LastSongsKey = "lastsongs";
+	private final static String LAST_SONGS = "lastsongs";
 
 	public static List<String> getLastSongs(Context _context) {
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_context);
 		// Retrieve the values
 		Set<String> set = new HashSet<String>();
-		set = preferences.getStringSet(LastSongsKey, null);
+		set = preferences.getStringSet(LAST_SONGS, null);
 
 		return new ArrayList<String>(set);
 	}
@@ -31,7 +31,7 @@ public class SoundBoxPreferences {
 		Set<String> set = new HashSet<String>();
 		set.addAll(songsID);
 
-		editor.putStringSet(LastSongsKey, set);
+		editor.putStringSet(LAST_SONGS, set);
 		editor.commit();
 
 	}
@@ -40,7 +40,7 @@ public class SoundBoxPreferences {
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_context);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.remove(LastSongsKey);
+		editor.remove(LAST_SONGS);
 		editor.commit();
 	}
 }

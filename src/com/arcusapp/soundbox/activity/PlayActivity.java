@@ -20,9 +20,9 @@ import android.widget.Toast;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RepeatState;
 import com.arcusapp.soundbox.player.MediaPlayerService;
-import com.arcusapp.soundbox.util.MediaPlayerServiceListener;
 
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 
