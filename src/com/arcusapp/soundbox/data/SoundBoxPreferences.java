@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class LastSongsManager {
+public class SoundBoxPreferences {
 
 	private static String LastSongsKey = "lastsongs";
 

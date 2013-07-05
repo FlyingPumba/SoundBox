@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox;
+package com.arcusapp.soundbox.data;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
+import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.PlaylistEntry;
 import com.arcusapp.soundbox.model.SongEntry;
 
