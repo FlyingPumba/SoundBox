@@ -12,7 +12,8 @@
 	       android:layout_width="130dp"
 	       android:layout_height="40dp"
 	       android:text="Logo a Inicio" 
-	       android:textSize="13sp"/>
+	       android:textSize="13sp"
+	       android:onClick="onClick" />
         
         <Button
 	       android:id="@+id/btnPlayFolder"
@@ -20,7 +21,8 @@
 	       android:layout_height="40dp"
 	       android:text="Reproducir Carpeta" 
 	       android:textSize="13sp"
-	       android:layout_toRightOf="@id/btnLogo"/>
+	       android:layout_toRightOf="@id/btnLogo"
+	       android:onClick="onClick" />
 
         <TextView
             android:id="@+id/txtDir"
@@ -31,11 +33,17 @@
             android:textSize="14sp" />
 
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/dirsList"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtDir"
-            android:layout_alignParentBottom="true" >
+            android:layout_below="@id/txtDir" >
+        </ListView>
+        
+        <ListView
+            android:id="@+id/songsList"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dirsList">
         </ListView>
 
 

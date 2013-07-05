@@ -4,30 +4,32 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
+import com.arcusapp.soundbox.util.DirectoryHelper;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 
-public class FoldersActivity extends ListActivity implements View.OnClickListener {
+public class FoldersActivity extends Activity implements View.OnClickListener {
 
-	// TODO: set the OnClick mehtods on the layout xml
 	private TextView txtDir;
-	private Button btnLogo, btnPlayFolder;
+	private ListView songsListView, dirsListView;
 
-	private MediaProvider media;
+	private MediaProvider mediaProvider;
 	MediaEntryHelper<SongEntry> mediaEntryHelper;
 	private Intent playActivityIntent;
 
@@ -41,79 +43,102 @@ public class FoldersActivity extends ListActivity implements View.OnClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_folders);
 
-		// TODO: set the OnClick mehtods on the layout xml
-		txtDir = (TextView) findViewById(R.id.txtDir);
-		btnLogo = (Button) findViewById(R.id.btnLogo);
-		btnLogo.setOnClickListener(this);
-		btnPlayFolder = (Button) findViewById(R.id.btnPlayFolder);
-		btnPlayFolder.setOnClickListener(this);
+		mediaProvider = new MediaProvider();
+		actualDir = mediaProvider.getDefaultDirectory();
 
-		media = new MediaProvider();
-		actualDir = media.musicDirectory;
+		// TODO: init the UI on a different method
+		txtDir = (TextView) findViewById(R.id.txtDir);
 		txtDir.setText("Musica/");
+		songsListView = (ListView) findViewById(R.id.songsList);
+		songsListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				// handle the click on a song
+				playActivityIntent = new Intent(SoundBoxApplication.getApplicationContext(), PlayActivity.class);
+
+				Bundle b = new Bundle();
+				b.putString(BundleExtra.CURRENT_ID, songs.get(position).getID().toString());
+				b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
+				playActivityIntent.putExtras(b);
+
+				startActivity(playActivityIntent);
+			}
+		});
+		dirsListView = (ListView) findViewById(R.id.dirsList);
+		dirsListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				// handle the click on a directory
+				actualDir = new File(subDirs.get(position).getPath());
+				// txtDir.setText(actualDir.toString().split(media.root_sd)[1]);
+				txtDir.setText(actualDir.getName());
+
+				songs = mediaProvider.getSongsInAFolder(actualDir, projection);
+				subDirs = mediaProvider.getSubDirsInAFolder(actualDir);
+
+				// TODO: WRITE A PROPER ADAPTER !!
+				if (!songs.isEmpty()) {
+					songsListView.setAdapter(new ArrayAdapter<String>(SoundBoxApplication.getApplicationContext(), android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
+				} else {
+					ArrayAdapter<String> adapter = (ArrayAdapter<String>) songsListView.getAdapter();
+					adapter.clear();
+
+				}
+				if (!subDirs.isEmpty()) {
+					dirsListView.setAdapter(new ArrayAdapter<String>(SoundBoxApplication.getApplicationContext(), android.R.layout.simple_list_item_1, DirectoryHelper.getNamesFromFiles(subDirs)));
+				} else {
+					ArrayAdapter<String> adapter = (ArrayAdapter<String>) dirsListView.getAdapter();
+					adapter.clear();
+
+				}
+			}
+		});
 
 		// TODO: FoldersActivitty shouldnt handle the projection
 		projection = MediaStore.Audio.Media.TITLE;
 
-		songs = media.getSongsInAFolder(actualDir, projection);
-		subDirs = media.getSubDirsInAFolder(actualDir);
+		// set the first options for the user
+		songs = new ArrayList<SongEntry>();
+		subDirs = mediaProvider.getDefaultUserOptions();
 
-		// TODO: with a proper adapter in order to show the subdirs too
-		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
+		songsListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new ArrayList<String>()));
+		dirsListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, DirectoryHelper.getNamesFromFiles(subDirs)));
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.folders, menu);
 		return true;
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-
-		if (songs.get(position).getID() == "-1") {
-			TextView txt = (TextView) v;
-			File temp_file = new File(actualDir, txt.getText().toString());
-
-			if (!temp_file.isFile()) {
-				actualDir = temp_file;
-				txtDir.setText(actualDir.toString().split(media.root_sd)[1]);
-
-				songs = media.getSongsInAFolder(actualDir, projection);
-				subDirs = media.getSubDirsInAFolder(actualDir);
-
-				// //TODO: with a proper adapter in order to show the subdirs too
-				setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
-			}
-
-		} else {
-			playActivityIntent = new Intent(this, PlayActivity.class);
-
-			Bundle b = new Bundle();
-			// set the selected song to the CURRENT_ID flag
-			b.putString(BundleExtra.CURRENT_ID, songs.get(position).getID().toString());
-			// set the songs in the folder to the SONGS_ID_LIST flag
-			b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
-
-			playActivityIntent.putExtras(b);
-			startActivity(playActivityIntent);
-		}
-	}
-
-	@Override
 	public void onBackPressed() {
-		if (!actualDir.equals(media.musicDirectory)) {
+		// check if the actual dir is not an sd card
+		if (!mediaProvider.getSDCards().contains(actualDir)) {
 			// list parent folder
 			actualDir = actualDir.getParentFile();
-			txtDir.setText(actualDir.toString().split(media.root_sd)[1]);
+			txtDir.setText(actualDir.getName());
 
-			songs = media.getSongsInAFolder(actualDir, projection);
-			subDirs = media.getSubDirsInAFolder(actualDir);
+			songs = mediaProvider.getSongsInAFolder(actualDir, projection);
+			subDirs = mediaProvider.getSubDirsInAFolder(actualDir);
 
-			// //TODO: with a proper adapter in order to show the subdirs too
-			setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
+			// TODO: WRITE A PROPER ADAPTER !!
+			if (!songs.isEmpty()) {
+				songsListView.setAdapter(new ArrayAdapter<String>(SoundBoxApplication.getApplicationContext(), android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
+			} else {
+				ArrayAdapter<String> adapter = (ArrayAdapter<String>) songsListView.getAdapter();
+				adapter.clear();
+
+			}
+			if (!subDirs.isEmpty()) {
+				dirsListView.setAdapter(new ArrayAdapter<String>(SoundBoxApplication.getApplicationContext(), android.R.layout.simple_list_item_1, DirectoryHelper.getNamesFromFiles(subDirs)));
+			} else {
+				ArrayAdapter<String> adapter = (ArrayAdapter<String>) dirsListView.getAdapter();
+				adapter.clear();
+
+			}
 		} else {
 			finish();
 		}

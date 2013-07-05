@@ -16,23 +16,64 @@ import android.support.v4.content.CursorLoader;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.PlaylistEntry;
 import com.arcusapp.soundbox.model.SongEntry;
+import com.arcusapp.soundbox.util.DirectoryHelper;
 
 public class MediaProvider {
 
 	private OnlyDirsFilter myFilter;
-	public String root_sd;
-	public File musicDirectory;
-	private Uri musicDirectoryUri;
+	private File defaultDirectory;
+	private Uri defaultDirectoryUri;
+
+	List<File> sdCards;
+
+	File musicDirectory;
 
 	private Cursor myCursor;
 
 	public MediaProvider() {
 		myFilter = new OnlyDirsFilter();
 
-		root_sd = Environment.getExternalStorageDirectory().toString();
-		musicDirectory = new File(root_sd + "/Musica");
-		musicDirectoryUri = MediaStore.Audio.Media.getContentUriForPath(musicDirectory.getPath());
-		checkIfMusicDirectoryExist();
+		musicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+		searchForSDCards();
+		defaultDirectory = sdCards.get(0);
+		defaultDirectoryUri = MediaStore.Audio.Media.getContentUriForPath(defaultDirectory.getPath());
+	}
+
+	private void searchForSDCards() {
+		sdCards = new ArrayList<File>();
+		File primarysdCard = Environment.getExternalStorageDirectory();
+		String[] sdCardDirectories = DirectoryHelper.getStorageDirectories();
+		String[] othersdCardDirectories = DirectoryHelper.getOtherStorageDirectories();
+
+		sdCards.add(primarysdCard);
+		for (String s : sdCardDirectories) {
+			File directory = new File(s);
+			if (!sdCards.contains(directory)) {
+				sdCards.add(directory);
+			}
+		}
+		for (String s : othersdCardDirectories) {
+			File directory = new File(s);
+			if (!sdCards.contains(directory)) {
+				sdCards.add(directory);
+			}
+		}
+
+	}
+
+	public File getDefaultDirectory() {
+		return defaultDirectory;
+	}
+
+	public List<File> getDefaultUserOptions() {
+		List<File> defaultUserOptions = new ArrayList<File>();
+		defaultUserOptions.add(musicDirectory);
+		defaultUserOptions.addAll(sdCards);
+		return defaultUserOptions;
+	}
+
+	public List<File> getSDCards() {
+		return sdCards;
 	}
 
 	/**
@@ -46,7 +87,7 @@ public class MediaProvider {
 		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID };
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, cursorProjection, selection, null, null);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, null, null);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -70,7 +111,7 @@ public class MediaProvider {
 		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, projection };
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, cursorProjection, selection, null, null);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, null, null);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -94,7 +135,7 @@ public class MediaProvider {
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " not null ";
 		String sortOrder = MediaStore.Audio.Artists.ARTIST;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, projection, selection, null, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -116,7 +157,7 @@ public class MediaProvider {
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
 		String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, projection, selection, null, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -138,7 +179,7 @@ public class MediaProvider {
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
 		String sortOrder = MediaStore.Audio.Media._ID;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, projection, selection, null, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -160,7 +201,7 @@ public class MediaProvider {
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = '" + album + "'";
 		String sortOrder = MediaStore.Audio.Media._ID;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, projection, selection, null, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -228,7 +269,7 @@ public class MediaProvider {
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " = ?";
 		String[] selectionArgs = new String[] { songID };
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, projection, selection, selectionArgs, null);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, selectionArgs, null);
 		myCursor = cl.loadInBackground();
 
 		myCursor.moveToNext();
@@ -260,7 +301,7 @@ public class MediaProvider {
 
 		String sortOrder = MediaStore.Audio.Media._ID;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), musicDirectoryUri, cursorProjection, selection, ids, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, ids, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
@@ -324,13 +365,6 @@ public class MediaProvider {
 		return songs;
 	}
 
-	private void checkIfMusicDirectoryExist() {
-		// TODO: check if this works.
-		if (!musicDirectory.exists()) {
-			musicDirectory.mkdirs();
-		}
-	}
-
 	/**
 	 * Class to sort the files based on its names (alphabetically)
 	 */
@@ -348,7 +382,11 @@ public class MediaProvider {
 
 		@Override
 		public boolean accept(File pathname) {
-			return pathname.isDirectory();
+			return pathname.isDirectory() && !isProtected(pathname);
+		}
+
+		private boolean isProtected(File path) {
+			return (!path.canRead() && !path.canWrite());
 		}
 
 	}
