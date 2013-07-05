@@ -55,6 +55,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			MediaProvider media = new MediaProvider();
 			Bundle bundle = new Bundle();
 			bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
+			activityIntent.putExtras(bundle);
 
 			startActivity(activityIntent);
 		}

@@ -10,18 +10,17 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 
 public class SongListActivity extends ListActivity implements View.OnClickListener {
-
-	private Button btnLogo5;
 
 	String focusedElementID;
 	List<SongEntry> songs;
@@ -33,23 +32,26 @@ public class SongListActivity extends ListActivity implements View.OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_songs_list);
 
-		// TODO: set the onClick method on the layout xml
-		btnLogo5 = (Button) findViewById(R.id.btnLogo5);
-		btnLogo5.setOnClickListener(this);
-
 		mediaProvider = new MediaProvider();
 		mediaEntryHelper = new MediaEntryHelper<SongEntry>();
 
-		Bundle bundle = this.getIntent().getExtras();
+		try {
+			Bundle bundle = this.getIntent().getExtras();
 
-		focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-		List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+			// TODO: use the focusedElementID
+			focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+			List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
 
-		String projection = MediaStore.Audio.Media.TITLE;
-		songs = mediaProvider.getValueFromSongs(songsIDs, projection);
+			// XXX: SongslistActivity shoulndt know the projection
+			String projection = MediaStore.Audio.Media.TITLE;
+			songs = mediaProvider.getValueFromSongs(songsIDs, projection);
 
-		// XXX: make a proper adapter
-		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
+			// XXX: make a proper adapter
+			setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
+		}
+		catch (Exception e) {
+			Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
