@@ -19,8 +19,8 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 
-import com.arcusapp.soundbox.MediaProvider;
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 
 public class ArtistsActivity extends Activity implements View.OnClickListener {
@@ -47,8 +47,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		btnLogo3.setOnClickListener(this);
 
 		expList = (ExpandableListView) findViewById(R.id.expandableListArtists);
-		expList.setGroupIndicator(null);// le quito la flechita para abajo en
-										// los grupos/artistas
+		expList.setGroupIndicator(null);// le quito la flechita para abajo en los grupos/artistas
 
 		expList.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
@@ -122,7 +121,6 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 	}
 
 	public class MyExpandableListAdapter extends BaseExpandableListAdapter {
-
 		private List<String> mArtists;
 		private List<List<String>> mAlbums;
 
@@ -139,8 +137,8 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 		@Override
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-			// in this method you must set the text to see the parent/group on the list
 
+			// in this method you must set the text to see the parent/group on the list
 			TextView textView = new TextView(getApplicationContext());
 			textView.setText(displayTabArtist + getGroup(groupPosition).toString());
 			textView.setTextSize(25);

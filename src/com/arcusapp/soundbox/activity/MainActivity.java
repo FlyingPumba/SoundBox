@@ -9,9 +9,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
-import com.arcusapp.soundbox.MediaProvider;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 
 public class MainActivity extends Activity implements View.OnClickListener {

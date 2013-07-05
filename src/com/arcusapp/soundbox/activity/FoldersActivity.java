@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.arcusapp.soundbox.MediaProvider;
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;

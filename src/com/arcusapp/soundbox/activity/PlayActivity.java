@@ -3,16 +3,6 @@ package com.arcusapp.soundbox.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.arcusapp.soundbox.MediaPlayerServiceListener;
-import com.arcusapp.soundbox.MediaProvider;
-import com.arcusapp.soundbox.R;
-import com.arcusapp.soundbox.R.id;
-import com.arcusapp.soundbox.R.layout;
-import com.arcusapp.soundbox.R.menu;
-import com.arcusapp.soundbox.model.RepeatState;
-import com.arcusapp.soundbox.player.MediaPlayerService;
-import com.arcusapp.soundbox.player.MediaPlayerService.MyBinder;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,47 +17,54 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlayActivity extends Activity implements OnClickListener,
-		MediaPlayerServiceListener {
+import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.data.MediaProvider;
+import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.RepeatState;
+import com.arcusapp.soundbox.player.MediaPlayerService;
+import com.arcusapp.soundbox.util.MediaPlayerServiceListener;
 
+public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
+
+	// TODO: set the OnClick methods on the layout xml
 	TextView txtTitle, txtFile, txtArtist, txtAlbum;
 	Button btnPlayPause, btnPrev, btnNext, btnLogo4, btnSwitchRandom,
 			btnSwitchRepeat, btnList;
 
-	private MediaProvider sh;
-	// private MediaPlayerHandler mph;
-	private MediaPlayerService ms;
+	private MediaProvider media;
+	private MediaPlayerService mediaService;
 
 	String actualID;
 	List<String> temp_songs;
 
+	// FIXME: check and rewrite if necessary, this block may contain bugs
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		public void onServiceConnected(ComponentName className, IBinder binder) {
-			ms = ((MediaPlayerService.MyBinder) binder).getService();
+			mediaService = ((MediaPlayerService.MyBinder) binder).getService();
 			Toast.makeText(PlayActivity.this, "Service Conectado",
 					Toast.LENGTH_SHORT).show();
 
 			// el service estaba apagado
-			if (ms.getActualSongID() == null) {
+			if (mediaService.getActualSongID() == null) {
 				if (actualID == null) {
 					// aca tendria que estar lo del XML, para cuando entras al
 					// play list desde el menu princpial y el servicio estaba
 					// apagado
-					ms.SetUp(null, null, sh, PlayActivity.this);
+					mediaService.SetUp(null, null, media, PlayActivity.this);
 				}
 				else {
 					// asignamos la nueva información, si actualID es -1
 					// significa que no hay una cancion actual reproduciendose,
 					// así que le mandamos la primera de la lista
 					if (actualID.equals("-1")) {
-						ms.SetUp(temp_songs.get(0), temp_songs, sh,
+						mediaService.SetUp(temp_songs.get(0), temp_songs, media,
 								PlayActivity.this);
 					}
 					else {
-						ms.SetUp(actualID, temp_songs, sh, PlayActivity.this);
+						mediaService.SetUp(actualID, temp_songs, media, PlayActivity.this);
 					}
-					ms.TurnOnMediaPlayer();
+					mediaService.TurnOnMediaPlayer();
 				}
 			}
 			else {
@@ -79,19 +76,19 @@ public class PlayActivity extends Activity implements OnClickListener,
 					getInformationFromMediaService();
 				}
 				else if (actualID.equals("-1")) {
-					ms.SetUp(temp_songs.get(0), temp_songs, sh,
+					mediaService.SetUp(temp_songs.get(0), temp_songs, media,
 							PlayActivity.this);
-					ms.TurnOnMediaPlayer();
+					mediaService.TurnOnMediaPlayer();
 				}
 				else {
-					ms.SetUp(actualID, temp_songs, sh, PlayActivity.this);
-					ms.TurnOnMediaPlayer();
+					mediaService.SetUp(actualID, temp_songs, media, PlayActivity.this);
+					mediaService.TurnOnMediaPlayer();
 				}
 			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
-			ms = null;
+			mediaService = null;
 		}
 	};
 
@@ -100,8 +97,9 @@ public class PlayActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 
-		sh = new MediaProvider();
+		media = new MediaProvider();
 
+		// TODO: set the OnClick methods on the layout xml
 		txtTitle = (TextView) findViewById(R.id.txtActualSongTitle);
 		txtFile = (TextView) findViewById(R.id.txtActualSongFile);
 		txtArtist = (TextView) findViewById(R.id.txtActualSongArtist);
@@ -127,6 +125,7 @@ public class PlayActivity extends Activity implements OnClickListener,
 		btnLogo4 = (Button) findViewById(R.id.btnLogo4);
 		btnLogo4.setOnClickListener(this);
 
+		// FIXME: this shouldnt be necessary, rewrite !
 		/*
 		 * este try-catch es porque podemos entrar directamente al PlayActivity
 		 * desde el MainActivity, y en ese caso el bundle.getString tira una
@@ -151,7 +150,6 @@ public class PlayActivity extends Activity implements OnClickListener,
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.play, menu);
 		return true;
 	}
@@ -159,23 +157,23 @@ public class PlayActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnPlayPause) {
-			ms.PlayAndPause();
+			mediaService.PlayAndPause();
 		}
 		else if (v.getId() == R.id.btnPrevSong) {
-			ms.PreviousSong();
+			mediaService.PreviousSong();
 
 		}
 		else if (v.getId() == R.id.btnNextSong) {
-			ms.NextSong();
+			mediaService.NextSong();
 		}
 		else if (v.getId() == R.id.btnSwitchRandom) {
-			if (ms.ChangeRandom())
+			if (mediaService.ChangeRandom())
 				this.btnSwitchRandom.setText("Random On");
 			else
 				this.btnSwitchRandom.setText("Random Off");
 		}
 		else if (v.getId() == R.id.btnSwitchRepeat) {
-			RepeatState rs = ms.ChangeRepeat();
+			RepeatState rs = mediaService.ChangeRepeat();
 			if (rs == RepeatState.Off) {
 				this.btnSwitchRepeat.setText("Repeat Off");
 			}
@@ -190,15 +188,11 @@ public class PlayActivity extends Activity implements OnClickListener,
 		else if (v.getId() == R.id.btnActualPlayList) {
 			Intent intent = new Intent();
 			intent.setAction("com.arcusapp.soundbox.SONGSLIST_ACTIVITY");
-			// Creamos la informacion a pasar entre actividades
-			Bundle b = new Bundle();
-			// cancion actual:
-			b.putString("id", ms.getActualSongID());
-			// todas las demas canciones:
-			b.putStringArrayList("songs",
-					new ArrayList<String>(ms.getSongsList()));
 
-			// Anadimos la informacion al intent
+			Bundle b = new Bundle();
+			b.putString(BundleExtra.CURRENT_ID, mediaService.getActualSongID());
+			b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaService.getSongsList()));
+
 			intent.putExtras(b);
 			startActivity(intent);
 		}
@@ -211,7 +205,7 @@ public class PlayActivity extends Activity implements OnClickListener,
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (ms != null)
+		if (mediaService != null)
 			unbindService(mConnection);
 	}
 
@@ -220,13 +214,14 @@ public class PlayActivity extends Activity implements OnClickListener,
 		getInformationFromMediaService();
 	}
 
+	// FIXME: This method may contain bugs, check if the approach is correct
 	private void getInformationFromMediaService() {
-		txtTitle.setText(ms.getActualTitle());
-		txtFile.setText(ms.getActualFileName());
-		txtArtist.setText(ms.getActualArtist());
-		txtAlbum.setText(ms.getActualAlbum());
+		txtTitle.setText(mediaService.getActualTitle());
+		txtFile.setText(mediaService.getActualFileName());
+		txtArtist.setText(mediaService.getActualArtist());
+		txtAlbum.setText(mediaService.getActualAlbum());
 
-		RepeatState rs = ms.getRepeatState();
+		RepeatState rs = mediaService.getRepeatState();
 		if (rs == RepeatState.Off) {
 			this.btnSwitchRepeat.setText("Repeat Off");
 		}
@@ -237,7 +232,7 @@ public class PlayActivity extends Activity implements OnClickListener,
 			this.btnSwitchRepeat.setText("Repeat One");
 		}
 
-		if (ms.getRandomState())
+		if (mediaService.getRandomState())
 			this.btnSwitchRandom.setText("Random On");
 		else
 			this.btnSwitchRandom.setText("Random Off");

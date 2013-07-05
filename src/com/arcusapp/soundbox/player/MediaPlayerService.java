@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 
-import com.arcusapp.soundbox.MediaPlayerServiceListener;
-import com.arcusapp.soundbox.MediaProvider;
+import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.RepeatState;
+import com.arcusapp.soundbox.util.MediaPlayerServiceListener;
 
 import android.app.Service;
 import android.content.Context;
