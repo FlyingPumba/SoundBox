@@ -263,7 +263,6 @@ public class MediaProvider {
 	 * @return list with the values
 	 */
 	public List<String> getValuesFromSong(String songID, String[] projection) {
-		// XXX: this method shouldn't be public
 		List<String> information = new ArrayList<String>();
 
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " = ?";

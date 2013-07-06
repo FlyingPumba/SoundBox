@@ -28,13 +28,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 	// TODO: set the OnClick methods on the layout xml
 	TextView txtTitle, txtFile, txtArtist, txtAlbum;
-	Button btnPlayPause, btnPrev, btnNext, btnLogo4, btnSwitchRandom,
-			btnSwitchRepeat, btnList;
+	Button btnSwitchRandom, btnSwitchRepeat;
 
-	private MediaProvider media;
+	private MediaProvider mediaProvider;
 	private MediaPlayerService mediaService;
 
-	String actualID;
+	String currentID;
 	List<String> temp_songs;
 
 	// FIXME: check and rewrite if necessary, this block may contain bugs
@@ -47,22 +46,22 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 			// el service estaba apagado
 			if (mediaService.getActualSongID() == null) {
-				if (actualID == null) {
+				if (currentID == null) {
 					// aca tendria que estar lo del XML, para cuando entras al
 					// play list desde el menu princpial y el servicio estaba
 					// apagado
-					mediaService.SetUp(null, null, media, PlayActivity.this);
+					mediaService.SetUp(null, null, mediaProvider, PlayActivity.this);
 				}
 				else {
 					// asignamos la nueva información, si actualID es -1
 					// significa que no hay una cancion actual reproduciendose,
 					// así que le mandamos la primera de la lista
-					if (actualID.equals("-1")) {
-						mediaService.SetUp(temp_songs.get(0), temp_songs, media,
+					if (currentID.equals("-1")) {
+						mediaService.SetUp(temp_songs.get(0), temp_songs, mediaProvider,
 								PlayActivity.this);
 					}
 					else {
-						mediaService.SetUp(actualID, temp_songs, media, PlayActivity.this);
+						mediaService.SetUp(currentID, temp_songs, mediaProvider, PlayActivity.this);
 					}
 					mediaService.TurnOnMediaPlayer();
 				}
@@ -70,18 +69,18 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 			else {
 				// el service estaba prendido, y le asginamos la nueva
 				// informacion
-				if (actualID == null) {
+				if (currentID == null) {
 					// play list desde el menu princpial y el servicio estaba
 					// prendido
 					getInformationFromMediaService();
 				}
-				else if (actualID.equals("-1")) {
-					mediaService.SetUp(temp_songs.get(0), temp_songs, media,
+				else if (currentID.equals("-1")) {
+					mediaService.SetUp(temp_songs.get(0), temp_songs, mediaProvider,
 							PlayActivity.this);
 					mediaService.TurnOnMediaPlayer();
 				}
 				else {
-					mediaService.SetUp(actualID, temp_songs, media, PlayActivity.this);
+					mediaService.SetUp(currentID, temp_songs, mediaProvider, PlayActivity.this);
 					mediaService.TurnOnMediaPlayer();
 				}
 			}
@@ -97,20 +96,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 
-		media = new MediaProvider();
+		mediaProvider = new MediaProvider();
 
-		// TODO: set the OnClick methods on the layout xml
 		txtTitle = (TextView) findViewById(R.id.txtActualSongTitle);
 		txtFile = (TextView) findViewById(R.id.txtActualSongFile);
 		txtArtist = (TextView) findViewById(R.id.txtActualSongArtist);
 		txtAlbum = (TextView) findViewById(R.id.txtActualSongAlbum);
-
-		btnPlayPause = (Button) findViewById(R.id.btnPlayPause);
-		btnPlayPause.setOnClickListener(this);
-		btnPrev = (Button) findViewById(R.id.btnPrevSong);
-		btnPrev.setOnClickListener(this);
-		btnNext = (Button) findViewById(R.id.btnNextSong);
-		btnNext.setOnClickListener(this);
 
 		btnSwitchRandom = (Button) findViewById(R.id.btnSwitchRandom);
 		btnSwitchRandom.setOnClickListener(this);
@@ -119,11 +110,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		btnSwitchRepeat = (Button) findViewById(R.id.btnSwitchRepeat);
 		btnSwitchRepeat.setOnClickListener(this);
 		btnSwitchRepeat.setText("Repeat Off");
-
-		btnList = (Button) findViewById(R.id.btnActualPlayList);
-		btnList.setOnClickListener(this);
-		btnLogo4 = (Button) findViewById(R.id.btnLogo4);
-		btnLogo4.setOnClickListener(this);
 
 		// FIXME: this shouldnt be necessary, rewrite !
 		/*
@@ -135,11 +121,9 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		try {
 			// Recuperamos la informacion pasada en el intent
 			Bundle bundle = this.getIntent().getExtras();
-			actualID = bundle.getString("id");
+			currentID = bundle.getString("id");
 			temp_songs = bundle.getStringArrayList("songs");
-		}
-		catch (Exception ex) {
-
+		} catch (Exception ex) {
 		}
 
 		Intent intent = new Intent(this, MediaPlayerService.class);
@@ -154,6 +138,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		return true;
 	}
 
+	// TODO: split the large onClick method on differents onClick methods for each button
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnPlayPause) {

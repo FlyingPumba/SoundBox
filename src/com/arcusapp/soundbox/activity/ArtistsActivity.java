@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
@@ -25,8 +24,6 @@ import com.arcusapp.soundbox.model.BundleExtra;
 
 public class ArtistsActivity extends Activity implements View.OnClickListener {
 
-	// TODO: set the OnClick method on the layout xml
-	private Button btnLogo3;
 	private ExpandableListView expList;
 	// XXX: make a proper adapter and do not use this variables.
 	private String displayTabArtist = "  ";
@@ -42,9 +39,6 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 		media = new MediaProvider();
 		playActivityIntent = new Intent(this, PlayActivity.class);
-
-		btnLogo3 = (Button) findViewById(R.id.btnLogo3);
-		btnLogo3.setOnClickListener(this);
 
 		expList = (ExpandableListView) findViewById(R.id.expandableListArtists);
 		expList.setGroupIndicator(null);// le quito la flechita para abajo en los grupos/artistas
