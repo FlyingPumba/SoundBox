@@ -165,7 +165,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 		if (item == null)
 		{
 			LayoutInflater inflater = mActivity.getLayoutInflater();
-			item = inflater.inflate(R.layout.activity_folders_listitem, null);
+			item = inflater.inflate(R.layout.default_listitem, null);
 
 			holder = new ViewHolder();
 
