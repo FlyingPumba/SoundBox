@@ -120,6 +120,7 @@ public class FoldersActivityListAdapter extends BaseAdapter {
 
 		// update the textView on the FoldersActivity to show the name of the current folder
 		txtCurrentDirectory.setText(getCurrentlDirName());
+
 		// refresh the list on the FoldersActivity
 		this.notifyDataSetChanged();
 	}

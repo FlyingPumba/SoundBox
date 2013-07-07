@@ -1,6 +1,7 @@
 package com.arcusapp.soundbox.activity;
 
 import android.app.Activity;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +26,15 @@ public class FoldersActivity extends Activity implements View.OnClickListener {
 
 		txtDir = (TextView) findViewById(R.id.txtDir);
 		myAdapter = new FoldersActivityListAdapter(this, txtDir);
+		myAdapter.registerDataSetObserver(new DataSetObserver() {
+			@Override
+			public void onChanged() {
+				super.onChanged();
+
+				if (myAdapter.getCount() > 0)
+					myListView.setSelection(0);
+			}
+		});
 
 		myListView = (ListView) findViewById(R.id.foldersActivityList);
 		myListView.setAdapter(myAdapter);
@@ -53,7 +63,7 @@ public class FoldersActivity extends Activity implements View.OnClickListener {
 		if (v.getId() == R.id.btnLogo) {
 			finish();
 		} else if (v.getId() == R.id.btnPlayFolder) {
-			// TODO: play current folder.
+			// TODO: play current folder or delete this button
 		}
 	}
 }
