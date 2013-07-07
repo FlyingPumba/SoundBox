@@ -1,55 +1,55 @@
 package com.arcusapp.soundbox.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.data.MediaProvider;
+import com.arcusapp.soundbox.adapter.SonglistAcitivityAdapter;
 import com.arcusapp.soundbox.model.BundleExtra;
-import com.arcusapp.soundbox.model.SongEntry;
-import com.arcusapp.soundbox.util.MediaEntryHelper;
 
-public class SongListActivity extends ListActivity implements View.OnClickListener {
+public class SongListActivity extends Activity implements View.OnClickListener {
 
-	String focusedElementID;
-	List<SongEntry> songs;
-	MediaProvider mediaProvider;
-	MediaEntryHelper<SongEntry> mediaEntryHelper;
+	ListView myListView;
+	SonglistAcitivityAdapter myAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_songs_list);
 
-		mediaProvider = new MediaProvider();
-		mediaEntryHelper = new MediaEntryHelper<SongEntry>();
+		myListView = (ListView) findViewById(R.id.songslistActivityList);
 
 		try {
 			Bundle bundle = this.getIntent().getExtras();
 
-			// TODO: use the focusedElementID
-			focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+			String focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
 			List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
 
-			// XXX: SongslistActivity shoulndt know the projection
-			String projection = MediaStore.Audio.Media.TITLE;
-			songs = mediaProvider.getValueFromSongs(songsIDs, projection);
+			myAdapter = new SonglistAcitivityAdapter(this, Integer.parseInt(focusedElementID), songsIDs);
+			myListView.setAdapter(myAdapter);
+			myListView.setOnItemClickListener(new OnItemClickListener() {
 
-			// XXX: make a proper adapter
-			setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mediaEntryHelper.getValues(songs)));
-		}
-		catch (Exception e) {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+					myAdapter.onItemClick(position);
+				}
+			});
+
+			if (focusedElementID != BundleExtra.DefaultValues.DEFAULT_ID && myAdapter.getCount() > 0) {
+				myListView.setSelection(songsIDs.indexOf(focusedElementID));
+			}
+
+		} catch (Exception e) {
 			Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
 		}
 	}
@@ -63,29 +63,14 @@ public class SongListActivity extends ListActivity implements View.OnClickListen
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnLogo5) {
-			Intent activityIntent = new Intent(this, MainActivity.class);
+			Intent activityIntent = new Intent();
+			activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
 			startActivity(activityIntent);
 		}
-
 	}
 
 	@Override
 	public void onBackPressed() {
 		finish();
-	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-
-		Intent playActivityIntent = new Intent();
-		playActivityIntent.setAction("com.arcusapp.soundbox.PLAY_ACTIVITY");
-
-		Bundle b = new Bundle();
-		b.putString(BundleExtra.CURRENT_ID, songs.get(position).getID().toString());
-		b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
-
-		playActivityIntent.putExtras(b);
-		startActivity(playActivityIntent);
 	}
 }

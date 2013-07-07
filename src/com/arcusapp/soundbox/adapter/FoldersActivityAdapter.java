@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.activity.FoldersActivity;
-import com.arcusapp.soundbox.activity.PlayActivity;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
@@ -31,7 +30,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 	private List<File> subDirs;
 	private List<SongEntry> songs;
 	private MediaProvider mediaProvider;
-	MediaEntryHelper<SongEntry> mediaEntryHelper;
+	private MediaEntryHelper<SongEntry> mediaEntryHelper;
 	private File currentDir;
 
 	private List<String> displayList;
@@ -43,7 +42,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 	 */
 	private File MAIN_USER_OPTIONS = new File("defaultoptions");
 
-	String projection = MediaStore.Audio.Media.TITLE;
+	private String projection = MediaStore.Audio.Media.TITLE;
 
 	public FoldersActivityAdapter(FoldersActivity activity, TextView currentDirectoryTextView) {
 		mActivity = activity;
@@ -72,7 +71,8 @@ public class FoldersActivityAdapter extends BaseAdapter {
 			makeDisplayList();
 		} else {
 			// handle the click on a song
-			Intent playActivityIntent = new Intent(SoundBoxApplication.getApplicationContext(), PlayActivity.class);
+			Intent playActivityIntent = new Intent();
+			playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
 			Bundle b = new Bundle();
 			b.putString(BundleExtra.CURRENT_ID, songs.get(position - currentDirCount).getID().toString());
@@ -189,10 +189,5 @@ public class FoldersActivityAdapter extends BaseAdapter {
 		}
 
 		return (item);
-	}
-
-	static class ViewHolder {
-		ImageView icon;
-		TextView text;
 	}
 }
