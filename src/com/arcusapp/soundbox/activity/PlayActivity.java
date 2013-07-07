@@ -26,7 +26,6 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 
-	// TODO: set the OnClick methods on the layout xml
 	TextView txtTitle, txtFile, txtArtist, txtAlbum;
 	Button btnSwitchRandom, btnSwitchRepeat;
 

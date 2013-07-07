@@ -99,11 +99,13 @@ public class MediaProvider {
 		return songs;
 	}
 
+	// TODO: delete this method if we are not going to use it
 	/**
 	 * Returns a list of SongEntries for all the Songs in the MediaStore.
 	 * 
 	 * @param projection one key from {@linkplain MediaStore.Audio.Media} to associate on the SongEntry's value
 	 * @return a list of SongEntries
+	 * @deprecated NOT USED
 	 */
 	public List<SongEntry> getAllSongsWithValue(String projection) {
 		List<SongEntry> allSongsDisplay = new ArrayList<SongEntry>();
@@ -291,7 +293,7 @@ public class MediaProvider {
 		String[] ids = new String[songsID.size()];
 		ids = songsID.toArray(ids);
 
-		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, projection };
+		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, projection, MediaStore.Audio.Media.DATA };
 
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " IN (";
 		for (int i = 0; i < songsID.size() - 1; i++)
@@ -304,6 +306,7 @@ public class MediaProvider {
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
+			String pepe = myCursor.getString(2);
 			songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
 		}
 
@@ -353,14 +356,23 @@ public class MediaProvider {
 				+ "SUBSTR(" + MediaStore.Audio.Media.DATA + ",0 , LENGTH('" + folder + "')+1) = '" + folder + "' AND "
 				+ "SUBSTR(" + MediaStore.Audio.Media.DATA + ",LENGTH('" + folder + "')+1, 200) LIKE '/%.mp3' AND "
 				+ "SUBSTR(" + MediaStore.Audio.Media.DATA + ",LENGTH('" + folder + "')+1, 200) NOT LIKE '/%/%.mp3'";
+
 		String sortOrder = MediaStore.Audio.Media._ID;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), folderUri, cursorProjection, selection, null, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
 			songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
 		}
+
+		CursorLoader cl2 = new CursorLoader(SoundBoxApplication.getApplicationContext(), MediaStore.Audio.Media.INTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
+		myCursor = cl2.loadInBackground();
+
+		while (myCursor.moveToNext()) {
+			songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
+		}
+
 		return songs;
 	}
 

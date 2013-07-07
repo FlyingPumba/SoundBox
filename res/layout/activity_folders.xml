@@ -33,18 +33,10 @@
             android:textSize="14sp" />
 
         <ListView
-            android:id="@+id/dirsList"
+            android:id="@+id/foldersActivityList"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtDir" >
         </ListView>
-        
-        <ListView
-            android:id="@+id/songsList"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dirsList">
-        </ListView>
-
 
 </RelativeLayout>
