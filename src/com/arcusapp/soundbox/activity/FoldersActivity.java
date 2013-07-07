@@ -11,13 +11,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
-import com.arcusapp.soundbox.adapter.FoldersActivityListAdapter;
+import com.arcusapp.soundbox.adapter.FoldersActivityAdapter;
 
 public class FoldersActivity extends Activity implements View.OnClickListener {
 
 	private TextView txtDir;
 	private ListView myListView;
-	private FoldersActivityListAdapter myAdapter;
+	private FoldersActivityAdapter myAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class FoldersActivity extends Activity implements View.OnClickListener {
 		setContentView(R.layout.activity_folders);
 
 		txtDir = (TextView) findViewById(R.id.txtDir);
-		myAdapter = new FoldersActivityListAdapter(this, txtDir);
+		myAdapter = new FoldersActivityAdapter(this, txtDir);
 		myAdapter.registerDataSetObserver(new DataSetObserver() {
 			@Override
 			public void onChanged() {

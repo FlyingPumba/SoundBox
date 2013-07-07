@@ -23,7 +23,7 @@ import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 
-public class FoldersActivityListAdapter extends BaseAdapter {
+public class FoldersActivityAdapter extends BaseAdapter {
 
 	private FoldersActivity mActivity;
 	private TextView txtCurrentDirectory;
@@ -45,7 +45,7 @@ public class FoldersActivityListAdapter extends BaseAdapter {
 
 	String projection = MediaStore.Audio.Media.TITLE;
 
-	public FoldersActivityListAdapter(FoldersActivity activity, TextView currentDirectoryTextView) {
+	public FoldersActivityAdapter(FoldersActivity activity, TextView currentDirectoryTextView) {
 		mActivity = activity;
 		txtCurrentDirectory = currentDirectoryTextView;
 
