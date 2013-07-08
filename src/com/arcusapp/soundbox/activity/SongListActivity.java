@@ -41,7 +41,7 @@ public class SongListActivity extends Activity implements View.OnClickListener {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-					myAdapter.onItemClick(position);
+					myAdapter.onSongClick(position);
 				}
 			});
 

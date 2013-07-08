@@ -41,7 +41,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 		this.focusedID = focusedID;
 	}
 
-	public void onItemClick(int position) {
+	public void onSongClick(int position) {
 		Intent playActivityIntent = new Intent();
 		playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
