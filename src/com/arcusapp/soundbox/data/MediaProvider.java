@@ -99,7 +99,7 @@ public class MediaProvider {
 		return songs;
 	}
 
-	// TODO: delete this method if we are not going to use it
+	// XXX: delete this method if we are not going to use it
 	/**
 	 * Returns a list of SongEntries for all the Songs in the MediaStore.
 	 * 
@@ -306,7 +306,6 @@ public class MediaProvider {
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
-			String pepe = myCursor.getString(2);
 			songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
 		}
 
@@ -350,7 +349,6 @@ public class MediaProvider {
 		List<SongEntry> songs = new ArrayList<SongEntry>();
 		String folder = directory.getPath();
 
-		Uri folderUri = MediaStore.Audio.Media.getContentUriForPath(folder);
 		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, projection };
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND "
 				+ "SUBSTR(" + MediaStore.Audio.Media.DATA + ",0 , LENGTH('" + folder + "')+1) = '" + folder + "' AND "
