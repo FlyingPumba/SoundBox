@@ -60,6 +60,17 @@ public class FoldersActivityAdapter extends BaseAdapter {
 		makeDisplayList();
 	}
 
+	public void playCurrentDirectory() {
+		Intent playActivityIntent = new Intent();
+		playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+
+		Bundle b = new Bundle();
+		b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
+		playActivityIntent.putExtras(b);
+
+		mActivity.startActivity(playActivityIntent);
+	}
+
 	public void onItemClick(int position) {
 		if (isDirItem(position)) {
 			// handle the click on a directory

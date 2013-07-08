@@ -137,7 +137,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		return true;
 	}
 
-	// TODO: split the large onClick method on differents onClick methods for each button
+	// XXX: split the large onClick method on differents onClick methods for each button
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnPlayPause) {

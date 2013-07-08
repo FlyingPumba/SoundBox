@@ -63,7 +63,7 @@ public class FoldersActivity extends Activity implements View.OnClickListener {
 		if (v.getId() == R.id.btnLogo) {
 			finish();
 		} else if (v.getId() == R.id.btnPlayFolder) {
-			// TODO: play current folder or delete this button
+			myAdapter.playCurrentDirectory();
 		}
 	}
 }
