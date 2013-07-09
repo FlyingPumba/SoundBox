@@ -138,7 +138,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 			holder = (ViewHolder) item.getTag();
 		}
 
-		holder.icon.setImageResource(R.drawable.filetype_dir);
+		holder.icon.setImageResource(R.drawable.icon_album);
 		holder.text.setText(mAlbums.get(groupPosition).get(childPosition));
 
 		return (item);
