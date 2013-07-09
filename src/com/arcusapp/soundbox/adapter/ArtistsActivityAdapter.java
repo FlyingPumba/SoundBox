@@ -79,7 +79,6 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 		mActivity.startActivity(intent);
 	}
 
-	// TODO: add some nice icons for the Artists and the Albums and do this list nicer.
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		View item = convertView;

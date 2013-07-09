@@ -100,32 +100,6 @@ public class MediaProvider {
 		return songs;
 	}
 
-	// XXX: delete this method if we are not going to use it
-	/**
-	 * Returns a list of SongEntries for all the Songs in the MediaStore.
-	 * 
-	 * @param projection one key from {@linkplain MediaStore.Audio.Media} to associate on the SongEntry's value
-	 * @return a list of SongEntries
-	 * @deprecated NOT USED
-	 */
-	public List<SongEntry> getAllSongsWithValue(String projection) {
-		List<SongEntry> allSongsDisplay = new ArrayList<SongEntry>();
-
-		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, projection };
-		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
-
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, null, null);
-		myCursor = cl.loadInBackground();
-
-		while (myCursor.moveToNext()) {
-			allSongsDisplay.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
-		}
-
-		Collections.sort(allSongsDisplay);
-
-		return allSongsDisplay;
-	}
-
 	/**
 	 * Returns the name ({@linkplain MediaStore.Audio.Artists.ARTIST}) of all the Artists in the MediaStore.
 	 * 
@@ -281,30 +255,6 @@ public class MediaProvider {
 		}
 
 		return song;
-	}
-
-	/**
-	 * Returns the values corresponding to the given projection keys for the specified Song.
-	 * 
-	 * @param songID ({@linkplain MediaStore.Audio.Media._ID})
-	 * @param projection array with keys from {@linkplain MediaStore.Audio.Media}
-	 * @return list with the values
-	 * @deprecated @see {@linkplain #getSongFromID(String)}
-	 */
-	public List<String> getValuesFromSong(String songID, String[] projection) {
-		List<String> information = new ArrayList<String>();
-
-		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " = ?";
-		String[] selectionArgs = new String[] { songID };
-
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, selectionArgs, null);
-		myCursor = cl.loadInBackground();
-
-		myCursor.moveToNext();
-		for (int i = 0; i < myCursor.getColumnCount(); i++)
-			information.add(myCursor.getString(i));
-
-		return information;
 	}
 
 	/**
