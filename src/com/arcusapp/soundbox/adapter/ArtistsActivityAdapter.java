@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -103,13 +102,11 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 			holder = (ViewHolder) item.getTag();
 		}
 
-		holder.icon.setImageResource(R.drawable.filetype_dir);
+		holder.icon.setImageResource(R.drawable.icon_artist);
 		holder.text.setText(mArtists.get(groupPosition));
 		if (isExpanded) {
-			holder.text.setBackgroundColor(Color.YELLOW);
 			holder.text.setTypeface(null, Typeface.BOLD);
 		} else {
-			holder.text.setBackgroundColor(Color.TRANSPARENT);
 			holder.text.setTypeface(null, Typeface.NORMAL);
 		}
 

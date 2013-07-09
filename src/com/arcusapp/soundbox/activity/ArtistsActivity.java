@@ -25,8 +25,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 		myAdapter = new ArtistsActivityAdapter(this);
 
 		myExpandableList = (ExpandableListView) findViewById(R.id.expandableListArtists);
-		// le quito la flechita para abajo en los grupos/artistas
-		// myExpandableList.setGroupIndicator(null);
+		myExpandableList.setGroupIndicator(null);
 
 		myExpandableList.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
