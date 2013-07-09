@@ -43,7 +43,19 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 
-		// XXX: init the UI on a differente method
+		initUI();
+
+		try {
+			Bundle bundle = this.getIntent().getExtras();
+			currentID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+			songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+		} catch (Exception ex) {
+		}
+
+		initServiceConnection(savedInstanceState);
+	}
+
+	private void initUI() {
 		txtTitle = (TextView) findViewById(R.id.txtSongTitle);
 		txtFile = (TextView) findViewById(R.id.txtSongFile);
 		txtArtist = (TextView) findViewById(R.id.txtSongArtist);
@@ -56,15 +68,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		btnSwitchRepeat = (Button) findViewById(R.id.btnSwitchRepeat);
 		btnSwitchRepeat.setOnClickListener(this);
 		btnSwitchRepeat.setText("Repeat Off");
-
-		try {
-			Bundle bundle = this.getIntent().getExtras();
-			currentID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-			songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
-		} catch (Exception ex) {
-		}
-
-		initServiceConnection(savedInstanceState);
 	}
 
 	private void initServiceConnection(final Bundle savedInstanceState) {
