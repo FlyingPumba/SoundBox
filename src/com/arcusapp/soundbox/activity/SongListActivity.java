@@ -35,7 +35,7 @@ public class SongListActivity extends Activity implements View.OnClickListener {
 			String focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
 			List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
 
-			myAdapter = new SonglistAcitivityAdapter(this, Integer.parseInt(focusedElementID), songsIDs);
+			myAdapter = new SonglistAcitivityAdapter(this, focusedElementID, songsIDs);
 			myListView.setAdapter(myAdapter);
 			myListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -45,9 +45,7 @@ public class SongListActivity extends Activity implements View.OnClickListener {
 				}
 			});
 
-			if (focusedElementID != BundleExtra.DefaultValues.DEFAULT_ID && myAdapter.getCount() > 0) {
-				myListView.setSelection(songsIDs.indexOf(focusedElementID));
-			}
+			myListView.setSelection(myAdapter.getFocusedIDPosition());
 
 		} catch (Exception e) {
 			Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();

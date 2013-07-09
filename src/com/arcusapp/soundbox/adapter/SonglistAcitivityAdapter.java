@@ -30,9 +30,9 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 
 	private String projection = MediaStore.Audio.Media.TITLE;
 
-	private int focusedID;
+	private String focusedID;
 
-	public SonglistAcitivityAdapter(SongListActivity activity, int focusedID, List<String> songsID) {
+	public SonglistAcitivityAdapter(SongListActivity activity, String focusedID, List<String> songsID) {
 		mActivity = activity;
 		mediaProvider = new MediaProvider();
 		this.songsID = songsID;
@@ -51,6 +51,18 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 
 		playActivityIntent.putExtras(b);
 		mActivity.startActivity(playActivityIntent);
+	}
+
+	public int getFocusedIDPosition() {
+		if (focusedID != BundleExtra.DefaultValues.DEFAULT_ID) {
+			for (int i = 0; i < songs.size(); i++) {
+				if (songs.get(i).getID().equals(focusedID)) {
+					return i;
+				}
+			}
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -93,8 +105,10 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 		holder.icon.setImageResource(R.drawable.filetype_music);
 		holder.text.setText(songs.get(position).getValue());
 
-		if (position == focusedID) {
+		if (songs.get(position).getID().equals(focusedID)) {
 			holder.text.setTypeface(null, Typeface.BOLD);
+		} else {
+			holder.text.setTypeface(null, Typeface.NORMAL);
 		}
 
 		return (item);
