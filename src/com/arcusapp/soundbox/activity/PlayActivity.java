@@ -148,7 +148,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 	}
 
 	private void playBundleExtraSongs(Bundle savedInstanceState) {
-		if (savedInstanceState == null) {
+		if (savedInstanceState == null && songsID != null) {
 			mediaService.playSongs(currentID, songsID);
 		}
 	}
@@ -156,7 +156,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 	public void updateUI() {
 		currentSong = mediaService.getCurrentSong();
 		txtTitle.setText(currentSong.getTitle());
-		txtFile.setText(currentSong.getFilePath());
+		txtFile.setText(currentSong.getFile().getName());
 		txtArtist.setText(currentSong.getArtist());
 		txtAlbum.setText(currentSong.getAlbum());
 

@@ -1,18 +1,20 @@
 package com.arcusapp.soundbox.model;
 
+import java.io.File;
+
 public class Song {
 	private String id;
 	private String title;
 	private String artist;
 	private String album;
-	private String filePath;
+	private File file;
 
 	public Song(String id, String title, String artist, String album, String filePath) {
 		this.setID(id);
 		this.setName(title);
 		this.setArtist(artist);
 		this.setAlbum(album);
-		this.setFilePath(filePath);
+		this.setFile(filePath);
 	}
 
 	public Song() {
@@ -20,7 +22,7 @@ public class Song {
 		this.setName("");
 		this.setArtist("");
 		this.setAlbum("");
-		this.setFilePath("");
+		this.setFile("");
 	}
 
 	public String getID() {
@@ -55,11 +57,11 @@ public class Song {
 		this.album = album;
 	}
 
-	public String getFilePath() {
-		return filePath;
+	public File getFile() {
+		return file;
 	}
 
-	private void setFilePath(String filePath) {
-		this.filePath = filePath;
+	private void setFile(String filePath) {
+		this.file = new File(filePath);
 	}
 }

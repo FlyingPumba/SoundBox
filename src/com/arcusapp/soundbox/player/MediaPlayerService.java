@@ -200,7 +200,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		Song currentSong = currentSongStack.getCurrentSong();
 		try {
 			mediaPlayer.reset();
-			mediaPlayer.setDataSource(currentSong.getFilePath());
+			mediaPlayer.setDataSource(currentSong.getFile().getPath());
 			mediaPlayer.prepare();
 		} catch (Exception e) {
 			Log.d(TAG, "Wrong file path on the first song");
