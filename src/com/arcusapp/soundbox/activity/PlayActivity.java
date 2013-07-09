@@ -84,8 +84,8 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 			}
 		};
 
-		// XXX: use an action here
-		Intent intent = new Intent(this, MediaPlayerService.class);
+		Intent intent = new Intent();
+		intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
 		this.startService(intent);
 		this.bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
 	}

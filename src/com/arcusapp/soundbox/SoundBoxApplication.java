@@ -14,6 +14,7 @@ public abstract class SoundBoxApplication {
 	public static final String ACTION_PLAY_ACTIVITY = "com.arcusapp.soundbox.action.PLAY_ACTIVITY";
 	public static final String ACTION_SONGLIST_ACTIVITY = "com.arcusapp.soundbox.action.SONGLIST_ACTIVITY";
 	public static final String ACTION_PLAYLISTS_ACTIVITY = "com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY";
+	public static final String ACTION_MEDIA_PLAYER_SERVICE = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE";
 
 	public static void setInitialContext(Context context) {
 		appContext = context;
