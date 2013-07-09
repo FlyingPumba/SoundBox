@@ -64,19 +64,16 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		} catch (Exception ex) {
 		}
 
-		initServiceConnection();
-
-		if (songsID != null) {
-			mediaService.playSongs(currentID, songsID);
-		}
+		initServiceConnection(savedInstanceState);
 	}
 
-	private void initServiceConnection() {
+	private void initServiceConnection(final Bundle savedInstanceState) {
 		myServiceConnection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName className, IBinder binder) {
 				mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-				updateUI();
 				registerToMediaService();
+				playBundleExtraSongs(savedInstanceState);
+				updateUI();
 			}
 
 			public void onServiceDisconnected(ComponentName className) {
@@ -146,8 +143,14 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		updateUI();
 	}
 
-	public void registerToMediaService() {
+	private void registerToMediaService() {
 		mediaService.registerListener(this);
+	}
+
+	private void playBundleExtraSongs(Bundle savedInstanceState) {
+		if (savedInstanceState == null) {
+			mediaService.playSongs(currentID, songsID);
+		}
 	}
 
 	public void updateUI() {

@@ -1,7 +1,6 @@
 package com.arcusapp.soundbox.player;
 
 import java.util.List;
-import java.util.Random;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
@@ -29,8 +27,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	private RepeatState repeatState = RepeatState.Off;
 	private RandomState randomState = RandomState.Off;
 
-	private Random randomGenerator;
-	private MediaProvider mediaProvider;
 	private MediaPlayer mediaPlayer;
 	private MediaPlayerServiceListener currentListener;
 	private final IBinder mBinder = new MyBinder();
@@ -50,12 +46,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		if (mediaPlayer == null) {
 			mediaPlayer = new MediaPlayer();
 			mediaPlayer.setOnCompletionListener(this);
-		}
-		if (mediaProvider == null) {
-			mediaProvider = new MediaProvider();
-		}
-		if (randomGenerator == null) {
-			randomGenerator = new Random();
 		}
 	}
 
@@ -209,11 +199,14 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		// play the song
 		Song currentSong = currentSongStack.getCurrentSong();
 		try {
+			mediaPlayer.reset();
 			mediaPlayer.setDataSource(currentSong.getFilePath());
+			mediaPlayer.prepare();
 		} catch (Exception e) {
 			Log.d(TAG, "Wrong file path on the first song");
 		}
 
+		currentListener.onSongCompletion();
 		mediaPlayer.start();
 	}
 }

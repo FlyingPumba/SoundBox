@@ -80,7 +80,7 @@ public class SongStack {
 	}
 
 	private String currentId() {
-		return songsID.get(currentPosition);
+		return currentSongsIDList.get(currentPosition);
 	}
 
 	private String previousId() {
@@ -110,22 +110,20 @@ public class SongStack {
 	}
 
 	public void setRandomState(RandomState state) {
-		if (state != randomState) {
-			this.randomState = state;
+		this.randomState = state;
 
-			switch (state) {
-				case Off:
-					currentSongsIDList.clear();
-					currentSongsIDList = songsID;
-					break;
-				case Shuffled:
-					currentSongsIDList.clear();
-					currentSongsIDList = songsID;
-					Collections.shuffle(currentSongsIDList);
-					break;
-				case Random:
-					break;
-			}
+		switch (state) {
+			case Off:
+				currentSongsIDList.clear();
+				currentSongsIDList = songsID;
+				break;
+			case Shuffled:
+				currentSongsIDList.clear();
+				currentSongsIDList = songsID;
+				Collections.shuffle(currentSongsIDList);
+				break;
+			case Random:
+				break;
 		}
 	}
 
