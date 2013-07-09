@@ -103,7 +103,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 			holder = (ViewHolder) item.getTag();
 		}
 
-		holder.icon.setImageResource(R.drawable.filetype_music);
+		holder.icon.setImageResource(R.drawable.icon_song);
 		holder.text.setText(songs.get(position).getValue());
 
 		if (songs.get(position).getID().equals(focusedID)) {

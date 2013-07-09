@@ -7,7 +7,7 @@
 <ImageView android:id="@+id/foldersListIcon"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
-    android:src="@drawable/filetype_music" />
+    android:src="@drawable/icon_song" />
 
 <TextView android:id="@+id/foldersListText"
     android:layout_width="fill_parent"
