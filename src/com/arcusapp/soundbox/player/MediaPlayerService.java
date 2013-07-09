@@ -1,222 +1,62 @@
 package com.arcusapp.soundbox.player;
 
-import java.io.File;
 import java.util.List;
 import java.util.Random;
 
-import com.arcusapp.soundbox.data.MediaProvider;
-import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
-import com.arcusapp.soundbox.model.RepeatState;
-
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.util.Log;
+
+import com.arcusapp.soundbox.data.MediaProvider;
+import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
+import com.arcusapp.soundbox.model.RandomState;
+import com.arcusapp.soundbox.model.RepeatState;
+import com.arcusapp.soundbox.model.Song;
 
 public class MediaPlayerService extends Service implements OnCompletionListener {
 
 	private static final String TAG = "MediaPlayerService";
 
-	private String actualID;
-	private List<String> songsList;
-	private List<String> repeatList;
+	// private int currentSongPosition;
+	private SongStack currentSongStack;
+	private List<String> songsIDList;
 
-	private RepeatState repeatState;
-	private boolean randomState;
-	Random rnd = new Random();
+	private RepeatState repeatState = RepeatState.Off;
+	private RandomState randomState = RandomState.Off;
 
-	private String actualTitle;
-	private File actualFile;
-	private String actualArtist;
-	private String actualAlbum;
-
-	private MediaProvider sh;
-	String[] defaultProjection = new String[] { MediaStore.Audio.Media.TITLE,
-			MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ARTIST,
-			MediaStore.Audio.Media.ALBUM };
-
+	private Random randomGenerator;
+	private MediaProvider mediaProvider;
 	private MediaPlayer mediaPlayer;
-	private MediaPlayerServiceListener mpsl;
-	private Context context;
-
+	private MediaPlayerServiceListener currentListener;
 	private final IBinder mBinder = new MyBinder();
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		// Called every time a client starts the service using startService
 		// We want this service to continue running until it is explicitly stopped, so return sticky.
 		return Service.START_STICKY;
 	}
 
 	@Override
-	public IBinder onBind(Intent arg0) {
-		return mBinder;
-	}
+	public void onCreate() {
+		super.onCreate();
+		// Called when the Service object is instantiated. Theoretically, only once.
 
-	@Override
-	public boolean onUnbind(Intent arg0) {
-		mpsl = null;
-		return true;
-	}
-
-	public class MyBinder extends Binder {
-		public MediaPlayerService getService() {
-			return MediaPlayerService.this;
-		}
-	}
-
-	public boolean SetUp(String actual, List<String> songs,
-			MediaProvider songsHandler, MediaPlayerServiceListener listener) {
-
-		if (actual != null) {
-			this.actualID = actual;
-			this.songsList = songs;
-			repeatList = songs;
-		}
-
-		if (mpsl == null)
-			mpsl = listener;
-		if (mediaPlayer == null)
+		if (mediaPlayer == null) {
 			mediaPlayer = new MediaPlayer();
-		if (sh == null)
-			sh = songsHandler;
-
-		// la id que mando el playList Activity es null, significa que no tiene
-		// cancion y no va a llamar al TurnOnMediaPlayer
-		if (actual == null)
-			mpsl.onSongChanged();
-
-		return true;
-	}
-
-	// Primer metodo para prender el reproductor
-	public void TurnOnMediaPlayer() {
-		setInfo();
-		ChangeSong();
-	}
-
-	public String getActualSongID() {
-		return actualID;
-	}
-
-	public String getActualFileName() {
-		return actualFile.getName();
-	}
-
-	public String getActualArtist() {
-		return actualArtist;
-	}
-
-	public String getActualAlbum() {
-		return actualAlbum;
-	}
-
-	public String getActualTitle() {
-		return actualTitle;
-	}
-
-	public List<String> getSongsList() {
-		return songsList;
-	}
-
-	public boolean getRandomState() {
-		return randomState;
-	}
-
-	public RepeatState getRepeatState() {
-		return repeatState;
-	}
-
-	public boolean ChangeRandom() {
-		randomState = !randomState;
-		return randomState;
-	}
-
-	public RepeatState ChangeRepeat() {
-		if (repeatState == RepeatState.Off) {
-			repeatState = RepeatState.All;
+			mediaPlayer.setOnCompletionListener(this);
 		}
-		else if (repeatState == RepeatState.All) {
-			repeatState = RepeatState.One;
+		if (mediaProvider == null) {
+			mediaProvider = new MediaProvider();
 		}
-		else if (repeatState == RepeatState.One) {
-			repeatState = RepeatState.Off;
+		if (randomGenerator == null) {
+			randomGenerator = new Random();
 		}
-		return repeatState;
-	}
-
-	public void PlayAndPause() {
-		// prendemos la musica !
-		if (!mediaPlayer.isPlaying()) {
-			// mediaPlayer.setOnCompletionListener(this);
-			mediaPlayer.start();
-		}
-		else {
-			mediaPlayer.pause();
-		}
-	}
-
-	public void NextSong() {
-		if (songsList.size() > 1) {
-			// tomo la posicion en la lista de la id actual:
-			int index = songsList.indexOf(actualID);
-			// apago el mediaPlayer
-			mediaPlayer.stop();
-
-			if (randomState) {
-				int newindex = index;
-				while (newindex == index)
-					newindex = rnd.nextInt(songsList.size());
-
-				actualID = songsList.get(newindex);
-			}
-			else {
-				// le sumo uno;
-				if (index + 1 != songsList.size()) {
-					actualID = songsList.get(index + 1);
-				}
-				else {
-					actualID = songsList.get(0);
-				}
-			}
-
-			setInfo();
-			ChangeSong();
-		}
-	}
-
-	public void PreviousSong() {
-
-		// tomo la posicion en la lista de la id actual:
-		int index = songsList.indexOf(actualID);
-		// apago el mediaPlayer
-		mediaPlayer.stop();
-
-		if (randomState) {
-			Random rnd = new Random();
-			int newindex = index;
-			while (newindex == index)
-				newindex = rnd.nextInt(songsList.size());
-
-			actualID = songsList.get(newindex);
-		}
-		else {
-			// le resto uno;
-			if (index != 0) {
-				actualID = songsList.get(index - 1);
-			}
-			else {
-				actualID = songsList.get(songsList.size() - 1);
-			}
-		}
-
-		setInfo();
-		ChangeSong();
 	}
 
 	@Override
@@ -230,87 +70,150 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	}
 
 	@Override
-	public void onCreate() {
-		super.onDestroy();
-		repeatState = RepeatState.Off;
+	public IBinder onBind(Intent arg0) {
+		return mBinder;
 	}
 
-	private void setInfo() {
-		// Recuperamos cierta informacion para mostrar en el reproductor
-		// FIXME: MediaPlayerService, shouldn't know the defaultprojection.
-		List<String> infoSong = sh.getValuesFromSong(actualID, defaultProjection);
-		// Construimos el mensaje a mostrar
-		actualFile = new File(infoSong.get(1));
-		actualTitle = infoSong.get(0);
-		actualArtist = infoSong.get(2);
-		actualAlbum = infoSong.get(3);
+	@Override
+	public boolean onUnbind(Intent arg0) {
+		currentListener = null;
+		return true;
 	}
 
-	private void ChangeSong() {
-		Uri uri = Uri.fromFile(actualFile);
-		if (mediaPlayer != null)
-			if (mediaPlayer.isPlaying())
+	public class MyBinder extends Binder {
+		public MediaPlayerService getService() {
+			return MediaPlayerService.this;
+		}
+	}
+
+	public void registerListener(MediaPlayerServiceListener listener) {
+		this.currentListener = listener;
+	}
+
+	public void playSongs(String currentSongID, List<String> songsID) {
+		if (songsID.size() == 0) {
+			Log.d(TAG, "No songs to play");
+			return;
+		}
+		if (currentSongID != BundleExtra.DefaultValues.DEFAULT_ID && !songsID.contains(currentSongID)) {
+			Log.d(TAG, "Cant handle the given current ID");
+			return;
+		}
+		songsIDList = songsID;
+
+		int currentSongPosition;
+		if (currentSongID == BundleExtra.DefaultValues.DEFAULT_ID) {
+			currentSongPosition = 0;
+		} else {
+			currentSongPosition = songsID.indexOf(currentSongID);
+		}
+
+		// create the song stack
+		currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
+
+		playCurrentSong();
+	}
+
+	public Song getCurrentSong() {
+		return currentSongStack.getCurrentSong();
+	}
+
+	public List<String> getSongsIDList() {
+		if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
+			return songsIDList;
+		} else {
+			return currentSongStack.getCurrentSongsIDList();
+		}
+
+	}
+
+	public RandomState getRandomState() {
+		return currentSongStack.getCurrentRandomState();
+	}
+
+	public RepeatState getRepeatState() {
+		return repeatState;
+	}
+
+	public RandomState changeRandomState() {
+		if (randomState == RandomState.Off) {
+			randomState = RandomState.Shuffled;
+		}
+		else if (randomState == RandomState.Shuffled) {
+			randomState = RandomState.Random;
+		}
+		else if (randomState == RandomState.Random) {
+			randomState = RandomState.Off;
+		}
+		currentSongStack.setRandomState(randomState);
+		return randomState;
+	}
+
+	public RepeatState changeRepeatState() {
+		if (repeatState == RepeatState.Off) {
+			repeatState = RepeatState.All;
+		}
+		else if (repeatState == RepeatState.All) {
+			repeatState = RepeatState.One;
+		}
+		else if (repeatState == RepeatState.One) {
+			repeatState = RepeatState.Off;
+		}
+		return repeatState;
+	}
+
+	public void playAndPause() {
+		if (!mediaPlayer.isPlaying()) {
+			mediaPlayer.start();
+		}
+		else {
+			mediaPlayer.pause();
+		}
+	}
+
+	public void playNextSong() {
+		currentSongStack.moveStackFoward();
+		// check if we started the playlist again
+		if (currentSongStack.getCurrentSong().getID() == currentSongStack.getCurrentSongsIDList().get(0)) {
+			if (repeatState == RepeatState.Off) {
 				mediaPlayer.stop();
-		mediaPlayer = MediaPlayer.create(context, uri);
-		Log.d(TAG, "Creating media player, file is: " + actualFile.getName());
-		mediaPlayer.setOnCompletionListener(this);
-		mediaPlayer.start();
+			} else {
+				playCurrentSong();
+			}
+		} else {
+			playCurrentSong();
+		}
+	}
 
-		mpsl.onSongChanged();
+	public void playPreviousSong() {
+		currentSongStack.moveStackBackward();
+		playCurrentSong();
 	}
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		// pasar a la siguiente cancion, esto depende del estado del repeat y
-		// del random
 		if (repeatState == RepeatState.One) {
 			mediaPlayer.stop();
 			mediaPlayer.start();
+		} else {
+			playNextSong();
+			currentListener.onSongCompletion();
 		}
-		else {
+	}
 
-			// tomo la posicion en la lista de la id actual:
-			int index = repeatList.indexOf(actualID);
-
-			// me fijo que no haya llegado al tope.
-			if (index + 1 != repeatList.size()) {
-				// elijo un nuevo elemento, random o no.
-				if (randomState) {
-					rnd = new Random();
-					int newindex = index;
-					while (newindex == index)
-						newindex = rnd.nextInt(repeatList.size());
-
-					actualID = repeatList.get(newindex);
-					repeatList.remove(index);
-				}
-				else {
-					actualID = repeatList.get(index + 1);
-					repeatList.remove(index);
-				}
-
-				setInfo();
-				ChangeSong();
-			}
-			else {
-				// vuelvo a repetir todo o paro el reproductor
-				if (repeatState == RepeatState.All) {
-					repeatList = songsList;
-					if (randomState) {
-						rnd = new Random();
-						int newindex = rnd.nextInt(repeatList.size());
-						actualID = repeatList.get(newindex);
-					}
-					else
-						actualID = repeatList.get(0);
-
-					setInfo();
-					ChangeSong();
-				}
-				else
-					// repeat es off y llegamos al final de la lista
-					mediaPlayer.stop();
-			}
+	private void playCurrentSong() {
+		if (mediaPlayer.isPlaying()) {
+			mediaPlayer.stop();
 		}
+
+		// play the song
+		Song currentSong = currentSongStack.getCurrentSong();
+		try {
+			mediaPlayer.setDataSource(currentSong.getFilePath());
+		} catch (Exception e) {
+			Log.d(TAG, "Wrong file path on the first song");
+		}
+
+		mediaPlayer.start();
 	}
 }

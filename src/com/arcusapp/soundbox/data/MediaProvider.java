@@ -15,6 +15,7 @@ import android.support.v4.content.CursorLoader;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.PlaylistEntry;
+import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.DirectoryHelper;
 
@@ -257,12 +258,38 @@ public class MediaProvider {
 		return ids;
 	}
 
+	public Song getSongFromID(String songID) {
+		Song song;
+		List<String> values = new ArrayList<String>();
+
+		String[] projection = { MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE,
+				MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.DATA };
+
+		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " = ?";
+		String[] selectionArgs = new String[] { songID };
+
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, selectionArgs, null);
+		myCursor = cl.loadInBackground();
+
+		myCursor.moveToNext();
+		for (int i = 0; i < myCursor.getColumnCount(); i++)
+			values.add(myCursor.getString(i));
+		if (values.size() > 0) {
+			song = new Song(values.get(0), values.get(1), values.get(2), values.get(3), values.get(4));
+		} else {
+			song = new Song();
+		}
+
+		return song;
+	}
+
 	/**
 	 * Returns the values corresponding to the given projection keys for the specified Song.
 	 * 
 	 * @param songID ({@linkplain MediaStore.Audio.Media._ID})
 	 * @param projection array with keys from {@linkplain MediaStore.Audio.Media}
 	 * @return list with the values
+	 * @deprecated @see {@linkplain #getSongFromID(String)}
 	 */
 	public List<String> getValuesFromSong(String songID, String[] projection) {
 		List<String> information = new ArrayList<String>();

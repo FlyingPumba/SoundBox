@@ -16,7 +16,7 @@
         android:onClick="onClick"/>
     
     <Button
-        android:id="@+id/btnActualPlayList"
+        android:id="@+id/btnCurrentPlayList"
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:text="List" 
@@ -43,7 +43,7 @@
         android:onClick="onClick"/>
     
     <TextView
-        android:id="@+id/txtActualSongTitle"
+        android:id="@+id/txtSongTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnLogo4"
@@ -53,28 +53,28 @@
         android:textSize="20sp" />
     
     <TextView
-        android:id="@+id/txtActualSongFile"
+        android:id="@+id/txtSongFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtActualSongTitle"
+        android:layout_below="@id/txtSongTitle"
         android:layout_alignParentLeft="true"
         android:text="Archivo"
         android:textSize="16sp" />
             
      <TextView
-        android:id="@+id/txtActualSongArtist"
+        android:id="@+id/txtSongArtist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtActualSongFile"
+        android:layout_below="@id/txtSongFile"
         android:layout_alignParentLeft="true"
         android:text="Artista"
         android:textSize="16sp" />
      
      <TextView
-        android:id="@+id/txtActualSongAlbum"
+        android:id="@+id/txtSongAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtActualSongArtist"
+        android:layout_below="@id/txtSongArtist"
         android:layout_alignParentLeft="true"
         android:text="Album"
         android:textSize="16sp" />
@@ -85,7 +85,7 @@
         android:layout_height="35dp"
         android:text="Back" 
         android:textSize="13sp"
-        android:layout_below="@id/txtActualSongAlbum"
+        android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
         android:layout_alignParentLeft="true"
         android:onClick="onClick"/>
@@ -96,7 +96,7 @@
         android:layout_height="35dp"
         android:text="Play/Pause" 
         android:textSize="13sp"
-        android:layout_below="@id/txtActualSongAlbum"
+        android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
         android:layout_centerInParent="true"
         android:onClick="onClick"/>
@@ -107,7 +107,7 @@
         android:layout_height="35dp"
         android:text="Next" 
         android:textSize="13sp"
-        android:layout_below="@id/txtActualSongAlbum"
+        android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
         android:layout_alignParentRight="true"
         android:onClick="onClick"/>
