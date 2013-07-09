@@ -20,13 +20,14 @@ import com.arcusapp.soundbox.activity.SongListActivity;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
+import com.arcusapp.soundbox.util.MediaEntryHelper;
 
 public class SonglistAcitivityAdapter extends BaseAdapter {
 	private SongListActivity mActivity;
 
 	private List<SongEntry> songs;
-	private List<String> songsID;
 	private MediaProvider mediaProvider;
+	private MediaEntryHelper<SongEntry> mediaEntryHelper;
 
 	private String projection = MediaStore.Audio.Media.TITLE;
 
@@ -35,7 +36,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 	public SonglistAcitivityAdapter(SongListActivity activity, String focusedID, List<String> songsID) {
 		mActivity = activity;
 		mediaProvider = new MediaProvider();
-		this.songsID = songsID;
+		mediaEntryHelper = new MediaEntryHelper<SongEntry>();
 		songs = mediaProvider.getValueFromSongs(songsID, projection);
 
 		this.focusedID = focusedID;
@@ -47,7 +48,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 
 		Bundle b = new Bundle();
 		b.putString(BundleExtra.CURRENT_ID, songs.get(position).getID().toString());
-		b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(songsID));
+		b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
 
 		playActivityIntent.putExtras(b);
 		mActivity.startActivity(playActivityIntent);

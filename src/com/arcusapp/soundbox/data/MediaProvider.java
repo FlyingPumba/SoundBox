@@ -180,7 +180,7 @@ public class MediaProvider {
 
 		String[] projection = { MediaStore.Audio.Media._ID };
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
-		String sortOrder = MediaStore.Audio.Media._ID;
+		String sortOrder = MediaStore.Audio.Media.TITLE;
 
 		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
@@ -202,7 +202,7 @@ public class MediaProvider {
 
 		String[] projection = { MediaStore.Audio.Media._ID };
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = '" + album + "'";
-		String sortOrder = MediaStore.Audio.Media._ID;
+		String sortOrder = MediaStore.Audio.Media.TITLE;
 
 		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
