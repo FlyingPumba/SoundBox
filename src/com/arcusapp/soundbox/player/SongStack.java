@@ -26,13 +26,14 @@ public class SongStack {
 	public SongStack(int firstPosition, List<String> songsID, RandomState randomState) {
 		mediaProvider = new MediaProvider();
 		this.currentPosition = firstPosition;
-		this.songsID = songsID;
+		this.songsID = new ArrayList<String>();
+		this.songsID.addAll(songsID);
+
+		this.currentSong = mediaProvider.getSongFromID(songsID.get(firstPosition));
 
 		randomGenerator = new Random();
 		currentSongsIDList = new ArrayList<String>();
 		this.setRandomState(randomState);
-
-		updateStack();
 	}
 
 	public Song getCurrentSong() {
@@ -111,16 +112,20 @@ public class SongStack {
 
 	public void setRandomState(RandomState state) {
 		this.randomState = state;
-
+		String currentID = currentSong.getID();
 		switch (state) {
 			case Off:
 				currentSongsIDList.clear();
-				currentSongsIDList = songsID;
+				currentSongsIDList.addAll(songsID);
+				currentPosition = currentSongsIDList.indexOf(currentID);
+				updateStack();
 				break;
 			case Shuffled:
 				currentSongsIDList.clear();
-				currentSongsIDList = songsID;
+				currentSongsIDList.addAll(songsID);
 				Collections.shuffle(currentSongsIDList);
+				currentPosition = currentSongsIDList.indexOf(currentID);
+				updateStack();
 				break;
 			case Random:
 				break;

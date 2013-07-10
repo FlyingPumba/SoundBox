@@ -87,15 +87,14 @@ public class MediaProvider {
 
 		String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID };
 		String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
+		String sortOrder = MediaStore.Audio.Media.TITLE;
 
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, null, null);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {
 			songs.add(myCursor.getString(0));
 		}
-
-		Collections.sort(songs);
 
 		return songs;
 	}
@@ -221,7 +220,7 @@ public class MediaProvider {
 
 		Uri specialUri = MediaStore.Audio.Playlists.Members.getContentUri("external", Integer.parseInt(playListID));
 		String[] projection = { MediaStore.Audio.Playlists.Members.AUDIO_ID };
-		String sortOrder = MediaStore.Audio.Playlists.Members.AUDIO_ID;
+		String sortOrder = MediaStore.Audio.Playlists.Members.TITLE;
 
 		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), specialUri, projection, null, null, sortOrder);
 		myCursor = cl.loadInBackground();
@@ -277,9 +276,7 @@ public class MediaProvider {
 			selection += "?, ";
 		selection += "?)";
 
-		String sortOrder = MediaStore.Audio.Media._ID;
-
-		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, ids, sortOrder);
+		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, ids, null);
 		myCursor = cl.loadInBackground();
 
 		while (myCursor.moveToNext()) {

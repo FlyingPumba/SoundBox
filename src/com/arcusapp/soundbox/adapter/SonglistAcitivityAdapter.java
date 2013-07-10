@@ -37,7 +37,21 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 		mActivity = activity;
 		mediaProvider = new MediaProvider();
 		mediaEntryHelper = new MediaEntryHelper<SongEntry>();
-		songs = mediaProvider.getValueFromSongs(songsID, projection);
+
+		// songs = mediaProvider.getValueFromSongs(songsID, projection);
+
+		List<SongEntry> temp_songs = mediaProvider.getValueFromSongs(songsID, projection);
+		songs = new ArrayList<SongEntry>();
+		// order them by the order given on the songsID
+		for (int i = 0; i < songsID.size(); i++) {
+			for (int j = 0; j < temp_songs.size(); j++) {
+				if (temp_songs.get(j).getID().equals(songsID.get(i))) {
+					songs.add(temp_songs.get(j));
+					temp_songs.remove(j);
+					break;
+				}
+			}
+		}
 
 		this.focusedID = focusedID;
 	}
