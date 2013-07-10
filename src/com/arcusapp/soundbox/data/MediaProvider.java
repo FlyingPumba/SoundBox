@@ -332,7 +332,7 @@ public class MediaProvider {
 				+ "SUBSTR(" + MediaStore.Audio.Media.DATA + ",LENGTH('" + folder + "')+1, 200) LIKE '/%.mp3' AND "
 				+ "SUBSTR(" + MediaStore.Audio.Media.DATA + ",LENGTH('" + folder + "')+1, 200) NOT LIKE '/%/%.mp3'";
 
-		String sortOrder = MediaStore.Audio.Media._ID;
+		String sortOrder = MediaStore.Audio.Media.TITLE;
 
 		CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
 		myCursor = cl.loadInBackground();
