@@ -59,7 +59,7 @@ public class SongStack {
 		}
 	}
 
-	public void moveStackFoward() {
+	public void moveStackForward() {
 		if (randomState != RandomState.Random) {
 			if (currentPosition == songsID.size() - 1) {
 				currentPosition = 0;

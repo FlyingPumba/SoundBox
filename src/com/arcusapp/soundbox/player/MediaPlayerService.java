@@ -159,7 +159,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	}
 
 	public void playNextSong() {
-		currentSongStack.moveStackFoward();
+		currentSongStack.moveStackForward();
 		// check if we started the playlist again
 		if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
 			if (repeatState == RepeatState.Off) {
