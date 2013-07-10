@@ -163,7 +163,18 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 		// check if we started the playlist again
 		if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
 			if (repeatState == RepeatState.Off) {
+				// prepare the first song of the list, but do not play it.
 				mediaPlayer.stop();
+				Song currentSong = currentSongStack.getCurrentSong();
+				try {
+					mediaPlayer.reset();
+					mediaPlayer.setDataSource(currentSong.getFile().getPath());
+					mediaPlayer.prepare();
+				} catch (Exception e) {
+					Log.d(TAG, "Wrong file path on the first song");
+				}
+				currentListener.onSongCompletion();
+
 			} else {
 				playCurrentSong();
 			}
