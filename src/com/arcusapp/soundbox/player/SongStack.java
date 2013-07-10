@@ -46,7 +46,7 @@ public class SongStack {
 	public void moveStackBackward() {
 		if (randomState != RandomState.Random) {
 			if (currentPosition == 0) {
-				currentPosition = songsID.size();
+				currentPosition = songsID.size() - 1;
 			} else {
 				currentPosition--;
 			}
@@ -60,7 +60,7 @@ public class SongStack {
 
 	public void moveStackFoward() {
 		if (randomState != RandomState.Random) {
-			if (currentPosition == songsID.size()) {
+			if (currentPosition == songsID.size() - 1) {
 				currentPosition = 0;
 			} else {
 				currentPosition++;
@@ -86,7 +86,7 @@ public class SongStack {
 	private String previousId() {
 		if (randomState != RandomState.Random) {
 			if (currentPosition == 0) {
-				return currentSongsIDList.get(currentSongsIDList.size());
+				return currentSongsIDList.get(currentSongsIDList.size() - 1);
 			} else {
 				return currentSongsIDList.get(currentPosition - 1);
 			}
@@ -98,7 +98,7 @@ public class SongStack {
 
 	private String nextId() {
 		if (randomState != RandomState.Random) {
-			if (currentPosition == currentSongsIDList.size()) {
+			if (currentPosition == currentSongsIDList.size() - 1) {
 				return currentSongsIDList.get(0);
 			} else {
 				return currentSongsIDList.get(currentPosition + 1);

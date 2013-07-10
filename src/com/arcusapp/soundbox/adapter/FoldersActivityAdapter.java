@@ -137,7 +137,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 	}
 
 	private String getCurrentlDirName() {
-		if (currentDir == MAIN_USER_OPTIONS)
+		if (currentDir.equals(MAIN_USER_OPTIONS))
 			return "";
 		else
 			return currentDir.getName();

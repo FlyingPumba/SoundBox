@@ -85,14 +85,11 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 			Log.d(TAG, "No songs to play");
 			return;
 		}
-		if (currentSongID != BundleExtra.DefaultValues.DEFAULT_ID && !songsID.contains(currentSongID)) {
-			Log.d(TAG, "Cant handle the given current ID");
-			return;
-		}
+
 		songsIDList = songsID;
 
 		int currentSongPosition;
-		if (currentSongID == BundleExtra.DefaultValues.DEFAULT_ID) {
+		if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
 			currentSongPosition = 0;
 		} else {
 			currentSongPosition = songsID.indexOf(currentSongID);
@@ -164,7 +161,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 	public void playNextSong() {
 		currentSongStack.moveStackFoward();
 		// check if we started the playlist again
-		if (currentSongStack.getCurrentSong().getID() == currentSongStack.getCurrentSongsIDList().get(0)) {
+		if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
 			if (repeatState == RepeatState.Off) {
 				mediaPlayer.stop();
 			} else {
