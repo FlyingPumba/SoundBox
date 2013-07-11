@@ -30,7 +30,7 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 
 	private TextView txtTitle, txtFile, txtArtist, txtAlbum;
-	private Button btnSwitchRandom, btnSwitchRepeat;
+	private Button btnSwitchRandom, btnSwitchRepeat, btnPlayAndPause;
 
 	private MediaPlayerService mediaService;
 	private ServiceConnection myServiceConnection;
@@ -69,6 +69,8 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 		btnSwitchRepeat = (Button) findViewById(R.id.btnSwitchRepeat);
 		btnSwitchRepeat.setOnClickListener(this);
+
+		btnPlayAndPause = (Button) findViewById(R.id.btnPlayPause);
 	}
 
 	private void initServiceConnection(final Bundle savedInstanceState) {
@@ -101,6 +103,11 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnPlayPause) {
 			mediaService.playAndPause();
+			if (mediaService.isPlaying()) {
+				btnPlayAndPause.setBackgroundResource(R.drawable.icon_pause);
+			} else {
+				btnPlayAndPause.setBackgroundResource(R.drawable.icon_play);
+			}
 		}
 		else if (v.getId() == R.id.btnPrevSong) {
 			mediaService.playPreviousSong();
@@ -168,6 +175,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 		btnSwitchRandom.setBackgroundResource(randomStateIcon(mediaService.getRandomState()));
 		btnSwitchRepeat.setBackgroundResource(repeatStateIcon(mediaService.getRepeatState()));
+
+		if (mediaService.isPlaying()) {
+			btnPlayAndPause.setBackgroundResource(R.drawable.icon_pause);
+		} else {
+			btnPlayAndPause.setBackgroundResource(R.drawable.icon_play);
+		}
 	}
 
 	private int repeatStateIcon(RepeatState state) {

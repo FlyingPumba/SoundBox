@@ -114,6 +114,10 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
 	}
 
+	public boolean isPlaying() {
+		return mediaPlayer.isPlaying();
+	}
+
 	public RandomState getRandomState() {
 		return currentSongStack.getCurrentRandomState();
 	}
