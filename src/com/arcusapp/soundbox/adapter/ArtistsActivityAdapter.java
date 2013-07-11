@@ -101,11 +101,12 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 			holder = (ViewHolder) item.getTag();
 		}
 
-		holder.icon.setImageResource(R.drawable.icon_artist);
 		holder.text.setText(mArtists.get(groupPosition));
 		if (isExpanded) {
+			holder.icon.setImageResource(R.drawable.icon_artist_selected);
 			holder.text.setTypeface(null, Typeface.BOLD);
 		} else {
+			holder.icon.setImageResource(R.drawable.icon_artist);
 			holder.text.setTypeface(null, Typeface.NORMAL);
 		}
 
