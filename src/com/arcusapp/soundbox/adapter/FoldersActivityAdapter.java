@@ -195,7 +195,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 			holder.icon.setImageResource(R.drawable.icon_folder);
 			holder.text.setText(subDirs.get(position).getName());
 		} else {
-			holder.icon.setImageResource(R.drawable.icon_song);
+			holder.icon.setImageResource(R.drawable.icon_audiofile);
 			holder.text.setText(songs.get(position - currentDirCount).getValue());
 		}
 
