@@ -60,7 +60,7 @@ public class SongListActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.btnLogo5) {
+		if (v.getId() == R.id.btnHomeSonglistActivity) {
 			Intent activityIntent = new Intent();
 			activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
 			startActivity(activityIntent);

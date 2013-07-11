@@ -62,7 +62,7 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.btnLogo3) {
+		if (v.getId() == R.id.btnHomeArtistsActivity) {
 			finish();
 		}
 	}

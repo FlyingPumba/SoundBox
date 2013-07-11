@@ -8,12 +8,11 @@
     tools:context=".FoldersActivity" >
 
         <Button
-	       android:id="@+id/btnLogo"
-	       android:layout_width="130dp"
-	       android:layout_height="40dp"
-	       android:text="Logo a Inicio" 
-	       android:textSize="13sp"
-	       android:onClick="onClick" />
+	       android:id="@+id/btnHomeFoldersActivity"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+       		android:background="@drawable/icon_home"
+        	android:onClick="onClick"/>
         
         <Button
 	       android:id="@+id/btnPlayFolder"
@@ -21,14 +20,14 @@
 	       android:layout_height="40dp"
 	       android:text="Reproducir Carpeta" 
 	       android:textSize="13sp"
-	       android:layout_toRightOf="@id/btnLogo"
+	       android:layout_toRightOf="@id/btnHomeFoldersActivity"
 	       android:onClick="onClick" />
 
         <TextView
             android:id="@+id/txtDir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnLogo"
+            android:layout_below="@id/btnHomeFoldersActivity"
             android:text="nada"
             android:textSize="14sp" />
 

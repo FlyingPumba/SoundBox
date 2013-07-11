@@ -8,18 +8,17 @@
     tools:context=".PlayActivity" >
     
     <Button
-        android:id="@+id/btnLogo4"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:text="Logo a Inicio" 
-        android:textSize="13sp"
+        android:id="@+id/btnHomePlayActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_home"
         android:onClick="onClick"/>
     
     <Button
         android:id="@+id/btnCurrentPlayList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/btnLogo4"
+        android:layout_toRightOf="@+id/btnHomePlayActivity"
         android:background="@drawable/icon_list"
         android:onClick="onClick"/>
     
@@ -41,7 +40,7 @@
         android:id="@+id/txtSongTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogo4"
+        android:layout_below="@id/btnHomePlayActivity"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10sp"
         android:text="Titulo"

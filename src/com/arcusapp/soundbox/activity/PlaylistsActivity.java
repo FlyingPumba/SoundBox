@@ -91,7 +91,7 @@ public class PlaylistsActivity extends ListActivity implements View.OnClickListe
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.btnLogo6) {
+		if (v.getId() == R.id.btnHomePlaylistsActivity) {
 			Intent activityIntent = new Intent(this, MainActivity.class);
 			startActivity(activityIntent);
 		}

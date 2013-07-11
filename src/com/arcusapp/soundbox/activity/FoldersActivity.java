@@ -60,7 +60,7 @@ public class FoldersActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.btnLogo) {
+		if (v.getId() == R.id.btnHomeFoldersActivity) {
 			finish();
 		} else if (v.getId() == R.id.btnPlayFolder) {
 			myAdapter.playCurrentDirectory();

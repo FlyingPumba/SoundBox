@@ -8,19 +8,18 @@
     tools:context=".ArtistsActivity" >
 
     <Button
-        android:id="@+id/btnLogo3"
-        android:layout_width="130dp"
-        android:layout_height="40dp"
-        android:text="Logo a Inicio" 
-        android:textSize="13sp"
-        android:onClick="onClick"/>
+        android:id="@+id/btnHomeArtistsActivity"
+       	android:layout_width="wrap_content"
+       	android:layout_height="wrap_content"
+     	android:background="@drawable/icon_home"
+       	android:onClick="onClick"/>
     
     <ExpandableListView
         android:id="@+id/expandableListArtists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" 
-        android:layout_below="@id/btnLogo3">
+        android:layout_below="@id/btnHomeArtistsActivity">
     </ExpandableListView>
 
 </RelativeLayout>

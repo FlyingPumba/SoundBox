@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
@@ -58,6 +59,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 	private void initUI() {
 		txtTitle = (TextView) findViewById(R.id.txtSongTitle);
+		txtTitle.setTypeface(null, Typeface.BOLD);
 		txtFile = (TextView) findViewById(R.id.txtSongFile);
 		txtArtist = (TextView) findViewById(R.id.txtSongArtist);
 		txtAlbum = (TextView) findViewById(R.id.txtSongAlbum);
@@ -128,7 +130,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 			startActivity(intent);
 		}
-		else if (v.getId() == R.id.btnLogo4) {
+		else if (v.getId() == R.id.btnHomePlayActivity) {
 			Intent activityIntent = new Intent();
 			activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
 			startActivity(activityIntent);

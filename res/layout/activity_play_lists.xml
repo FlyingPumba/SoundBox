@@ -8,18 +8,17 @@
     tools:context=".PlaylistsActivity" >
 
     <Button
-	       android:id="@+id/btnLogo6"
-	       android:layout_width="130dp"
-	       android:layout_height="40dp"
-	       android:text="Logo a Inicio" 
-	       android:textSize="13sp"
-	       android:onClick="onClick"/>
-         <ListView
-             android:id="@android:id/list"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:layout_below="@id/btnLogo6" 
-             android:layout_alignParentBottom="true" >
-         </ListView>
+       android:id="@+id/btnHomePlaylistsActivity"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:background="@drawable/icon_home"
+       android:onClick="onClick"/>
+    <ListView
+       android:id="@android:id/list"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/btnHomePlaylistsActivity" 
+       android:layout_alignParentBottom="true" >
+    </ListView>
 
 </RelativeLayout>
