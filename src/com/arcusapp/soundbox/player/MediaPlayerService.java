@@ -218,7 +218,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 			Log.d(TAG, "Wrong file path on the first song");
 		}
 
-		currentListener.onSongCompletion();
 		mediaPlayer.start();
+		currentListener.onSongCompletion();
 	}
 }
