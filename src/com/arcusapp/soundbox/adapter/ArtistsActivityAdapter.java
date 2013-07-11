@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
@@ -137,6 +138,10 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 
 		holder.icon.setImageResource(R.drawable.icon_album);
 		holder.text.setText(mAlbums.get(groupPosition).get(childPosition));
+		// set left margin
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		lp.setMargins(20, 0, 0, 0);
+		holder.icon.setLayoutParams(lp);
 
 		return (item);
 	}
