@@ -192,7 +192,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 
 		// check if its a directory or a song
 		if (isDirItem(position)) {
-			holder.icon.setImageResource(R.drawable.icon_dir);
+			holder.icon.setImageResource(R.drawable.icon_folder);
 			holder.text.setText(subDirs.get(position).getName());
 		} else {
 			holder.icon.setImageResource(R.drawable.icon_song);
