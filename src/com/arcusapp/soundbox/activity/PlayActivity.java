@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
@@ -63,11 +64,9 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
 		btnSwitchRandom = (Button) findViewById(R.id.btnSwitchRandom);
 		btnSwitchRandom.setOnClickListener(this);
-		btnSwitchRandom.setText("Random Off");
 
 		btnSwitchRepeat = (Button) findViewById(R.id.btnSwitchRepeat);
 		btnSwitchRepeat.setOnClickListener(this);
-		btnSwitchRepeat.setText("Repeat Off");
 	}
 
 	private void initServiceConnection(final Bundle savedInstanceState) {
@@ -110,11 +109,13 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		}
 		else if (v.getId() == R.id.btnSwitchRandom) {
 			mediaService.changeRandomState();
-			btnSwitchRandom.setText(randomStateToText(mediaService.getRandomState()));
+			btnSwitchRandom.setBackgroundResource(randomStateIcon(mediaService.getRandomState()));
+			Toast.makeText(this, randomStateToText(mediaService.getRandomState()), Toast.LENGTH_SHORT).show();
 		}
 		else if (v.getId() == R.id.btnSwitchRepeat) {
 			mediaService.changeRepeatState();
-			btnSwitchRepeat.setText(repeatStateToText(mediaService.getRepeatState()));
+			btnSwitchRepeat.setBackgroundResource(repeatStateIcon(mediaService.getRepeatState()));
+			Toast.makeText(this, repeatStateToText(mediaService.getRepeatState()), Toast.LENGTH_SHORT).show();
 		}
 		else if (v.getId() == R.id.btnCurrentPlayList) {
 			Intent intent = new Intent();
@@ -163,28 +164,47 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 		txtArtist.setText(currentSong.getArtist());
 		txtAlbum.setText(currentSong.getAlbum());
 
-		btnSwitchRepeat.setText(repeatStateToText(mediaService.getRepeatState()));
-		btnSwitchRandom.setText(randomStateToText(mediaService.getRandomState()));
+		btnSwitchRandom.setBackgroundResource(randomStateIcon(mediaService.getRandomState()));
+		btnSwitchRepeat.setBackgroundResource(repeatStateIcon(mediaService.getRepeatState()));
 	}
 
-	private String randomStateToText(RandomState state) {
-		if (state == RandomState.Off) {
-			return "Random Off";
-		} else if (state == RandomState.Shuffled) {
-			return "Random Shuffled";
+	private int repeatStateIcon(RepeatState state) {
+		if (state == RepeatState.Off) {
+			return R.drawable.icon_repeat_off;
+		} else if (state == RepeatState.All) {
+			return R.drawable.icon_repeat_all;
 		} else {
-			// TODO: put icons or something, because this is horrible.
-			return "Random Random";
+			return R.drawable.icon_repeat_one;
+		}
+	}
+
+	private int randomStateIcon(RandomState state) {
+		if (state == RandomState.Off) {
+			return R.drawable.icon_random_off;
+		} else if (state == RandomState.Shuffled) {
+			return R.drawable.icon_random_shuffled;
+		} else {
+			return R.drawable.icon_random_random;
 		}
 	}
 
 	private String repeatStateToText(RepeatState state) {
 		if (state == RepeatState.Off) {
-			return "Repeat Off";
+			return "Repeat mode is Off";
 		} else if (state == RepeatState.All) {
-			return "Repeat All";
+			return "Repeat mode is All";
 		} else {
-			return "Repeat One";
+			return "Repeat mode is One";
+		}
+	}
+
+	private String randomStateToText(RandomState state) {
+		if (state == RandomState.Off) {
+			return "Random mode is Off";
+		} else if (state == RandomState.Shuffled) {
+			return "Random mode is Shuffled";
+		} else {
+			return "Random mode is TrueRandom";
 		}
 	}
 }
