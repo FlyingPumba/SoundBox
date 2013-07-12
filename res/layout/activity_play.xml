@@ -86,6 +86,7 @@
         android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
         android:layout_centerInParent="true"
+        android:background="@drawable/icon_play"
         android:onClick="onClick"/>
      
      <Button
@@ -99,7 +100,7 @@
         android:onClick="onClick"/>
      
       <TextView
-        android:id="@+id/txtTimePast"
+        android:id="@+id/txtTimeCurrent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnPrevSong"
@@ -119,10 +120,10 @@
         android:textSize="16sp" />
       
       <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="20sp"
-        android:layout_below="@id/txtTimePast"
+        android:layout_below="@id/txtTimeCurrent"
         android:layout_centerHorizontal="true"
         android:max="50" />
 

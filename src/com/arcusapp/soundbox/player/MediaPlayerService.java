@@ -18,207 +18,219 @@ import com.arcusapp.soundbox.model.Song;
 
 public class MediaPlayerService extends Service implements OnCompletionListener {
 
-	private static final String TAG = "MediaPlayerService";
+    private static final String TAG = "MediaPlayerService";
 
-	// private int currentSongPosition;
-	private SongStack currentSongStack;
-	private List<String> songsIDList;
+    // private int currentSongPosition;
+    private SongStack currentSongStack;
+    private List<String> songsIDList;
 
-	private RepeatState repeatState = RepeatState.Off;
-	private RandomState randomState = RandomState.Off;
+    private RepeatState repeatState = RepeatState.Off;
+    private RandomState randomState = RandomState.Off;
 
-	private MediaPlayer mediaPlayer;
-	private MediaPlayerServiceListener currentListener;
-	private final IBinder mBinder = new MyBinder();
+    private MediaPlayer mediaPlayer;
+    private MediaPlayerServiceListener currentListener;
+    private final IBinder mBinder = new MyBinder();
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		// Called every time a client starts the service using startService
-		// We want this service to continue running until it is explicitly stopped, so return sticky.
-		return Service.START_STICKY;
-	}
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // Called every time a client starts the service using startService
+        // We want this service to continue running until it is explicitly stopped, so return sticky.
+        return Service.START_STICKY;
+    }
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		// Called when the Service object is instantiated. Theoretically, only once.
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // Called when the Service object is instantiated. Theoretically, only once.
 
-		if (mediaPlayer == null) {
-			mediaPlayer = new MediaPlayer();
-			mediaPlayer.setOnCompletionListener(this);
-		}
-	}
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setOnCompletionListener(this);
+        }
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (mediaPlayer != null) {
-			mediaPlayer.stop();
-			mediaPlayer.release();
-			mediaPlayer = null;
-		}
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return mBinder;
-	}
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return mBinder;
+    }
 
-	@Override
-	public boolean onUnbind(Intent arg0) {
-		currentListener = null;
-		return true;
-	}
+    @Override
+    public boolean onUnbind(Intent arg0) {
+        currentListener = null;
+        return true;
+    }
 
-	public class MyBinder extends Binder {
-		public MediaPlayerService getService() {
-			return MediaPlayerService.this;
-		}
-	}
+    public class MyBinder extends Binder {
+        public MediaPlayerService getService() {
+            return MediaPlayerService.this;
+        }
+    }
 
-	public void registerListener(MediaPlayerServiceListener listener) {
-		this.currentListener = listener;
-	}
+    public void registerListener(MediaPlayerServiceListener listener) {
+        this.currentListener = listener;
+    }
 
-	public void playSongs(String currentSongID, List<String> songsID) {
-		if (songsID.size() == 0) {
-			Log.d(TAG, "No songs to play");
-			return;
-		}
+    public void playSongs(String currentSongID, List<String> songsID) {
+        if (songsID.size() == 0) {
+            Log.d(TAG, "No songs to play");
+            return;
+        }
 
-		songsIDList = songsID;
+        songsIDList = songsID;
 
-		int currentSongPosition;
-		if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
-			currentSongPosition = 0;
-		} else {
-			currentSongPosition = songsID.indexOf(currentSongID);
-		}
+        int currentSongPosition;
+        if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
+            currentSongPosition = 0;
+        } else {
+            currentSongPosition = songsID.indexOf(currentSongID);
+        }
 
-		// create the song stack
-		currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
+        // create the song stack
+        currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
 
-		playCurrentSong();
-	}
+        playCurrentSong();
+    }
 
-	public Song getCurrentSong() {
-		return currentSongStack.getCurrentSong();
-	}
+    public Song getCurrentSong() {
+        return currentSongStack.getCurrentSong();
+    }
 
-	public List<String> getSongsIDList() {
-		if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
-			return songsIDList;
-		} else {
-			return currentSongStack.getCurrentSongsIDList();
-		}
+    public List<String> getSongsIDList() {
+        if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
+            return songsIDList;
+        } else {
+            return currentSongStack.getCurrentSongsIDList();
+        }
 
-	}
+    }
 
-	public boolean isPlaying() {
-		return mediaPlayer.isPlaying();
-	}
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
 
-	public RandomState getRandomState() {
-		return currentSongStack.getCurrentRandomState();
-	}
+    public RandomState getRandomState() {
+        return currentSongStack.getCurrentRandomState();
+    }
 
-	public RepeatState getRepeatState() {
-		return repeatState;
-	}
+    public RepeatState getRepeatState() {
+        return repeatState;
+    }
 
-	public RandomState changeRandomState() {
-		if (randomState == RandomState.Off) {
-			randomState = RandomState.Shuffled;
-		}
-		else if (randomState == RandomState.Shuffled) {
-			randomState = RandomState.Random;
-		}
-		else if (randomState == RandomState.Random) {
-			randomState = RandomState.Off;
-		}
-		currentSongStack.setRandomState(randomState);
-		return randomState;
-	}
+    public RandomState changeRandomState() {
+        if (randomState == RandomState.Off) {
+            randomState = RandomState.Shuffled;
+        }
+        else if (randomState == RandomState.Shuffled) {
+            randomState = RandomState.Random;
+        }
+        else if (randomState == RandomState.Random) {
+            randomState = RandomState.Off;
+        }
+        currentSongStack.setRandomState(randomState);
+        return randomState;
+    }
 
-	public RepeatState changeRepeatState() {
-		if (repeatState == RepeatState.Off) {
-			repeatState = RepeatState.All;
-		}
-		else if (repeatState == RepeatState.All) {
-			repeatState = RepeatState.One;
-		}
-		else if (repeatState == RepeatState.One) {
-			repeatState = RepeatState.Off;
-		}
-		return repeatState;
-	}
+    public RepeatState changeRepeatState() {
+        if (repeatState == RepeatState.Off) {
+            repeatState = RepeatState.All;
+        }
+        else if (repeatState == RepeatState.All) {
+            repeatState = RepeatState.One;
+        }
+        else if (repeatState == RepeatState.One) {
+            repeatState = RepeatState.Off;
+        }
+        return repeatState;
+    }
 
-	public void playAndPause() {
-		if (!mediaPlayer.isPlaying()) {
-			mediaPlayer.start();
-		}
-		else {
-			mediaPlayer.pause();
-		}
-	}
+    public void seekTo(int position) {
+        mediaPlayer.seekTo(position);
+    }
 
-	public void playNextSong() {
-		currentSongStack.moveStackForward();
-		// check if we started the playlist again
-		if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
-			if (repeatState == RepeatState.Off) {
-				// prepare the first song of the list, but do not play it.
-				mediaPlayer.stop();
-				Song currentSong = currentSongStack.getCurrentSong();
-				try {
-					mediaPlayer.reset();
-					mediaPlayer.setDataSource(currentSong.getFile().getPath());
-					mediaPlayer.prepare();
-				} catch (Exception e) {
-					Log.d(TAG, "Wrong file path on the first song");
-				}
-				currentListener.onSongCompletion();
+    public int getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
+    }
 
-			} else {
-				playCurrentSong();
-			}
-		} else {
-			playCurrentSong();
-		}
-	}
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
 
-	public void playPreviousSong() {
-		currentSongStack.moveStackBackward();
-		playCurrentSong();
-	}
+    public void playAndPause() {
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+        else {
+            mediaPlayer.pause();
+        }
+    }
 
-	@Override
-	public void onCompletion(MediaPlayer arg0) {
-		if (repeatState == RepeatState.One) {
-			mediaPlayer.stop();
-			mediaPlayer.start();
-		} else {
-			playNextSong();
-			currentListener.onSongCompletion();
-		}
-	}
+    public void playNextSong() {
+        currentSongStack.moveStackForward();
+        // check if we started the playlist again
+        if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
+            if (repeatState == RepeatState.Off) {
+                // prepare the first song of the list, but do not play it.
+                mediaPlayer.stop();
+                Song currentSong = currentSongStack.getCurrentSong();
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(currentSong.getFile().getPath());
+                    mediaPlayer.prepare();
+                } catch (Exception e) {
+                    Log.d(TAG, "Wrong file path on the first song");
+                }
+                currentListener.onSongCompletion();
 
-	private void playCurrentSong() {
-		if (mediaPlayer.isPlaying()) {
-			mediaPlayer.stop();
-		}
+            } else {
+                playCurrentSong();
+            }
+        } else {
+            playCurrentSong();
+        }
+    }
 
-		// play the song
-		Song currentSong = currentSongStack.getCurrentSong();
-		try {
-			mediaPlayer.reset();
-			mediaPlayer.setDataSource(currentSong.getFile().getPath());
-			mediaPlayer.prepare();
-		} catch (Exception e) {
-			Log.d(TAG, "Wrong file path on the first song");
-		}
+    public void playPreviousSong() {
+        currentSongStack.moveStackBackward();
+        playCurrentSong();
+    }
 
-		mediaPlayer.start();
-		currentListener.onSongCompletion();
-	}
+    @Override
+    public void onCompletion(MediaPlayer arg0) {
+        if (repeatState == RepeatState.One) {
+            mediaPlayer.stop();
+            mediaPlayer.start();
+        } else {
+            playNextSong();
+            currentListener.onSongCompletion();
+        }
+    }
+
+    private void playCurrentSong() {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+
+        // play the song
+        Song currentSong = currentSongStack.getCurrentSong();
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(currentSong.getFile().getPath());
+            mediaPlayer.prepare();
+        } catch (Exception e) {
+            Log.d(TAG, "Wrong file path on the first song");
+        }
+
+        mediaPlayer.start();
+        currentListener.onSongCompletion();
+    }
 }
