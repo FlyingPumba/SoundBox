@@ -61,7 +61,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         }
 
         initServiceConnection(savedInstanceState);
-        initiRunnableSeekBar();
     }
 
     private void initiRunnableSeekBar() {
@@ -115,6 +114,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
                 registerToMediaService();
                 playBundleExtraSongs(savedInstanceState);
                 updateUI();
+                initiRunnableSeekBar();
             }
 
             public void onServiceDisconnected(ComponentName className) {
@@ -203,6 +203,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     public void updateUI() {
         currentSong = mediaService.getCurrentSong();
+
         txtTitle.setText(currentSong.getTitle());
         txtFile.setText(currentSong.getFile().getName());
         txtArtist.setText(currentSong.getArtist());
