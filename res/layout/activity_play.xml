@@ -106,7 +106,6 @@
         android:layout_below="@id/btnPrevSong"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="3sp"
-        android:text="#0"
         android:textSize="16sp" />
       
       <TextView
@@ -116,13 +115,12 @@
         android:layout_below="@id/btnNextSong"
         android:layout_alignParentRight="true"
         android:layout_marginTop="3sp"
-        android:text="#1"
         android:textSize="16sp" />
       
       <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
-        android:layout_height="20sp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/txtTimeCurrent"
         android:layout_centerHorizontal="true"
         android:max="50" />
