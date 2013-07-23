@@ -42,7 +42,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     public void onCreate() {
         super.onCreate();
         // Called when the Service object is instantiated. Theoretically, only once.
-
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setOnCompletionListener(this);

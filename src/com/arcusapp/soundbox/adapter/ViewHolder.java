@@ -4,6 +4,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ViewHolder {
-	ImageView icon;
-	TextView text;
+    ImageView icon;
+    TextView text;
 }

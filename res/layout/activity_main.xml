@@ -27,9 +27,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="En Reproducción"
-                android:onClick="onClick" />
-
+                android:onClick="onClick"
+                android:text="En Reproducción" />
         </TableRow>
 
         <TableRow
@@ -42,17 +41,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ver Carpetas"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:text="Ver Carpetas" />
 
-			<Button
+            <Button
                 android:id="@+id/btnPlayLists"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Listas de Repr."
-                android:onClick="onClick" />
-
+                android:onClick="onClick"
+                android:text="Listas de Repr." />
         </TableRow>
 
         <TableRow
@@ -65,20 +63,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Artistas y Álbumes"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:text="Artistas y Álbumes" />
 
             <Button
                 android:id="@+id/btnSongs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Canciones"
-                android:onClick="onClick" />
-
+                android:onClick="onClick"
+                android:text="Canciones" />
         </TableRow>
-
-
     </TableLayout>
 
 </RelativeLayout>

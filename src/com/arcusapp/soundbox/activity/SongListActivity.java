@@ -19,56 +19,56 @@ import com.arcusapp.soundbox.model.BundleExtra;
 
 public class SongListActivity extends Activity implements View.OnClickListener {
 
-	ListView myListView;
-	SonglistAcitivityAdapter myAdapter;
+    ListView myListView;
+    SonglistAcitivityAdapter myAdapter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_songs_list);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_songs_list);
 
-		myListView = (ListView) findViewById(R.id.songslistActivityList);
+        myListView = (ListView) findViewById(R.id.songslistActivityList);
 
-		try {
-			Bundle bundle = this.getIntent().getExtras();
+        try {
+            Bundle bundle = this.getIntent().getExtras();
 
-			String focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-			List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+            String focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+            List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
 
-			myAdapter = new SonglistAcitivityAdapter(this, focusedElementID, songsIDs);
-			myListView.setAdapter(myAdapter);
-			myListView.setOnItemClickListener(new OnItemClickListener() {
+            myAdapter = new SonglistAcitivityAdapter(this, focusedElementID, songsIDs);
+            myListView.setAdapter(myAdapter);
+            myListView.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-					myAdapter.onSongClick(position);
-				}
-			});
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+                    myAdapter.onSongClick(position);
+                }
+            });
 
-			myListView.setSelection(myAdapter.getFocusedIDPosition());
+            myListView.setSelection(myAdapter.getFocusedIDPosition());
 
-		} catch (Exception e) {
-			Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
-		}
-	}
+        } catch (Exception e) {
+            Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
+        }
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.songs_list, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.songs_list, menu);
+        return true;
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.btnHomeSonglistActivity) {
-			Intent activityIntent = new Intent();
-			activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
-			startActivity(activityIntent);
-		}
-	}
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnHomeSonglistActivity) {
+            Intent activityIntent = new Intent();
+            activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
+            startActivity(activityIntent);
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		finish();
-	}
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

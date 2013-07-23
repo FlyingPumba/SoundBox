@@ -9,17 +9,17 @@
 
     <Button
         android:id="@+id/btnHomeArtistsActivity"
-       	android:layout_width="wrap_content"
-       	android:layout_height="wrap_content"
-     	android:background="@drawable/icon_home"
-       	android:onClick="onClick"/>
-    
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_home"
+        android:onClick="onClick" />
+
     <ExpandableListView
         android:id="@+id/expandableListArtists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" 
-        android:layout_below="@id/btnHomeArtistsActivity">
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/btnHomeArtistsActivity" >
     </ExpandableListView>
 
 </RelativeLayout>

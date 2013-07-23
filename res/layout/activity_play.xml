@@ -6,36 +6,36 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".PlayActivity" >
-    
+
     <Button
         android:id="@+id/btnHomePlayActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/icon_home"
-        android:onClick="onClick"/>
-    
+        android:onClick="onClick" />
+
     <Button
         android:id="@+id/btnCurrentPlayList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/btnHomePlayActivity"
         android:background="@drawable/icon_list"
-        android:onClick="onClick"/>
-    
+        android:onClick="onClick" />
+
     <Button
         android:id="@+id/btnSwitchRandom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/btnSwitchRepeat"
-        android:onClick="onClick"/>
-    
+        android:onClick="onClick" />
+
     <Button
         android:id="@+id/btnSwitchRepeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:onClick="onClick"/>
-    
+        android:onClick="onClick" />
+
     <TextView
         android:id="@+id/txtSongTitle"
         android:layout_width="wrap_content"
@@ -44,80 +44,80 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10sp"
         android:textSize="20sp" />
-    
+
     <TextView
         android:id="@+id/txtSongFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtSongTitle"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/txtSongTitle"
         android:textSize="16sp" />
-            
-     <TextView
+
+    <TextView
         android:id="@+id/txtSongArtist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtSongFile"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/txtSongFile"
         android:textSize="16sp" />
-     
-     <TextView
+
+    <TextView
         android:id="@+id/txtSongAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtSongArtist"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/txtSongArtist"
         android:textSize="16sp" />
-     
-     <Button
+
+    <Button
         android:id="@+id/btnPrevSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
-        android:layout_alignParentLeft="true"
         android:background="@drawable/icon_previous"
-        android:onClick="onClick"/>
-     
-     <Button
+        android:onClick="onClick" />
+
+    <Button
         android:id="@+id/btnPlayPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtSongAlbum"
-        android:layout_marginTop="7sp"
         android:layout_centerInParent="true"
+        android:layout_marginTop="7sp"
         android:background="@drawable/icon_play"
-        android:onClick="onClick"/>
-     
-     <Button
+        android:onClick="onClick" />
+
+    <Button
         android:id="@+id/btnNextSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
-        android:layout_alignParentRight="true"
         android:background="@drawable/icon_next"
-        android:onClick="onClick"/>
-     
-      <TextView
+        android:onClick="onClick" />
+
+    <TextView
         android:id="@+id/txtTimeCurrent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnPrevSong"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/btnPrevSong"
         android:layout_marginTop="3sp"
         android:textSize="16sp" />
-      
-      <TextView
+
+    <TextView
         android:id="@+id/txtTimeTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnNextSong"
         android:layout_alignParentRight="true"
+        android:layout_below="@id/btnNextSong"
         android:layout_marginTop="3sp"
         android:textSize="16sp" />
-      
-      <SeekBar
+
+    <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
