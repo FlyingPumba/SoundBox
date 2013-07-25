@@ -12,5 +12,9 @@
     <string name="title_activity_play_list">PlayListActivity</string>
     <string name="title_activity_songs_list">SongsListActivity</string>
     <string name="title_activity_play_lists">PlayListsActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

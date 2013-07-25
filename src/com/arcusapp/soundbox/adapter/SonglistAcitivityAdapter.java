@@ -3,6 +3,7 @@ package com.arcusapp.soundbox.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,14 +17,13 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.activity.SongListActivity;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 
 public class SonglistAcitivityAdapter extends BaseAdapter {
-    private SongListActivity mActivity;
+    private Activity mActivity;
 
     private List<SongEntry> songs;
     private MediaProvider mediaProvider;
@@ -33,7 +33,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 
     private String focusedID;
 
-    public SonglistAcitivityAdapter(SongListActivity activity, String focusedID, List<String> songsID) {
+    public SonglistAcitivityAdapter(Activity activity, String focusedID, List<String> songsID) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
         mediaEntryHelper = new MediaEntryHelper<SongEntry>();

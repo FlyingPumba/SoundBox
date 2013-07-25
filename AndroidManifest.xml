@@ -14,67 +14,83 @@
         android:icon="@drawable/icon_soundbox"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
         <service
-		  android:name=".player.MediaPlayerService"
-		  android:icon="@drawable/icon_soundbox"
-		  android:label="@string/app_name">
-		  <intent-filter>
+            android:name="com.arcusapp.soundbox.player.MediaPlayerService"
+            android:icon="@drawable/icon_soundbox"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-          </intent-filter>
-		</service> 
-		
+            </intent-filter>
+        </service>
+
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.arcusapp.soundbox.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.MAIN_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.FoldersActivity"
+            android:name="com.arcusapp.soundbox.activity.FoldersActivity"
             android:label="@string/title_activity_folders" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.FOLDERS_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ArtistsActivity"
+            android:name="com.arcusapp.soundbox.activity.ArtistsActivity"
             android:label="@string/title_activity_artists" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.ARTISTS_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PlayActivity"
+            android:name="com.arcusapp.soundbox.activity.PlayActivity"
             android:label="@string/title_activity_play" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.PLAY_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-        	android:name=".activity.SongListActivity"
+            android:name="com.arcusapp.soundbox.activity.SongListActivity"
             android:label="@string/title_activity_songs_list" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.SONGLIST_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PlaylistsActivity"
+            android:name="com.arcusapp.soundbox.activity.PlaylistsActivity"
             android:label="@string/title_activity_play_lists" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.arcusapp.soundbox.activity.MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

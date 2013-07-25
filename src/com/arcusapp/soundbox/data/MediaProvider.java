@@ -96,6 +96,7 @@ public class MediaProvider {
             songs.add(myCursor.getString(0));
         }
 
+        myCursor.close();
         return songs;
     }
 
@@ -117,6 +118,7 @@ public class MediaProvider {
         while (myCursor.moveToNext()) {
             artists.add(myCursor.getString(0));
         }
+        myCursor.close();
         return artists;
     }
 
@@ -139,6 +141,8 @@ public class MediaProvider {
         while (myCursor.moveToNext()) {
             albums.add(myCursor.getString(0));
         }
+
+        myCursor.close();
         return albums;
     }
 
@@ -161,6 +165,8 @@ public class MediaProvider {
         while (myCursor.moveToNext()) {
             ids.add(myCursor.getString(0));
         }
+
+        myCursor.close();
         return ids;
     }
 
@@ -183,6 +189,8 @@ public class MediaProvider {
         while (myCursor.moveToNext()) {
             ids.add(myCursor.getString(0));
         }
+
+        myCursor.close();
         return ids;
     }
 
@@ -206,6 +214,7 @@ public class MediaProvider {
 
         Collections.sort(playLists);
 
+        myCursor.close();
         return playLists;
     }
 
@@ -228,6 +237,8 @@ public class MediaProvider {
         while (myCursor.moveToNext()) {
             ids.add(myCursor.getString(0));
         }
+
+        myCursor.close();
         return ids;
     }
 
@@ -253,6 +264,7 @@ public class MediaProvider {
             song = new Song();
         }
 
+        myCursor.close();
         return song;
     }
 
@@ -285,6 +297,7 @@ public class MediaProvider {
 
         Collections.sort(songs);
 
+        myCursor.close();
         return songs;
     }
 
@@ -345,6 +358,7 @@ public class MediaProvider {
             songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
         }
 
+        myCursor.close();
         return songs;
     }
 

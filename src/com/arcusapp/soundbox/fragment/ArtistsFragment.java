@@ -1,9 +1,10 @@
-package com.arcusapp.soundbox.activity;
+package com.arcusapp.soundbox.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
@@ -12,19 +13,17 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.ArtistsActivityAdapter;
 
-public class ArtistsActivity extends Activity implements View.OnClickListener {
+public class ArtistsFragment extends Fragment {
 
-    private ExpandableListView myExpandableList;
-    private ArtistsActivityAdapter myAdapter;
+    ArtistsActivityAdapter myAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_artists);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
 
-        myAdapter = new ArtistsActivityAdapter(this);
+        myAdapter = new ArtistsActivityAdapter(this.getActivity());
 
-        myExpandableList = (ExpandableListView) findViewById(R.id.expandableListArtists);
+        ExpandableListView myExpandableList = (ExpandableListView) rootView.findViewById(R.id.expandableListArtists);
         myExpandableList.setGroupIndicator(null);
 
         myExpandableList.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -52,18 +51,6 @@ public class ArtistsActivity extends Activity implements View.OnClickListener {
         });
 
         myExpandableList.setAdapter(myAdapter);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.artists, menu);
-        return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btnHomeArtistsActivity) {
-            finish();
-        }
+        return rootView;
     }
 }

@@ -1,12 +1,12 @@
-package com.arcusapp.soundbox.activity;
+package com.arcusapp.soundbox.fragment;
 
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -17,25 +17,23 @@ import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.adapter.SonglistAcitivityAdapter;
 import com.arcusapp.soundbox.model.BundleExtra;
 
-public class SongListActivity extends Activity implements View.OnClickListener {
+public class SongsListFragment extends Fragment {
 
-    ListView myListView;
     SonglistAcitivityAdapter myAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_songs_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_songs_list, container, false);
 
-        myListView = (ListView) findViewById(R.id.songslistActivityList);
+        ListView myListView = (ListView) rootView.findViewById(R.id.songslistActivityList);
 
         try {
-            Bundle bundle = this.getIntent().getExtras();
+            Bundle bundle = getArguments();
 
             String focusedElementID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
             List<String> songsIDs = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
 
-            myAdapter = new SonglistAcitivityAdapter(this, focusedElementID, songsIDs);
+            myAdapter = new SonglistAcitivityAdapter(this.getActivity(), focusedElementID, songsIDs);
             myListView.setAdapter(myAdapter);
             myListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -50,25 +48,6 @@ public class SongListActivity extends Activity implements View.OnClickListener {
         } catch (Exception e) {
             Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.songs_list, menu);
-        return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btnHomeSonglistActivity) {
-            Intent activityIntent = new Intent();
-            activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
-            startActivity(activityIntent);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
+        return rootView;
     }
 }

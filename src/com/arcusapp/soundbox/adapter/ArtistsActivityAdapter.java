@@ -3,6 +3,7 @@ package com.arcusapp.soundbox.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,18 +17,17 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.activity.ArtistsActivity;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 
 public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
-    private ArtistsActivity mActivity;
+    private Activity mActivity;
 
     private List<String> mArtists;
     private List<List<String>> mAlbums;
     private MediaProvider mediaProvider;
 
-    public ArtistsActivityAdapter(ArtistsActivity activity) {
+    public ArtistsActivityAdapter(Activity activity) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
 
@@ -51,7 +51,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         playActivityIntent.putExtras(b);
 
-        mActivity.startActivity(playActivityIntent);
+        SoundBoxApplication.getApplicationContext().startActivity(playActivityIntent);
     }
 
     public void onAlbumLongClick(int groupPosition, int childPosition) {
@@ -64,7 +64,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         playActivityIntent.putExtras(b);
 
-        mActivity.startActivity(playActivityIntent);
+        SoundBoxApplication.getApplicationContext().startActivity(playActivityIntent);
     }
 
     public void onAlbumClick(int groupPosition, int childPosition) {
@@ -77,7 +77,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         intent.putExtras(b);
 
-        mActivity.startActivity(intent);
+        SoundBoxApplication.getApplicationContext().startActivity(intent);
     }
 
     @Override
