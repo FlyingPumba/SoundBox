@@ -101,7 +101,11 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public Song getCurrentSong() {
-        return currentSongStack.getCurrentSong();
+        if (currentSongStack != null) {
+            return currentSongStack.getCurrentSong();
+        } else {
+            return null;
+        }
     }
 
     public List<String> getSongsIDList() {
