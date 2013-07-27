@@ -33,7 +33,7 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 
-    private TextView txtTitle, txtFile, txtArtist, txtAlbum, txtTimeCurrent, txtTimeTotal;
+    private TextView txtTitle, txtArtist, txtAlbum, txtTimeCurrent, txtTimeTotal;
     private Button btnSwitchRandom, btnSwitchRepeat, btnPlayAndPause;
     private SeekBar seekBar;
 
@@ -72,7 +72,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
     private void initUI() {
         txtTitle = (TextView) findViewById(R.id.txtSongTitle);
         txtTitle.setTypeface(null, Typeface.BOLD);
-        txtFile = (TextView) findViewById(R.id.txtSongFile);
         txtArtist = (TextView) findViewById(R.id.txtSongArtist);
         txtAlbum = (TextView) findViewById(R.id.txtSongAlbum);
         txtTimeCurrent = (TextView) findViewById(R.id.txtTimeCurrent);
@@ -172,11 +171,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
             startActivity(intent);
         }
-        else if (v.getId() == R.id.btnHomePlayActivity) {
-            Intent activityIntent = new Intent();
-            activityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
-            startActivity(activityIntent);
-        }
     }
 
     @Override
@@ -205,7 +199,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         currentSong = mediaService.getCurrentSong();
 
         txtTitle.setText(currentSong.getTitle());
-        txtFile.setText(currentSong.getFile().getName());
         txtArtist.setText(currentSong.getArtist());
         txtAlbum.setText(currentSong.getAlbum());
 

@@ -8,22 +8,16 @@
     tools:context=".PlayActivity" >
 
     <Button
-        android:id="@+id/btnHomePlayActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/icon_home"
-        android:onClick="onClick" />
-
-    <Button
         android:id="@+id/btnCurrentPlayList"
+        style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/btnHomePlayActivity"
         android:background="@drawable/icon_list"
         android:onClick="onClick" />
 
     <Button
         android:id="@+id/btnSwitchRandom"
+        style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/btnSwitchRepeat"
@@ -31,6 +25,7 @@
 
     <Button
         android:id="@+id/btnSwitchRepeat"
+        style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -40,25 +35,19 @@
         android:id="@+id/txtSongTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnHomePlayActivity"
+        android:layout_below="@+id/btnCurrentPlayList"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10sp"
+        android:text="Titulo"
         android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/txtSongFile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtSongTitle"
-        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/txtSongArtist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtSongFile"
+        android:layout_below="@id/txtSongTitle"
+        android:text="Artista"
         android:textSize="16sp" />
 
     <TextView
@@ -67,23 +56,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/txtSongArtist"
+        android:text="Album"
         android:textSize="16sp" />
 
     <Button
         android:id="@+id/btnPrevSong"
+        style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/txtTimeCurrent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
         android:background="@drawable/icon_previous"
         android:onClick="onClick" />
 
     <Button
         android:id="@+id/btnPlayPause"
+        style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtSongAlbum"
+        android:layout_above="@+id/txtTimeCurrent"
         android:layout_centerInParent="true"
         android:layout_marginTop="7sp"
         android:background="@drawable/icon_play"
@@ -91,10 +83,11 @@
 
     <Button
         android:id="@+id/btnNextSong"
+        style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/txtTimeCurrent"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/txtSongAlbum"
         android:layout_marginTop="7sp"
         android:background="@drawable/icon_next"
         android:onClick="onClick" />
@@ -103,8 +96,8 @@
         android:id="@+id/txtTimeCurrent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/seekBar"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/btnPrevSong"
         android:layout_marginTop="3sp"
         android:textSize="16sp" />
 
@@ -112,8 +105,8 @@
         android:id="@+id/txtTimeTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/seekBar"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/btnNextSong"
         android:layout_marginTop="3sp"
         android:textSize="16sp" />
 
@@ -121,7 +114,7 @@
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtTimeCurrent"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:max="50" />
 

@@ -23,9 +23,10 @@ import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 
 public class PlayFragment extends Fragment implements MediaPlayerServiceListener {
-    TextView txtSongTitle;
-    Button btnPlayPause;
-    MediaPlayerService mediaService;
+    private TextView txtSongTitle;
+    private Button btnPlayPause;
+    private MediaPlayerService mediaService;
+    private boolean isCurrentSongNull = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         Song currentSong = mediaService.getCurrentSong();
 
         if (currentSong != null) {
+            isCurrentSongNull = false;
             txtSongTitle.setText(currentSong.getTitle());
 
             if (mediaService.isPlaying()) {
@@ -81,6 +83,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             }
             btnPlayPause.setClickable(true);
         } else {
+            isCurrentSongNull = true;
             txtSongTitle.setText("---");
             btnPlayPause.setBackgroundResource(R.drawable.icon_play);
             btnPlayPause.setClickable(false);
@@ -96,9 +99,11 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
             @Override
             public void onClick(View v) {
-                Intent playActivityIntent = new Intent();
-                playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-                getActivity().startActivity(playActivityIntent);
+                if (!isCurrentSongNull) {
+                    Intent playActivityIntent = new Intent();
+                    playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+                    getActivity().startActivity(playActivityIntent);
+                }
             }
         });
 
@@ -108,9 +113,11 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
             @Override
             public void onClick(View v) {
-                Intent playActivityIntent = new Intent();
-                playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-                getActivity().startActivity(playActivityIntent);
+                if (!isCurrentSongNull) {
+                    Intent playActivityIntent = new Intent();
+                    playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+                    getActivity().startActivity(playActivityIntent);
+                }
             }
         });
         btnPlayPause = (Button) rootView.findViewById(R.id.fragmentPlay_btnPlayPause);

@@ -44,7 +44,6 @@ public class SongsListFragment extends Fragment {
             });
 
             myListView.setSelection(myAdapter.getFocusedIDPosition());
-
         } catch (Exception e) {
             Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
         }

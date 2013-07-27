@@ -92,8 +92,8 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 
             holder = new ViewHolder();
 
-            holder.icon = (ImageView) item.findViewById(R.id.foldersListIcon);
-            holder.text = (TextView) item.findViewById(R.id.foldersListText);
+            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
+            holder.text = (TextView) item.findViewById(R.id.itemText);
 
             item.setTag(holder);
         }
@@ -104,10 +104,10 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 
         holder.text.setText(mArtists.get(groupPosition));
         if (isExpanded) {
-            holder.icon.setImageResource(R.drawable.icon_artist_selected);
+            holder.icon.setBackgroundResource(R.drawable.icon_artist_selected);
             holder.text.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.icon.setImageResource(R.drawable.icon_artist);
+            holder.icon.setBackgroundResource(R.drawable.icon_artist);
             holder.text.setTypeface(null, Typeface.NORMAL);
         }
 
@@ -126,8 +126,8 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 
             holder = new ViewHolder();
 
-            holder.icon = (ImageView) item.findViewById(R.id.foldersListIcon);
-            holder.text = (TextView) item.findViewById(R.id.foldersListText);
+            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
+            holder.text = (TextView) item.findViewById(R.id.itemText);
 
             item.setTag(holder);
         }
@@ -136,7 +136,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
             holder = (ViewHolder) item.getTag();
         }
 
-        holder.icon.setImageResource(R.drawable.icon_album);
+        holder.icon.setBackgroundResource(R.drawable.icon_album);
         holder.text.setText(mAlbums.get(groupPosition).get(childPosition));
         // set left margin
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

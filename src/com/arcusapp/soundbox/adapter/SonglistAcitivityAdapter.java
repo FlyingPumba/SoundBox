@@ -107,8 +107,8 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            holder.icon = (ImageView) item.findViewById(R.id.foldersListIcon);
-            holder.text = (TextView) item.findViewById(R.id.foldersListText);
+            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
+            holder.text = (TextView) item.findViewById(R.id.itemText);
 
             item.setTag(holder);
         }
@@ -117,7 +117,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
             holder = (ViewHolder) item.getTag();
         }
 
-        holder.icon.setImageResource(R.drawable.icon_song);
+        holder.icon.setBackgroundResource(R.drawable.icon_song);
         holder.text.setText(songs.get(position).getValue());
 
         if (songs.get(position).getID().equals(focusedID)) {
