@@ -7,15 +7,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".PlayActivity" >
 
-    <Button
+    <ImageButton
         android:id="@+id/btnCurrentPlayList"
         style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/icon_list"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:src="@drawable/icon_list" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnSwitchRandom"
         style="@style/icon"
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_toLeftOf="@+id/btnSwitchRepeat"
         android:onClick="onClick" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnSwitchRepeat"
         style="@style/icon"
         android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
         android:text="Album"
         android:textSize="16sp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnPrevSong"
         style="@style/icon"
         android:layout_width="wrap_content"
@@ -67,10 +67,10 @@
         android:layout_above="@+id/txtTimeCurrent"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="7sp"
-        android:background="@drawable/icon_previous"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:src="@drawable/icon_previous" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnPlayPause"
         style="@style/icon"
         android:layout_width="wrap_content"
@@ -78,10 +78,10 @@
         android:layout_above="@+id/txtTimeCurrent"
         android:layout_centerInParent="true"
         android:layout_marginTop="7sp"
-        android:background="@drawable/icon_play"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:src="@drawable/icon_play" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnNextSong"
         style="@style/icon"
         android:layout_width="wrap_content"
@@ -89,8 +89,8 @@
         android:layout_above="@+id/txtTimeCurrent"
         android:layout_alignParentRight="true"
         android:layout_marginTop="7sp"
-        android:background="@drawable/icon_next"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:src="@drawable/icon_next" />
 
     <TextView
         android:id="@+id/txtTimeCurrent"

@@ -14,13 +14,13 @@
         android:layout_toLeftOf="@+id/fragmentPlay.btnPlayPause"
         android:textSize="17sp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/fragmentPlay.btnPlayPause"
         style="@style/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/icon_play" />
+        android:src="@drawable/icon_play" />
 
 </RelativeLayout>

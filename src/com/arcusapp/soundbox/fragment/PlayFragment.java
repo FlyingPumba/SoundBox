@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
@@ -24,7 +24,7 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 
 public class PlayFragment extends Fragment implements MediaPlayerServiceListener {
     private TextView txtSongTitle;
-    private Button btnPlayPause;
+    private ImageButton btnPlayPause;
     private MediaPlayerService mediaService;
     private boolean isCurrentSongNull = false;
 
@@ -77,15 +77,15 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             txtSongTitle.setText(currentSong.getTitle());
 
             if (mediaService.isPlaying()) {
-                btnPlayPause.setBackgroundResource(R.drawable.icon_pause);
+                btnPlayPause.setImageResource(R.drawable.icon_pause);
             } else {
-                btnPlayPause.setBackgroundResource(R.drawable.icon_play);
+                btnPlayPause.setImageResource(R.drawable.icon_play);
             }
             btnPlayPause.setClickable(true);
         } else {
             isCurrentSongNull = true;
             txtSongTitle.setText("---");
-            btnPlayPause.setBackgroundResource(R.drawable.icon_play);
+            btnPlayPause.setImageResource(R.drawable.icon_play);
             btnPlayPause.setClickable(false);
         }
     }
@@ -120,16 +120,16 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
                 }
             }
         });
-        btnPlayPause = (Button) rootView.findViewById(R.id.fragmentPlay_btnPlayPause);
+        btnPlayPause = (ImageButton) rootView.findViewById(R.id.fragmentPlay_btnPlayPause);
         btnPlayPause.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 mediaService.playAndPause();
                 if (mediaService.isPlaying()) {
-                    btnPlayPause.setBackgroundResource(R.drawable.icon_pause);
+                    btnPlayPause.setImageResource(R.drawable.icon_pause);
                 } else {
-                    btnPlayPause.setBackgroundResource(R.drawable.icon_play);
+                    btnPlayPause.setImageResource(R.drawable.icon_play);
                 }
             }
         });

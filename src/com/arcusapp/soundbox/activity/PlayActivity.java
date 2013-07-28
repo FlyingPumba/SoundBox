@@ -16,7 +16,7 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -34,7 +34,7 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 
     private TextView txtTitle, txtArtist, txtAlbum, txtTimeCurrent, txtTimeTotal;
-    private Button btnSwitchRandom, btnSwitchRepeat, btnPlayAndPause;
+    private ImageButton btnSwitchRandom, btnSwitchRepeat, btnPlayAndPause;
     private SeekBar seekBar;
 
     private MediaPlayerService mediaService;
@@ -77,13 +77,13 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         txtTimeCurrent = (TextView) findViewById(R.id.txtTimeCurrent);
         txtTimeTotal = (TextView) findViewById(R.id.txtTimeTotal);
 
-        btnSwitchRandom = (Button) findViewById(R.id.btnSwitchRandom);
+        btnSwitchRandom = (ImageButton) findViewById(R.id.btnSwitchRandom);
         btnSwitchRandom.setOnClickListener(this);
 
-        btnSwitchRepeat = (Button) findViewById(R.id.btnSwitchRepeat);
+        btnSwitchRepeat = (ImageButton) findViewById(R.id.btnSwitchRepeat);
         btnSwitchRepeat.setOnClickListener(this);
 
-        btnPlayAndPause = (Button) findViewById(R.id.btnPlayPause);
+        btnPlayAndPause = (ImageButton) findViewById(R.id.btnPlayPause);
 
         // init the seekbar
         seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -138,9 +138,9 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         if (v.getId() == R.id.btnPlayPause) {
             mediaService.playAndPause();
             if (mediaService.isPlaying()) {
-                btnPlayAndPause.setBackgroundResource(R.drawable.icon_pause);
+                btnPlayAndPause.setImageResource(R.drawable.icon_pause);
             } else {
-                btnPlayAndPause.setBackgroundResource(R.drawable.icon_play);
+                btnPlayAndPause.setImageResource(R.drawable.icon_play);
             }
         }
         else if (v.getId() == R.id.btnPrevSong) {
@@ -152,12 +152,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         }
         else if (v.getId() == R.id.btnSwitchRandom) {
             mediaService.changeRandomState();
-            btnSwitchRandom.setBackgroundResource(randomStateIcon(mediaService.getRandomState()));
+            btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
             Toast.makeText(this, randomStateToText(mediaService.getRandomState()), Toast.LENGTH_SHORT).show();
         }
         else if (v.getId() == R.id.btnSwitchRepeat) {
             mediaService.changeRepeatState();
-            btnSwitchRepeat.setBackgroundResource(repeatStateIcon(mediaService.getRepeatState()));
+            btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
             Toast.makeText(this, repeatStateToText(mediaService.getRepeatState()), Toast.LENGTH_SHORT).show();
         }
         else if (v.getId() == R.id.btnCurrentPlayList) {
@@ -202,13 +202,13 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         txtArtist.setText(currentSong.getArtist());
         txtAlbum.setText(currentSong.getAlbum());
 
-        btnSwitchRandom.setBackgroundResource(randomStateIcon(mediaService.getRandomState()));
-        btnSwitchRepeat.setBackgroundResource(repeatStateIcon(mediaService.getRepeatState()));
+        btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
+        btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
 
         if (mediaService.isPlaying()) {
-            btnPlayAndPause.setBackgroundResource(R.drawable.icon_pause);
+            btnPlayAndPause.setImageResource(R.drawable.icon_pause);
         } else {
-            btnPlayAndPause.setBackgroundResource(R.drawable.icon_play);
+            btnPlayAndPause.setImageResource(R.drawable.icon_play);
         }
         int duration = mediaService.getDuration();
         txtTimeTotal.setText(formatDuration(duration));
