@@ -123,6 +123,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     MediaProvider media = new MediaProvider();
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
+                    bundle.putBoolean(SongsListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
 
                     SongsListFragment fragment = new SongsListFragment();
                     fragment.setArguments(bundle);
