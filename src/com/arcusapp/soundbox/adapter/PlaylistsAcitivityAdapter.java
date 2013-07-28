@@ -35,7 +35,7 @@ public class PlaylistsAcitivityAdapter extends BaseAdapter {
     public void onPlaylistClick(int position) {
         // show the songs from that specific playlists
         Intent intent = new Intent();
-        intent.setAction(SoundBoxApplication.ACTION_SONGLIST_ACTIVITY);
+        intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
 
         Bundle b = new Bundle();
         String playlistID = playlists.get(position).getID();

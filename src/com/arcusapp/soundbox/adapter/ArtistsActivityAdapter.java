@@ -51,7 +51,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         playActivityIntent.putExtras(b);
 
-        SoundBoxApplication.getApplicationContext().startActivity(playActivityIntent);
+        mActivity.startActivity(playActivityIntent);
     }
 
     public void onAlbumLongClick(int groupPosition, int childPosition) {
@@ -64,12 +64,12 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         playActivityIntent.putExtras(b);
 
-        SoundBoxApplication.getApplicationContext().startActivity(playActivityIntent);
+        mActivity.startActivity(playActivityIntent);
     }
 
     public void onAlbumClick(int groupPosition, int childPosition) {
         Intent intent = new Intent();
-        intent.setAction(SoundBoxApplication.ACTION_SONGLIST_ACTIVITY);
+        intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
 
         Bundle b = new Bundle();
         List<String> ids = mediaProvider.getSongsFromAlbum(mAlbums.get(groupPosition).get(childPosition));
@@ -77,7 +77,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         intent.putExtras(b);
 
-        SoundBoxApplication.getApplicationContext().startActivity(intent);
+        mActivity.startActivity(intent);
     }
 
     @Override

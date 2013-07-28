@@ -22,7 +22,7 @@ import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 
-public class SonglistAcitivityAdapter extends BaseAdapter {
+public class SongsListAcitivityAdapter extends BaseAdapter {
     private Activity mActivity;
 
     private List<SongEntry> songs;
@@ -33,7 +33,7 @@ public class SonglistAcitivityAdapter extends BaseAdapter {
 
     private String focusedID;
 
-    public SonglistAcitivityAdapter(Activity activity, String focusedID, List<String> songsID) {
+    public SongsListAcitivityAdapter(Activity activity, String focusedID, List<String> songsID) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
         mediaEntryHelper = new MediaEntryHelper<SongEntry>();

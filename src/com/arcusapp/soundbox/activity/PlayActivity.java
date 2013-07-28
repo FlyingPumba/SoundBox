@@ -162,7 +162,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         }
         else if (v.getId() == R.id.btnCurrentPlayList) {
             Intent intent = new Intent();
-            intent.setAction(SoundBoxApplication.ACTION_SONGLIST_ACTIVITY);
+            intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
 
             Bundle b = new Bundle();
             b.putString(BundleExtra.CURRENT_ID, currentSong.getID());
