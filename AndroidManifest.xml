@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arcusapp.arcusmusic"
+    package="com.arcusapp.soundbox"
     android:installLocation="preferExternal"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="12"
         android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon_soundbox"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
         <service
-		  android:name=".MediaPlayerService"
-		  android:icon="@drawable/ic_launcher"
-		  android:label="@string/app_name">
-		</service> 
-		
+            android:name="com.arcusapp.soundbox.player.MediaPlayerService"
+            android:icon="@drawable/icon_soundbox"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
         <activity
-            android:name="com.arcusapp.arcusmusic.MainActivity"
+            android:name="com.arcusapp.soundbox.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.arcusapp.soundbox.action.MAIN_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.arcusmusic.FoldersActivity"
+            android:name="com.arcusapp.soundbox.activity.FoldersActivity"
             android:label="@string/title_activity_folders" >
             <intent-filter>
-                <action android:name="com.arcusapp.arcusmusic.FOLDERS_ACTIVITY" />
+                <action android:name="com.arcusapp.soundbox.action.FOLDERS_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.arcusmusic.SongsActivity"
-            android:label="@string/title_activity_songs" >
-            <intent-filter>
-                <action android:name="com.arcusapp.arcusmusic.SONGS_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.arcusapp.arcusmusic.ArtistsActivity"
+            android:name="com.arcusapp.soundbox.activity.ArtistsActivity"
             android:label="@string/title_activity_artists" >
             <intent-filter>
-                <action android:name="com.arcusapp.arcusmusic.ARTISTS_ACTIVITY" />
+                <action android:name="com.arcusapp.soundbox.action.ARTISTS_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.arcusmusic.PlayActivity"
+            android:name="com.arcusapp.soundbox.activity.PlayActivity"
             android:label="@string/title_activity_play" >
             <intent-filter>
-                <action android:name="com.arcusapp.arcusmusic.PLAY_ACTIVITY" />
+                <action android:name="com.arcusapp.soundbox.action.PLAY_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.arcusmusic.SongsListActivity"
-            android:label="@string/title_activity_songs_list" >
-            <intent-filter>
-                <action android:name="com.arcusapp.arcusmusic.SONGSLIST_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.arcusapp.arcusmusic.PlayListsActivity"
+            android:name="com.arcusapp.soundbox.activity.PlaylistsActivity"
             android:label="@string/title_activity_play_lists" >
             <intent-filter>
-                <action android:name="com.arcusapp.arcusmusic.PLAYLISTS_ACTIVITY" />
+                <action android:name="com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.arcusapp.soundbox.activity.SongsListActivity"
+            android:label="@string/title_activity_songs_list" >
+            <intent-filter>
+                <action android:name="com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

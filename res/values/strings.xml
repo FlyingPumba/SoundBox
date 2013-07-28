@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ArcusMusic</string>
+    <string name="app_name">SoundBox</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_folders">FoldersActivity</string>
@@ -12,5 +12,9 @@
     <string name="title_activity_play_list">PlayListActivity</string>
     <string name="title_activity_songs_list">SongsListActivity</string>
     <string name="title_activity_play_lists">PlayListsActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

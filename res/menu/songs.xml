@@ -5,14 +5,14 @@
         android:orderInCategory="100"
         android:title="Ver por..">
         <menu>
-              <item
-		        android:id="@+id/menuFileNameProjection"
-		        android:orderInCategory="100"
-		        android:title="Ver por FileName" />
-              <item
-		        android:id="@+id/menuTitleProjection"
-		        android:orderInCategory="100"
-		        android:title="Ver por Titulo" />
+            <item
+                android:id="@+id/menuFileNameProjection"
+                android:orderInCategory="100"
+                android:title="Ver por FileName"/>
+            <item
+                android:id="@+id/menuTitleProjection"
+                android:orderInCategory="100"
+                android:title="Ver por Titulo"/>
         </menu>
     </item>
 
