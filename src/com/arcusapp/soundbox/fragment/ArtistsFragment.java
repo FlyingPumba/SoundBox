@@ -30,7 +30,8 @@ public class ArtistsFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    myAdapter.onArtistLongClick(position);
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    myAdapter.onArtistLongClick(groupPosition);
                     return true;
                 } else if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     int groupPosition = ExpandableListView.getPackedPositionGroup(id);
