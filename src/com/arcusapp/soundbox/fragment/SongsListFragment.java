@@ -55,7 +55,8 @@ public class SongsListFragment extends Fragment {
             if (addRandomButton) {
                 addRandomButton();
             }
-            myAdapter = new SongsListAcitivityAdapter(this.getActivity(), focusedElementID, songsIDs);
+
+            myAdapter = new SongsListAcitivityAdapter(this.getActivity(), focusedElementID, songsIDs, addRandomButton);
             myListView.setAdapter(myAdapter);
             myListView.setOnItemClickListener(new OnItemClickListener() {
 

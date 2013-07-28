@@ -32,13 +32,14 @@ public class SongsListAcitivityAdapter extends BaseAdapter {
     private String projection = MediaStore.Audio.Media.TITLE;
 
     private String focusedID;
+    private boolean hasHeader;
 
-    public SongsListAcitivityAdapter(Activity activity, String focusedID, List<String> songsID) {
+    public SongsListAcitivityAdapter(Activity activity, String focusedID, List<String> songsID, boolean hasHeader) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
         mediaEntryHelper = new MediaEntryHelper<SongEntry>();
 
-        // songs = mediaProvider.getValueFromSongs(songsID, projection);
+        this.hasHeader = hasHeader;
 
         List<SongEntry> temp_songs = mediaProvider.getValueFromSongs(songsID, projection);
         songs = new ArrayList<SongEntry>();
@@ -60,8 +61,13 @@ public class SongsListAcitivityAdapter extends BaseAdapter {
         Intent playActivityIntent = new Intent();
         playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
+        int finalpos = position;
+        if (hasHeader) {
+            finalpos--;
+        }
+
         Bundle b = new Bundle();
-        b.putString(BundleExtra.CURRENT_ID, songs.get(position).getID().toString());
+        b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID().toString());
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
 
         playActivityIntent.putExtras(b);
