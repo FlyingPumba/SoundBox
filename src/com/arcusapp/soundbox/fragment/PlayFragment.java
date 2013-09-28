@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
@@ -40,6 +41,11 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     @Override
     public void onSongCompletion() {
         updateUI();
+    }
+
+    @Override
+    public void onExceptionRaised(Exception ex) {
+        // TODO: fetch the last played song.
     }
 
     @Override

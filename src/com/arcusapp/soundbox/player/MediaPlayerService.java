@@ -209,11 +209,16 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public void onCompletion(MediaPlayer arg0) {
-        if (repeatState == RepeatState.One) {
-            playCurrentSong();
-        } else {
-            playNextSong();
-            currentListener.onSongCompletion();
+        try {
+            if (repeatState == RepeatState.One) {
+                playCurrentSong();
+            } else {
+                playNextSong();
+                currentListener.onSongCompletion();
+            }
+        }
+        catch (Exception ex) {
+            currentListener.onExceptionRaised(ex);
         }
     }
 
