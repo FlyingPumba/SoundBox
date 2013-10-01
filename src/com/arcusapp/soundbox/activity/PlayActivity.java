@@ -187,8 +187,8 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     @Override
     public void onExceptionRaised(Exception ex) {
-        //Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this.getApplicationContext(), "Error raised on the media player service", Toast.LENGTH_LONG).show();
+       // Toast.makeText(this.getApplicationContext(), "Error raised on the media player service. PLAY ACTIVITY", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void registerToMediaService() {
@@ -222,7 +222,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             seekBar.setMax(duration);
         }
         catch (Exception ex) {
-            Toast.makeText(this.getApplicationContext(), "Application unable to update the UI", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this.getApplicationContext(), "Application unable to update the UI. "+ex.getMessage(), Toast.LENGTH_LONG).show();
             this.finish();
         }
     }

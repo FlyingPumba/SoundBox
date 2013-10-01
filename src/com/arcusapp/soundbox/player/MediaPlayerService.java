@@ -1,5 +1,6 @@
 package com.arcusapp.soundbox.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Service;
@@ -28,7 +29,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private RandomState randomState = RandomState.Off;
 
     private MediaPlayer mediaPlayer;
-    private MediaPlayerServiceListener currentListener;
+    private List<MediaPlayerServiceListener> currentListeners;
     private final IBinder mBinder = new MyBinder();
 
     @Override
@@ -45,6 +46,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setOnCompletionListener(this);
+        }
+        if(currentListeners == null) {
+            currentListeners = new ArrayList<MediaPlayerServiceListener>();
         }
     }
 
@@ -65,7 +69,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public boolean onUnbind(Intent arg0) {
-        currentListener = null;
+        currentListeners = null;
         return true;
     }
 
@@ -76,7 +80,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public void registerListener(MediaPlayerServiceListener listener) {
-        this.currentListener = listener;
+        this.currentListeners.add(listener);
     }
 
     public void playSongs(String currentSongID, List<String> songsID) {
@@ -192,7 +196,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 } catch (Exception e) {
                     Log.d(TAG, "Wrong file path on the first song");
                 }
-                currentListener.onSongCompletion();
+                fireListenersOnSongCompletion();
 
             } else {
                 playCurrentSong();
@@ -214,11 +218,11 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 playCurrentSong();
             } else {
                 playNextSong();
-                currentListener.onSongCompletion();
+                fireListenersOnSongCompletion();
             }
         }
         catch (Exception ex) {
-            currentListener.onExceptionRaised(ex);
+            fireListenersOnErrorRaised(ex);
         }
     }
 
@@ -238,6 +242,18 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         mediaPlayer.start();
-        currentListener.onSongCompletion();
+        fireListenersOnSongCompletion();
+    }
+    
+    private void fireListenersOnSongCompletion() {
+        for (MediaPlayerServiceListener listener : currentListeners) {
+            listener.onSongCompletion();            
+        }
+    }
+    
+    private void fireListenersOnErrorRaised(Exception ex) {
+        for (MediaPlayerServiceListener listener : currentListeners) {
+            listener.onExceptionRaised(ex);            
+        }
     }
 }
