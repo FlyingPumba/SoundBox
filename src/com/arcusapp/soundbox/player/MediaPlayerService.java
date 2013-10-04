@@ -11,6 +11,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
@@ -83,6 +84,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         this.currentListeners.add(listener);
     }
 
+    // FIXME: Split this method in two differents, playSongs and LoadSongs
     public void playSongs(String currentSongID, List<String> songsID) {
         if (songsID.size() == 0) {
             Log.d(TAG, "No songs to play");
@@ -91,6 +93,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
         songsIDList = songsID;
 
+        // store the songs on preferences
+        SoundBoxPreferences.LastSongs.setLastSongs(songsIDList);
+        
         int currentSongPosition;
         if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
             currentSongPosition = 0;
@@ -99,6 +104,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         // create the song stack
+        // FIXME: when this method is called from PlayFragment we don't have to alter the list of sonsID (perhaps fixed with LoadSongs method)
         currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
 
         playCurrentSong();
@@ -233,6 +239,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
         // play the song
         Song currentSong = currentSongStack.getCurrentSong();
+        SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(currentSong.getID());
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(currentSong.getFile().getPath());

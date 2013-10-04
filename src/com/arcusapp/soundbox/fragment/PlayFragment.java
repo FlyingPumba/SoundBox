@@ -1,5 +1,7 @@
 package com.arcusapp.soundbox.fragment;
 
+import java.util.List;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
@@ -27,6 +30,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     private ImageButton btnPlayPause;
     private MediaPlayerService mediaService;
     private boolean isCurrentSongNull = false;
+    private boolean serviceStopped = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,8 +48,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
     @Override
     public void onExceptionRaised(Exception ex) {
-        // TODO: fetch the last played song and try to init the service again.
-        //Toast.makeText(getActivity(), "Error raised on the media player service. PLAY FRAGMENT", Toast.LENGTH_SHORT).show();
+        serviceStopped = true;
         initServiceConnection(null);
     }
 
@@ -62,6 +65,10 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
                 registerToMediaService();
+                if(serviceStopped) {
+                    FetchLastPlayedSongs();
+                    serviceStopped = false;
+                }
                 updateUI();
             }
 
@@ -76,6 +83,13 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         getActivity().bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    private void FetchLastPlayedSongs() {
+        List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
+        String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
+        mediaService.playSongs(lastSong, songsID);
+        mediaService.playAndPause();
+    }
+    
     private void updateUI() {
         Song currentSong = mediaService.getCurrentSong();
 
