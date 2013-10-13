@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.arcusapp.soundbox.data.MediaProvider;
+import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.Song;
 
@@ -130,6 +131,9 @@ public class SongStack {
             case Random:
                 break;
         }
+        
+        // store the songs on preferences
+        SoundBoxPreferences.LastSongs.setLastSongs(currentSongsIDList);
     }
 
     public RandomState getCurrentRandomState() {
