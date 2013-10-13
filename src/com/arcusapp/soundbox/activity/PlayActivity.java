@@ -185,6 +185,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         updateUI();
     }
 
+    @Override
+    public void onExceptionRaised(Exception ex) {
+       // Toast.makeText(this.getApplicationContext(), "Error raised on the media player service. PLAY ACTIVITY", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
     private void registerToMediaService() {
         mediaService.registerListener(this);
     }
@@ -196,23 +202,29 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
     }
 
     public void updateUI() {
-        currentSong = mediaService.getCurrentSong();
+        try {
+            currentSong = mediaService.getCurrentSong();
 
-        txtTitle.setText(currentSong.getTitle());
-        txtArtist.setText(currentSong.getArtist());
-        txtAlbum.setText(currentSong.getAlbum());
-
-        btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
-        btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
-
-        if (mediaService.isPlaying()) {
-            btnPlayAndPause.setImageResource(R.drawable.icon_pause);
-        } else {
-            btnPlayAndPause.setImageResource(R.drawable.icon_play);
+            txtTitle.setText(currentSong.getTitle());
+            txtArtist.setText(currentSong.getArtist());
+            txtAlbum.setText(currentSong.getAlbum());
+    
+            btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
+            btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
+    
+            if (mediaService.isPlaying()) {
+                btnPlayAndPause.setImageResource(R.drawable.icon_pause);
+            } else {
+                btnPlayAndPause.setImageResource(R.drawable.icon_play);
+            }
+            int duration = mediaService.getDuration();
+            txtTimeTotal.setText(formatDuration(duration));
+            seekBar.setMax(duration);
         }
-        int duration = mediaService.getDuration();
-        txtTimeTotal.setText(formatDuration(duration));
-        seekBar.setMax(duration);
+        catch (Exception ex) {
+            //Toast.makeText(this.getApplicationContext(), "Application unable to update the UI. "+ex.getMessage(), Toast.LENGTH_LONG).show();
+            this.finish();
+        }
     }
 
     private int repeatStateIcon(RepeatState state) {
@@ -257,10 +269,15 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     private Runnable moveSeekBarThread = new Runnable() {
         public void run() {
-            int position = mediaService.getCurrentPosition();
-            txtTimeCurrent.setText(formatDuration(position));
-            seekBar.setProgress(position);
-            myHandler.postDelayed(this, 100);
+            try {
+                int position = mediaService.getCurrentPosition();
+                txtTimeCurrent.setText(formatDuration(position));
+                seekBar.setProgress(position);
+                myHandler.postDelayed(this, 100);
+            }
+            catch (Exception ex) {
+                seekBar.setProgress(0);
+            }
         }
     };
 

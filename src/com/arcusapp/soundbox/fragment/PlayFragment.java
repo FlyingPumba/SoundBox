@@ -1,5 +1,7 @@
 package com.arcusapp.soundbox.fragment;
 
+import java.util.List;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
@@ -43,6 +46,11 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     }
 
     @Override
+    public void onExceptionRaised(Exception ex) {
+        initServiceConnection(null);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (mediaService != null) {
@@ -55,6 +63,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
                 registerToMediaService();
+                FetchLastPlayedSongs();
                 updateUI();
             }
 
@@ -69,6 +78,13 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         getActivity().bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    private void FetchLastPlayedSongs() {
+        List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
+        String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
+        mediaService.playSongs(lastSong, songsID);
+        mediaService.playAndPause();
+    }
+    
     private void updateUI() {
         Song currentSong = mediaService.getCurrentSong();
 

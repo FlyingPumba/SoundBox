@@ -1,5 +1,6 @@
 package com.arcusapp.soundbox.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Service;
@@ -10,6 +11,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
@@ -28,7 +30,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private RandomState randomState = RandomState.Off;
 
     private MediaPlayer mediaPlayer;
-    private MediaPlayerServiceListener currentListener;
+    private List<MediaPlayerServiceListener> currentListeners;
     private final IBinder mBinder = new MyBinder();
 
     @Override
@@ -45,6 +47,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setOnCompletionListener(this);
+        }
+        if(currentListeners == null) {
+            currentListeners = new ArrayList<MediaPlayerServiceListener>();
         }
     }
 
@@ -65,7 +70,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public boolean onUnbind(Intent arg0) {
-        currentListener = null;
+        currentListeners = null;
         return true;
     }
 
@@ -76,9 +81,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public void registerListener(MediaPlayerServiceListener listener) {
-        this.currentListener = listener;
+        this.currentListeners.add(listener);
     }
-
+    
     public void playSongs(String currentSongID, List<String> songsID) {
         if (songsID.size() == 0) {
             Log.d(TAG, "No songs to play");
@@ -86,7 +91,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         songsIDList = songsID;
-
+        
         int currentSongPosition;
         if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
             currentSongPosition = 0;
@@ -192,7 +197,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 } catch (Exception e) {
                     Log.d(TAG, "Wrong file path on the first song");
                 }
-                currentListener.onSongCompletion();
+                fireListenersOnSongCompletion();
 
             } else {
                 playCurrentSong();
@@ -209,11 +214,16 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public void onCompletion(MediaPlayer arg0) {
-        if (repeatState == RepeatState.One) {
-            playCurrentSong();
-        } else {
-            playNextSong();
-            currentListener.onSongCompletion();
+        try {
+            if (repeatState == RepeatState.One) {
+                playCurrentSong();
+            } else {
+                playNextSong();
+                fireListenersOnSongCompletion();
+            }
+        }
+        catch (Exception ex) {
+            fireListenersOnErrorRaised(ex);
         }
     }
 
@@ -224,6 +234,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
         // play the song
         Song currentSong = currentSongStack.getCurrentSong();
+        SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(currentSong.getID());
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(currentSong.getFile().getPath());
@@ -233,6 +244,18 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         mediaPlayer.start();
-        currentListener.onSongCompletion();
+        fireListenersOnSongCompletion();
+    }
+    
+    private void fireListenersOnSongCompletion() {
+        for (MediaPlayerServiceListener listener : currentListeners) {
+            listener.onSongCompletion();            
+        }
+    }
+    
+    private void fireListenersOnErrorRaised(Exception ex) {
+        for (MediaPlayerServiceListener listener : currentListeners) {
+            listener.onExceptionRaised(ex);            
+        }
     }
 }
