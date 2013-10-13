@@ -137,11 +137,6 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
     public void onClick(View v) {
         if (v.getId() == R.id.btnPlayPause) {
             mediaService.playAndPause();
-            if (mediaService.isPlaying()) {
-                btnPlayAndPause.setImageResource(R.drawable.icon_pause);
-            } else {
-                btnPlayAndPause.setImageResource(R.drawable.icon_play);
-            }
         }
         else if (v.getId() == R.id.btnPrevSong) {
             mediaService.playPreviousSong();
@@ -152,13 +147,11 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         }
         else if (v.getId() == R.id.btnSwitchRandom) {
             mediaService.changeRandomState();
-            btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
-            Toast.makeText(this, randomStateToText(mediaService.getRandomState()), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, randomStateToText(mediaService.getRandomState()), Toast.LENGTH_SHORT).show();
         }
         else if (v.getId() == R.id.btnSwitchRepeat) {
             mediaService.changeRepeatState();
-            btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
-            Toast.makeText(this, repeatStateToText(mediaService.getRepeatState()), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, repeatStateToText(mediaService.getRepeatState()), Toast.LENGTH_SHORT).show();
         }
         else if (v.getId() == R.id.btnCurrentPlayList) {
             Intent intent = new Intent();
@@ -181,7 +174,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
     }
 
     @Override
-    public void onSongCompletion() {
+    public void onMediaPlayerStateChanged() {
         updateUI();
     }
 

@@ -145,6 +145,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             randomState = RandomState.Off;
         }
         currentSongStack.setRandomState(randomState);
+        fireListenersOnMediaPlayerStateChanged();
         return randomState;
     }
 
@@ -158,6 +159,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         else if (repeatState == RepeatState.One) {
             repeatState = RepeatState.Off;
         }
+        fireListenersOnMediaPlayerStateChanged();
         return repeatState;
     }
 
@@ -180,6 +182,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         else {
             mediaPlayer.pause();
         }
+        fireListenersOnMediaPlayerStateChanged();
     }
 
     public void playNextSong() {
@@ -197,7 +200,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 } catch (Exception e) {
                     Log.d(TAG, "Wrong file path on the first song");
                 }
-                fireListenersOnSongCompletion();
+                fireListenersOnMediaPlayerStateChanged();
 
             } else {
                 playCurrentSong();
@@ -219,7 +222,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 playCurrentSong();
             } else {
                 playNextSong();
-                fireListenersOnSongCompletion();
+                fireListenersOnMediaPlayerStateChanged();
             }
         }
         catch (Exception ex) {
@@ -244,12 +247,12 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         mediaPlayer.start();
-        fireListenersOnSongCompletion();
+        fireListenersOnMediaPlayerStateChanged();
     }
     
-    private void fireListenersOnSongCompletion() {
+    private void fireListenersOnMediaPlayerStateChanged() {
         for (MediaPlayerServiceListener listener : currentListeners) {
-            listener.onSongCompletion();            
+            listener.onMediaPlayerStateChanged();            
         }
     }
     

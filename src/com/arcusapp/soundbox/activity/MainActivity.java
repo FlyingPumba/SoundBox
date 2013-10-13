@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +21,7 @@ import com.arcusapp.soundbox.fragment.ArtistsFragment;
 import com.arcusapp.soundbox.fragment.PlaylistsFragment;
 import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.util.AudioBecomingNoisyHandler;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 

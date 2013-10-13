@@ -41,7 +41,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     }
 
     @Override
-    public void onSongCompletion() {
+    public void onMediaPlayerStateChanged() {
         updateUI();
     }
 
@@ -142,11 +142,6 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             @Override
             public void onClick(View v) {
                 mediaService.playAndPause();
-                if (mediaService.isPlaying()) {
-                    btnPlayPause.setImageResource(R.drawable.icon_pause);
-                } else {
-                    btnPlayPause.setImageResource(R.drawable.icon_play);
-                }
             }
         });
     }
