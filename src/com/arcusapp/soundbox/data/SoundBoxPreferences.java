@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONArray;
+
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.BundleExtra;
 
@@ -19,24 +21,26 @@ public class SoundBoxPreferences {
     public static class LastSongs {
         public static List<String> getLastSongs() {    
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getApplicationContext());
-            // Retrieve the values
-            Set<String> set = new HashSet<String>();
-            set = preferences.getStringSet(LAST_SONGS, null);
-    
-            return new ArrayList<String>(set);
+            
+            List<String> songs = new ArrayList<String>();
+            try {
+                JSONArray jsonArray = new JSONArray(preferences.getString(LAST_SONGS, null));
+                for (int i = 0; i <= jsonArray.length(); i++) {
+                    songs.add(jsonArray.getString(i));
+                }
+
+            } catch (Exception e) { }
+            
+            return songs;
         }
     
         public static void setLastSongs(List<String> songsID) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getApplicationContext());
             SharedPreferences.Editor editor = preferences.edit();
     
-            // Set the values
-            Set<String> set = new HashSet<String>();
-            set.addAll(songsID);
-    
-            editor.putStringSet(LAST_SONGS, set);
+            String serializedString = new JSONArray(songsID).toString();
+            editor.putString(LAST_SONGS, serializedString);
             editor.commit();
-    
         }
     }
     

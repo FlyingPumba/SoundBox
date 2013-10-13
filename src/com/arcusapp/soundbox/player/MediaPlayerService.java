@@ -91,9 +91,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         songsIDList = songsID;
-
-        // store the songs on preferences
-        SoundBoxPreferences.LastSongs.setLastSongs(songsIDList);
         
         int currentSongPosition;
         if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
