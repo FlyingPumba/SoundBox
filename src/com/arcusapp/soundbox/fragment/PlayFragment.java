@@ -30,7 +30,6 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     private ImageButton btnPlayPause;
     private MediaPlayerService mediaService;
     private boolean isCurrentSongNull = false;
-    private boolean serviceStopped = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
     @Override
     public void onExceptionRaised(Exception ex) {
-        serviceStopped = true;
         initServiceConnection(null);
     }
 
@@ -65,10 +63,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
                 registerToMediaService();
-                if(serviceStopped) {
-                    FetchLastPlayedSongs();
-                    serviceStopped = false;
-                }
+                FetchLastPlayedSongs();
                 updateUI();
             }
 

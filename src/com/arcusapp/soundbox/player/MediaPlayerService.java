@@ -83,8 +83,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     public void registerListener(MediaPlayerServiceListener listener) {
         this.currentListeners.add(listener);
     }
-
-    // FIXME: Split this method in two differents, playSongs and LoadSongs
+    
     public void playSongs(String currentSongID, List<String> songsID) {
         if (songsID.size() == 0) {
             Log.d(TAG, "No songs to play");
@@ -104,7 +103,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
 
         // create the song stack
-        // FIXME: when this method is called from PlayFragment we don't have to alter the list of sonsID (perhaps fixed with LoadSongs method)
         currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
 
         playCurrentSong();
