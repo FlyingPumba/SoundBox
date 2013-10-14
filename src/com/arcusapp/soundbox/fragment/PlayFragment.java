@@ -30,13 +30,19 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     private ImageButton btnPlayPause;
     private MediaPlayerService mediaService;
     private boolean isCurrentSongNull = false;
-
+    private ServiceConnection myServiceConnection;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        initServiceConnection(savedInstanceState);
+        super.onCreate(savedInstanceState);
+    }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
         rootView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         initUI(rootView);
-        initServiceConnection(savedInstanceState);
         return rootView;
     }
 
@@ -57,13 +63,17 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             updateUI();
         }
     }
-
-    private void initServiceConnection(Bundle savedInstanceState) {
-        ServiceConnection myServiceConnection = new ServiceConnection() {
+    
+    private void initServiceConnection(final Bundle savedInstanceState) {
+        myServiceConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                registerToMediaService();
-                FetchLastPlayedSongs();
+                
+                
+                if(savedInstanceState == null) {
+                    registerToMediaService();
+                    FetchLastPlayedSongs();
+                }
                 updateUI();
             }
 
@@ -81,6 +91,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     private void FetchLastPlayedSongs() {
         List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
         String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
+        // FIXME: use a loadSongs method instead, this is BAD, so BAD.
         mediaService.playSongs(lastSong, songsID);
         mediaService.playAndPause();
     }

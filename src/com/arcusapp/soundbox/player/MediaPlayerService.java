@@ -81,7 +81,13 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public void registerListener(MediaPlayerServiceListener listener) {
-        this.currentListeners.add(listener);
+        if(!currentListeners.contains(listener) ) {
+            currentListeners.add(listener);
+        }
+    }
+    
+    public void unRegisterListener(MediaPlayerServiceListener listener) {
+        currentListeners.remove(listener);
     }
     
     public void playSongs(String currentSongID, List<String> songsID) {

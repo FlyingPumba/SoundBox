@@ -20,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
@@ -110,8 +109,10 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         myServiceConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                registerToMediaService();
-                playBundleExtraSongs(savedInstanceState);
+                if(savedInstanceState == null) {
+                    registerToMediaService();
+                    playBundleExtraSongs();
+                }
                 updateUI();
                 initiRunnableSeekBar();
             }
@@ -168,9 +169,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        if (mediaService != null)
+        if (mediaService != null) {
+            mediaService.unRegisterListener(this);
             unbindService(myServiceConnection);
+        }
+        
+        super.onDestroy();
     }
 
     @Override
@@ -188,8 +192,8 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         mediaService.registerListener(this);
     }
 
-    private void playBundleExtraSongs(Bundle savedInstanceState) {
-        if (savedInstanceState == null && songsID != null) {
+    private void playBundleExtraSongs() {
+        if (songsID != null) {
             mediaService.playSongs(currentID, songsID);
         }
     }
