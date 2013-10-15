@@ -42,7 +42,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public void onCreate() {
-        super.onCreate();
         // Called when the Service object is instantiated. Theoretically, only once.
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
@@ -51,6 +50,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         if(currentListeners == null) {
             currentListeners = new ArrayList<MediaPlayerServiceListener>();
         }
+        super.onCreate();
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
@@ -34,8 +35,12 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        initServiceConnection(savedInstanceState);
         super.onCreate(savedInstanceState);
+        
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+        
+        initServiceConnection(savedInstanceState);
     }
     
     @Override
@@ -53,6 +58,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
     @Override
     public void onExceptionRaised(Exception ex) {
+        Toast.makeText(getActivity(), "EXCEPTION", Toast.LENGTH_LONG).show();
         initServiceConnection(null);
     }
 
@@ -64,16 +70,22 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         }
     }
     
+    @Override
+    public void onDestroy() {
+        if (mediaService != null) {
+            mediaService.unRegisterListener(this);
+            getActivity().unbindService(myServiceConnection);
+        }
+        
+        super.onDestroy();
+    }
+    
     private void initServiceConnection(final Bundle savedInstanceState) {
         myServiceConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                
-                
-                if(savedInstanceState == null) {
-                    registerToMediaService();
-                    FetchLastPlayedSongs();
-                }
+                registerToMediaService();
+                FetchLastPlayedSongs();
                 updateUI();
             }
 
