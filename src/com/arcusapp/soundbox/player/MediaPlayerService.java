@@ -91,12 +91,12 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
     
     public void playSongs(String currentSongID, List<String> songsID) {
-        if (songsID.size() == 0) {
+        if (songsID.isEmpty()) {
             Log.d(TAG, "No songs to play");
             return;
         }
-
-        songsIDList = songsID;
+        this.songsIDList = new ArrayList<String>();
+        this.songsIDList.addAll(songsID);
         
         int currentSongPosition;
         if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
@@ -192,33 +192,37 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public void playNextSong() {
-        currentSongStack.moveStackForward();
-        // check if we started the playlist again
-        if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
-            if (repeatState == RepeatState.Off) {
-                // prepare the first song of the list, but do not play it.
-                mediaPlayer.stop();
-                Song currentSong = currentSongStack.getCurrentSong();
-                try {
+        try {
+            currentSongStack.moveStackForward();
+            // check if we started the playlist again
+            if (currentSongStack.getCurrentSong().getID().equals(currentSongStack.getCurrentSongsIDList().get(0))) {
+                if (repeatState == RepeatState.Off) {
+                    // prepare the first song of the list, but do not play it.
+                    mediaPlayer.stop();
+                    Song currentSong = currentSongStack.getCurrentSong();
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(currentSong.getFile().getPath());
                     mediaPlayer.prepare();
-                } catch (Exception e) {
-                    Log.d(TAG, "Wrong file path on the first song");
+                    fireListenersOnMediaPlayerStateChanged();
+    
+                } else {
+                    playCurrentSong();
                 }
-                fireListenersOnMediaPlayerStateChanged();
-
             } else {
                 playCurrentSong();
             }
-        } else {
-            playCurrentSong();
+        } catch (Exception e) {
+            fireListenersOnErrorRaised(e);
         }
     }
 
     public void playPreviousSong() {
-        currentSongStack.moveStackBackward();
-        playCurrentSong();
+        try {
+            currentSongStack.moveStackBackward();
+            playCurrentSong();
+        } catch (Exception e) {
+            fireListenersOnErrorRaised(e);
+        }
     }
 
     @Override
@@ -237,23 +241,23 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     private void playCurrentSong() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-        }
-
-        // play the song
-        Song currentSong = currentSongStack.getCurrentSong();
-        SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(currentSong.getID());
         try {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            // play the song
+            Song currentSong = currentSongStack.getCurrentSong();
+            SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(currentSong.getID());
+            
             mediaPlayer.reset();
             mediaPlayer.setDataSource(currentSong.getFile().getPath());
             mediaPlayer.prepare();
+            
+            mediaPlayer.start();
+            fireListenersOnMediaPlayerStateChanged();
         } catch (Exception e) {
-            Log.d(TAG, "Wrong file path on the first song");
+            fireListenersOnErrorRaised(e);
         }
-
-        mediaPlayer.start();
-        fireListenersOnMediaPlayerStateChanged();
     }
     
     private void fireListenersOnMediaPlayerStateChanged() {

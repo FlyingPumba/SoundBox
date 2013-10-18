@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -136,6 +137,11 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     @Override
     public void onClick(View v) {
+        if(currentSong == null || mediaService == null) {
+            finish();
+            return;
+        }
+        
         if (v.getId() == R.id.btnPlayPause) {
             mediaService.playAndPause();
         }
@@ -201,6 +207,9 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
     public void updateUI() {
         try {
             currentSong = mediaService.getCurrentSong();
+            if(currentSong == null) {
+                finish();
+            }
 
             txtTitle.setText(currentSong.getTitle());
             txtArtist.setText(currentSong.getArtist());

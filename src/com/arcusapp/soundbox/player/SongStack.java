@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import android.util.Log;
+
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.RandomState;
@@ -34,7 +36,7 @@ public class SongStack {
 
         randomGenerator = new Random();
         currentSongsIDList = new ArrayList<String>();
-        this.setRandomState(randomState);
+        setRandomState(randomState);
     }
 
     public Song getCurrentSong() {

@@ -2,6 +2,8 @@ package com.arcusapp.soundbox.model;
 
 import java.io.File;
 
+import android.util.Log;
+
 public class Song {
     private String id;
     private String title;
@@ -10,6 +12,7 @@ public class Song {
     private File file;
 
     public Song(String id, String title, String artist, String album, String filePath) {
+        Log.d("MONKEY", "Song id: "+id.toString());
         this.setID(id);
         this.setName(title);
         this.setArtist(artist);

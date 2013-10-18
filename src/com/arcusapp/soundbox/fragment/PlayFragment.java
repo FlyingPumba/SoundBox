@@ -58,7 +58,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
     @Override
     public void onExceptionRaised(Exception ex) {
-        Toast.makeText(getActivity(), "EXCEPTION", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), "EXCEPTION", Toast.LENGTH_LONG).show();
         initServiceConnection(null);
     }
 
