@@ -2,6 +2,7 @@ package com.arcusapp.soundbox.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
@@ -294,7 +295,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
      * @return
      */
     private String formatDuration(int duration) {
-        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(duration),
+        return String.format(Locale.getDefault(), "%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(duration),
                 TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
     }
 }

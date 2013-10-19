@@ -7,7 +7,7 @@
 
     <uses-sdk
         android:minSdkVersion="12"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     
@@ -28,7 +28,8 @@
         <service
             android:name="com.arcusapp.soundbox.player.MediaPlayerService"
             android:icon="@drawable/icon_soundbox"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
 
@@ -60,28 +61,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.ArtistsActivity"
-            android:label="@string/title_activity_artists" >
-            <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.ARTISTS_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.arcusapp.soundbox.activity.PlayActivity"
             android:label="@string/title_activity_play" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.PLAY_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.arcusapp.soundbox.activity.PlaylistsActivity"
-            android:label="@string/title_activity_play_lists" >
-            <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
