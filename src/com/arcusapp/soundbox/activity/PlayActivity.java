@@ -132,9 +132,10 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
                 if(savedInstanceState == null) {
-                    registerToMediaService();
                     playBundleExtraSongs();
                 }
+
+                registerToMediaService();
                 updateUI();
                 initiRunnableSeekBar();
             }
