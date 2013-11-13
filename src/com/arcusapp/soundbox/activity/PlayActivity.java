@@ -34,6 +34,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -82,6 +83,21 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         }
 
         initServiceConnection(savedInstanceState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == SoundBoxApplication.PICK_SONG_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a song
+                Bundle bundle = data.getExtras();
+                currentID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+                songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+                playBundleExtraSongs();
+            }
+        }
     }
 
     private void initiRunnableSeekBar() {
@@ -185,13 +201,13 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         else if (v.getId() == R.id.btnCurrentPlayList) {
             Intent intent = new Intent();
             intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
-            
+
             Bundle b = new Bundle();
             b.putString(BundleExtra.CURRENT_ID, currentSong.getID());
             b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaService.getSongsIDList()));
             intent.putExtras(b);
 
-            startActivity(intent);
+            startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
         }
     }
 

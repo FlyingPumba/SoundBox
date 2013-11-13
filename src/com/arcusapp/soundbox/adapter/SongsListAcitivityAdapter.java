@@ -78,8 +78,8 @@ public class SongsListAcitivityAdapter extends BaseAdapter {
     }
 
     public void onSongClick(int position) {
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        Intent playActivityReturnIntent = new Intent();
+        playActivityReturnIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
         int finalpos = position;
         if (hasHeader) {
@@ -90,8 +90,9 @@ public class SongsListAcitivityAdapter extends BaseAdapter {
         b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID().toString());
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
 
-        playActivityIntent.putExtras(b);
-        mActivity.startActivity(playActivityIntent);
+        playActivityReturnIntent.putExtras(b);
+        mActivity.setResult(Activity.RESULT_OK, playActivityReturnIntent);
+        mActivity.finish();
     }
 
     public int getFocusedIDPosition() {

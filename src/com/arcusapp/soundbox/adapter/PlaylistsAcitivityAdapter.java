@@ -62,7 +62,7 @@ public class PlaylistsAcitivityAdapter extends BaseAdapter {
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
         intent.putExtras(b);
 
-        mActivity.startActivity(intent);
+        mActivity.startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
     }
 
     public void onPlaylistLongClick(int position) {

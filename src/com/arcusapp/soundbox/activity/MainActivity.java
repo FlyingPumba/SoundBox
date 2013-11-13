@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -102,6 +103,24 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == SoundBoxApplication.PICK_SONG_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a song
+                Bundle bundle = data.getExtras();
+
+                Intent playActivityIntent = new Intent();
+                playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+
+                playActivityIntent.putExtras(bundle);
+                startActivity(playActivityIntent);
+            }
+        }
     }
 
     @Override

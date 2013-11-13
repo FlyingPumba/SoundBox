@@ -97,7 +97,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         intent.putExtras(b);
 
-        mActivity.startActivity(intent);
+        mActivity.startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
     }
 
     @Override

@@ -71,7 +71,7 @@
         </activity>
         <activity
             android:name="com.arcusapp.soundbox.activity.SongsListActivity"
-            android:label="@string/title_activity_songs_list" >
+            android:label="@string/title_activity_songs_list">
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY" />
 

@@ -101,12 +101,20 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public void registerListener(MediaPlayerServiceListener listener) {
+        if(listener == null || currentListeners == null){
+            stopSelf();
+            return;
+        }
         if(!currentListeners.contains(listener) ) {
             currentListeners.add(listener);
         }
     }
     
     public void unRegisterListener(MediaPlayerServiceListener listener) {
+        if(listener == null || currentListeners == null){
+            stopSelf();
+            return;
+        }
         currentListeners.remove(listener);
     }
     
@@ -281,12 +289,20 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
     
     private void fireListenersOnMediaPlayerStateChanged() {
+        if(currentListeners == null){
+            stopSelf();
+            return;
+        }
         for (MediaPlayerServiceListener listener : currentListeners) {
             listener.onMediaPlayerStateChanged();            
         }
     }
     
     private void fireListenersOnErrorRaised(Exception ex) {
+        if(currentListeners == null){
+            stopSelf();
+            return;
+        }
         for (MediaPlayerServiceListener listener : currentListeners) {
             listener.onExceptionRaised(ex);            
         }
