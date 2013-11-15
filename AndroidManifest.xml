@@ -3,7 +3,7 @@
     package="com.arcusapp.soundbox"
     android:installLocation="preferExternal"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="algebraic" >
 
     <uses-sdk
         android:minSdkVersion="12"
