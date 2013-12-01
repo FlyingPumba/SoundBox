@@ -136,8 +136,10 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mediaService.seekTo(progress);
-                    seekBar.setProgress(progress);
+                    if(mediaService != null) {
+                        mediaService.seekTo(progress);
+                        seekBar.setProgress(progress);
+                    }
                 }
             }
         });
