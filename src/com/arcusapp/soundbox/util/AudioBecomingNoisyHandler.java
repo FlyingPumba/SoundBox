@@ -60,7 +60,6 @@ public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver
         myServiceConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                registerToMediaService();
                 pausePlayer();
             }
 
@@ -74,10 +73,6 @@ public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver
         
         SoundBoxApplication.getApplicationContext().startService(intent);
         SoundBoxApplication.getApplicationContext().bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-    
-    private void registerToMediaService() {
-        mediaService.registerListener(this);
     }
 
     @Override
