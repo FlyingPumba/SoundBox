@@ -39,7 +39,9 @@
 
         <activity
             android:name="com.arcusapp.soundbox.activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +55,9 @@
         </activity>
         <activity
             android:name="com.arcusapp.soundbox.activity.FoldersActivity"
-            android:label="@string/title_activity_folders" >
+            android:label="@string/title_activity_folders"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.FOLDERS_ACTIVITY" />
 
@@ -62,7 +66,9 @@
         </activity>
         <activity
             android:name="com.arcusapp.soundbox.activity.PlayActivity"
-            android:label="@string/title_activity_play" >
+            android:label="@string/title_activity_play"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.PLAY_ACTIVITY" />
 
@@ -71,7 +77,9 @@
         </activity>
         <activity
             android:name="com.arcusapp.soundbox.activity.SongsListActivity"
-            android:label="@string/title_activity_songs_list">
+            android:label="@string/title_activity_songs_list"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY" />
 
