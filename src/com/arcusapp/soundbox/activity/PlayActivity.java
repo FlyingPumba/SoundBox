@@ -238,7 +238,8 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     private void playBundleExtraSongs() {
         if (songsID != null) {
-            mediaService.playSongs(currentID, songsID);
+            mediaService.loadSongs(songsID, currentID);
+            mediaService.playAndPause();
         }
     }
 

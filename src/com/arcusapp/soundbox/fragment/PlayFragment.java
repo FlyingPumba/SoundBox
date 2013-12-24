@@ -59,7 +59,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
         
-        initServiceConnection(savedInstanceState);
+        initServiceConnection();
     }
     
     @Override
@@ -78,7 +78,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     @Override
     public void onExceptionRaised(Exception ex) {
         //Toast.makeText(getActivity(), "EXCEPTION", Toast.LENGTH_LONG).show();
-        initServiceConnection(null);
+        initServiceConnection();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         super.onDestroy();
     }
     
-    private void initServiceConnection(final Bundle savedInstanceState) {
+    private void initServiceConnection() {
         myServiceConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
@@ -122,9 +122,8 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     private void FetchLastPlayedSongs() {
         List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
         String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
-        // FIXME: use a loadSongs method instead, this is BAD, so BAD.
-        mediaService.playSongs(lastSong, songsID);
-        mediaService.playAndPause();
+
+        mediaService.loadSongs(songsID, lastSong);
     }
     
     private void updateUI() {

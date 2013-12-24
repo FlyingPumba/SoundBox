@@ -151,28 +151,31 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
         currentListeners.remove(listener);
     }
-    
-    public void playSongs(String currentSongID, List<String> songsID) {
+
+    public void loadSongs(List<String> songsID, String currentSongID) {
         if (songsID.isEmpty()) {
             Log.d(TAG, "No songs to play");
             return;
         }
         this.songsIDList = new ArrayList<String>();
         this.songsIDList.addAll(songsID);
-        
+
         int currentSongPosition;
         if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
             currentSongPosition = 0;
         } else {
-            currentSongPosition = songsID.indexOf(currentSongID);
+            currentSongPosition = this.songsIDList.indexOf(currentSongID);
+            if(currentSongPosition == -1) {
+                Log.d(TAG, "The first song to play is not in the loaded songs");
+                return;
+            }
         }
 
         // create the song stack
         currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
 
-        playCurrentSong();
+        prepareMediaPlayer();
     }
-
     public Song getCurrentSong() {
         if (currentSongStack != null) {
             return currentSongStack.getCurrentSong();
@@ -187,7 +190,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         } else {
             return currentSongStack.getCurrentSongsIDList();
         }
-
     }
 
     public boolean isPlaying() {
@@ -266,7 +268,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                     mediaPlayer.setDataSource(currentSong.getFile().getPath());
                     mediaPlayer.prepare();
                     fireListenersOnMediaPlayerStateChanged();
-    
+
                 } else {
                     playCurrentSong();
                 }
@@ -303,6 +305,11 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     private void playCurrentSong() {
+        prepareMediaPlayer();
+        mediaPlayer.start();
+    }
+
+    private void prepareMediaPlayer() {
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -310,12 +317,11 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             // play the song
             Song currentSong = currentSongStack.getCurrentSong();
             SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(currentSong.getID());
-            
+
             mediaPlayer.reset();
             mediaPlayer.setDataSource(currentSong.getFile().getPath());
             mediaPlayer.prepare();
-            
-            mediaPlayer.start();
+
             fireListenersOnMediaPlayerStateChanged();
         } catch (Exception e) {
             fireListenersOnErrorRaised(e);
@@ -331,7 +337,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             listener.onMediaPlayerStateChanged();            
         }
     }
-    
+
     private void fireListenersOnErrorRaised(Exception ex) {
         if(currentListeners == null){
             stopSelf();
