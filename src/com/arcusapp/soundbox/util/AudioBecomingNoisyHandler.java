@@ -22,7 +22,6 @@ package com.arcusapp.soundbox.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.telephony.TelephonyManager;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
