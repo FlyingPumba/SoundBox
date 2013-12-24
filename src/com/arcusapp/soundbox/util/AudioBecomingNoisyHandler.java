@@ -25,10 +25,9 @@ import android.content.Intent;
 import android.telephony.TelephonyManager;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 
-public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver implements MediaPlayerServiceListener {
+public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver {
     
     private Context context;
 
@@ -53,11 +52,5 @@ public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver
         intent.putExtra(MediaPlayerService.INCOMMING_CALL, true);
         context.startService(intent);
     }
-
-    @Override
-    public void onMediaPlayerStateChanged() { }
-
-    @Override
-    public void onExceptionRaised(Exception ex) { }
 
 }

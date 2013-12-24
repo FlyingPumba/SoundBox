@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
@@ -42,6 +45,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     private static final String TAG = "MediaPlayerService";
     public static final String INCOMMING_CALL = "incomming_call";
+
+    private BroadcastReceiver headsetReceiver;
 
     // private int currentSongPosition;
     private SongStack currentSongStack;
@@ -80,6 +85,24 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
         if(currentListeners == null) {
             currentListeners = new ArrayList<MediaPlayerServiceListener>();
+        }
+        if(headsetReceiver == null) {
+            headsetReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    // state - 0 for unplugged, 1 for plugged.
+                    int state = intent.getIntExtra("state", 0);
+                    if(state == 0) {
+                        if (mediaPlayer != null) {
+                            if(mediaPlayer.isPlaying()) {
+                                mediaPlayer.pause();
+                                fireListenersOnMediaPlayerStateChanged();
+                            }
+                        }
+                    }
+                }
+            };
+            registerReceiver(headsetReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         }
         super.onCreate();
     }
