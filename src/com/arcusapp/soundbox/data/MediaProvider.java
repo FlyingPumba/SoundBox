@@ -20,13 +20,6 @@
 
 package com.arcusapp.soundbox.data;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -38,6 +31,13 @@ import com.arcusapp.soundbox.model.PlaylistEntry;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.DirectoryHelper;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class MediaProvider {
 

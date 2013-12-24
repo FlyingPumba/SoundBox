@@ -20,9 +20,6 @@
 
 package com.arcusapp.soundbox.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -41,6 +38,9 @@ import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SongsListAcitivityAdapter extends BaseAdapter {
     private Activity mActivity;

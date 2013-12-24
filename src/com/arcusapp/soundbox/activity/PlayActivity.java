@@ -20,11 +20,6 @@
 
 package com.arcusapp.soundbox.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,8 +29,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +45,11 @@ import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 

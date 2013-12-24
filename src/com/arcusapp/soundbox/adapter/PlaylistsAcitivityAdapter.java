@@ -20,9 +20,6 @@
 
 package com.arcusapp.soundbox.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +35,9 @@ import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.PlaylistEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlaylistsAcitivityAdapter extends BaseAdapter {
     private Activity mActivity;

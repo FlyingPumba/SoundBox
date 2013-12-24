@@ -20,18 +20,16 @@
 
 package com.arcusapp.soundbox.data;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.json.JSONArray;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.BundleExtra;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SoundBoxPreferences {
 

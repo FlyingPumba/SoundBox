@@ -20,10 +20,10 @@
 
 package com.arcusapp.soundbox.util;
 
+import com.arcusapp.soundbox.model.MediaEntry;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.arcusapp.soundbox.model.MediaEntry;
 
 public class MediaEntryHelper<T extends MediaEntry> {
     public List<String> getValues(List<T> list) {

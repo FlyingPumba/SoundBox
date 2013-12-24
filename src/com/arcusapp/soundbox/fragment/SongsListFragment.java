@@ -20,10 +20,6 @@
 
 package com.arcusapp.soundbox.fragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,6 +37,10 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.adapter.SongsListAcitivityAdapter;
 import com.arcusapp.soundbox.model.BundleExtra;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SongsListFragment extends Fragment {
 

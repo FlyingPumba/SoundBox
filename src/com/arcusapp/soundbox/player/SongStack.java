@@ -20,17 +20,15 @@
 
 package com.arcusapp.soundbox.player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import android.util.Log;
-
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.Song;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class SongStack {
     private MediaProvider mediaProvider;

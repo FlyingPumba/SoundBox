@@ -20,9 +20,6 @@
 
 package com.arcusapp.soundbox.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -39,6 +36,9 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
     private Activity mActivity;

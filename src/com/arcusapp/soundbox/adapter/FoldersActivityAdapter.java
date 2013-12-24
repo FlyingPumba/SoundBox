@@ -20,10 +20,6 @@
 
 package com.arcusapp.soundbox.adapter;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -41,6 +37,10 @@ import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoldersActivityAdapter extends BaseAdapter {
 

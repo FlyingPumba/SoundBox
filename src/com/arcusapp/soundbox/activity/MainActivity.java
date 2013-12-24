@@ -20,8 +20,6 @@
 
 package com.arcusapp.soundbox.activity;
 
-import java.util.ArrayList;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -40,6 +38,8 @@ import com.arcusapp.soundbox.fragment.ArtistsFragment;
 import com.arcusapp.soundbox.fragment.PlaylistsFragment;
 import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 

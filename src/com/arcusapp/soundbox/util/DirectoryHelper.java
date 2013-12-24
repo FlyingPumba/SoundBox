@@ -20,6 +20,8 @@
 
 package com.arcusapp.soundbox.util;
 
+import android.os.Environment;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,8 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import android.os.Environment;
 
 public class DirectoryHelper {
     public static List<String> getNamesFromFiles(List<File> fileList) {

@@ -20,9 +20,9 @@
 
 package com.arcusapp.soundbox.model;
 
-import java.io.File;
-
 import android.util.Log;
+
+import java.io.File;
 
 public class Song {
     private String id;

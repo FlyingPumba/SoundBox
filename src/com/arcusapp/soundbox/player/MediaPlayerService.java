@@ -20,9 +20,6 @@
 
 package com.arcusapp.soundbox.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,6 +37,9 @@ import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
 import com.arcusapp.soundbox.model.Song;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MediaPlayerService extends Service implements OnCompletionListener {
 
