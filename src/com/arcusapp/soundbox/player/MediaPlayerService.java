@@ -41,6 +41,7 @@ import com.arcusapp.soundbox.model.Song;
 public class MediaPlayerService extends Service implements OnCompletionListener {
 
     private static final String TAG = "MediaPlayerService";
+    public static final String INCOMMING_CALL = "incomming_call";
 
     // private int currentSongPosition;
     private SongStack currentSongStack;
@@ -53,9 +54,19 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private List<MediaPlayerServiceListener> currentListeners;
     private final IBinder mBinder = new MyBinder();
 
+    // Called every time a client starts the service using startService
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Called every time a client starts the service using startService
+        // Check if this is an intent from the AudioBecomingNoisyHandler
+        if(intent.getBooleanExtra(INCOMMING_CALL, false)) {
+            if (mediaPlayer != null) {
+                if(mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    fireListenersOnMediaPlayerStateChanged();
+                }
+            }
+        }
+
         // We want this service to continue running until it is explicitly stopped, so return sticky.
         return Service.START_STICKY;
     }

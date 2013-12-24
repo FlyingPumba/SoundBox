@@ -20,11 +20,9 @@
 
 package com.arcusapp.soundbox.util;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.telephony.TelephonyManager;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
@@ -35,9 +33,11 @@ public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver
     
     private MediaPlayerService mediaService;
     private ServiceConnection myServiceConnection;
-    
+    private Context context;
+
     @Override
     public void onReceive(Context ctx, Intent intent) {
+       context = ctx;
        String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
        
        if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
@@ -57,22 +57,10 @@ public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver
     }
 
     private void initServiceconnectionAndPause() {
-        myServiceConnection = new ServiceConnection() {
-            public void onServiceConnected(ComponentName className, IBinder binder) {
-                mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                pausePlayer();
-            }
-
-            public void onServiceDisconnected(ComponentName className) {
-                mediaService = null;
-            }
-        };
-
         Intent intent = new Intent();
         intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        
-        SoundBoxApplication.getApplicationContext().startService(intent);
-        SoundBoxApplication.getApplicationContext().bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
+        intent.putExtra(MediaPlayerService.INCOMMING_CALL, true);
+        context.startService(intent);
     }
 
     @Override
