@@ -31,8 +31,6 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 
 public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver implements MediaPlayerServiceListener {
     
-    private MediaPlayerService mediaService;
-    private ServiceConnection myServiceConnection;
     private Context context;
 
     @Override
