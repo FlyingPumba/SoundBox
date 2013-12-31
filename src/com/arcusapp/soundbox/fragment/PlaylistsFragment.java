@@ -31,17 +31,17 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.arcusapp.soundbox.R;
-import com.arcusapp.soundbox.adapter.PlaylistsAcitivityAdapter;
+import com.arcusapp.soundbox.adapter.PlaylistsActivityAdapter;
 
 public class PlaylistsFragment extends Fragment {
 
-    PlaylistsAcitivityAdapter myAdapter;
+    PlaylistsActivityAdapter myAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_playlists, container, false);
 
-        myAdapter = new PlaylistsAcitivityAdapter(getActivity());
+        myAdapter = new PlaylistsActivityAdapter(getActivity());
         ListView listView = (ListView) rootView.findViewById(R.id.playlistsActivityList);
 
         listView.setLongClickable(true);

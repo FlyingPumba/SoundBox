@@ -22,9 +22,7 @@ package com.arcusapp.soundbox.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,80 +34,56 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
-import com.arcusapp.soundbox.model.SongEntry;
-import com.arcusapp.soundbox.util.MediaEntryHelper;
+import com.arcusapp.soundbox.model.PlaylistEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongsListAcitivityAdapter extends BaseAdapter {
+public class PlaylistsActivityAdapter extends BaseAdapter {
     private Activity mActivity;
 
-    private List<SongEntry> songs;
+    private List<PlaylistEntry> playlists;
     private MediaProvider mediaProvider;
-    private MediaEntryHelper<SongEntry> mediaEntryHelper;
 
-    private String projection = MediaStore.Audio.Media.TITLE;
-
-    private String focusedID;
-    private boolean hasHeader;
-
-    public SongsListAcitivityAdapter(Activity activity, String focusedID, List<String> songsID, boolean hasHeader) {
+    public PlaylistsActivityAdapter(Activity activity) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
-        mediaEntryHelper = new MediaEntryHelper<SongEntry>();
 
-        this.hasHeader = hasHeader;
-
-        List<SongEntry> temp_songs = mediaProvider.getValueFromSongs(songsID, projection);
-        songs = new ArrayList<SongEntry>();
-        // order them by the order given on the songsID
-        for (int i = 0; i < songsID.size(); i++) {
-            for (int j = 0; j < temp_songs.size(); j++) {
-                if (temp_songs.get(j).getID().equals(songsID.get(i))) {
-                    songs.add(temp_songs.get(j));
-                    temp_songs.remove(j);
-                    break;
-                }
-            }
-        }
-
-        this.focusedID = focusedID;
+        playlists = mediaProvider.getAllPlayLists();
     }
 
-    public void onSongClick(int position) {
-        Intent playActivityReturnIntent = new Intent();
-        playActivityReturnIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-
-        int finalpos = position;
-        if (hasHeader) {
-            finalpos--;
-        }
+    public void onPlaylistClick(int position) {
+        // show the songs from that specific playlists
+        Intent intent = new Intent();
+        intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
 
         Bundle b = new Bundle();
-        b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID().toString());
-        b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
+        String playlistID = playlists.get(position).getID();
+        b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
+        intent.putExtras(b);
 
-        playActivityReturnIntent.putExtras(b);
-        mActivity.setResult(Activity.RESULT_OK, playActivityReturnIntent);
-        mActivity.finish();
+        mActivity.startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
     }
 
-    public int getFocusedIDPosition() {
-        if (focusedID != BundleExtra.DefaultValues.DEFAULT_ID) {
-            for (int i = 0; i < songs.size(); i++) {
-                if (songs.get(i).getID().equals(focusedID)) {
-                    return i;
-                }
-            }
-        }
+    public void onPlaylistLongClick(int position) {
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
-        return 0;
+        Bundle b = new Bundle();
+
+        // we play directly the playlist so we dont have a specific first song
+        b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+
+        String playlistID = playlists.get(position).getID();
+        b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
+
+        playActivityIntent.putExtras(b);
+        mActivity.startActivity(playActivityIntent);
     }
 
     @Override
     public int getCount() {
-        return songs.size();
+        return playlists.size();
     }
 
     @Override
@@ -145,13 +119,7 @@ public class SongsListAcitivityAdapter extends BaseAdapter {
         }
 
         holder.icon.setBackgroundResource(R.drawable.icon_song);
-        holder.text.setText(songs.get(position).getValue());
-
-        if (songs.get(position).getID().equals(focusedID)) {
-            holder.text.setTypeface(null, Typeface.BOLD);
-        } else {
-            holder.text.setTypeface(null, Typeface.NORMAL);
-        }
+        holder.text.setText(playlists.get(position).getValue());
 
         return (item);
     }
