@@ -63,7 +63,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Check if this is an intent from the AudioBecomingNoisyHandler
-        if(intent.getBooleanExtra(INCOMMING_CALL, false)) {
+        if(intent != null && intent.getBooleanExtra(INCOMMING_CALL, false)) {
             if (mediaPlayer != null) {
                 if(mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
