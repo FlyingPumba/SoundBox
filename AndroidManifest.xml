@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arcusapp.soundbox"
     android:installLocation="preferExternal"
-    android:versionCode="3"
+    android:versionCode="4"
     android:versionName="algebraic" >
 
     <uses-sdk
