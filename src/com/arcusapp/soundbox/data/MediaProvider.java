@@ -248,7 +248,7 @@ public class MediaProvider {
         List<String> ids = new ArrayList<String>();
 
         Uri specialUri = MediaStore.Audio.Playlists.Members.getContentUri("external", Integer.parseInt(playListID));
-        String[] projection = { MediaStore.Audio.Playlists.Members.AUDIO_ID };
+        String[] projection = { MediaStore.Audio.Playlists.Members.AUDIO_ID, MediaStore.Audio.Playlists.Members.TITLE };
         String sortOrder = MediaStore.Audio.Playlists.Members.TITLE;
 
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), specialUri, projection, null, null, sortOrder);
