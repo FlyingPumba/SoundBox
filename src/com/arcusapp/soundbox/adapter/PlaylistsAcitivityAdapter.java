@@ -67,7 +67,7 @@ public class PlaylistsAcitivityAdapter extends BaseAdapter {
 
     public void onPlaylistLongClick(int position) {
         Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction("com.arcusapp.soundbox.PLAY_ACTIVITY");
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
         Bundle b = new Bundle();
 
