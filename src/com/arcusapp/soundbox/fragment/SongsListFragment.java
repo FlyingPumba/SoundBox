@@ -63,11 +63,11 @@ public class SongsListFragment extends Fragment {
         Bundle bundleInt = getActivity().getIntent().getExtras();
         try {
             if (bundleInt != null) {
-                focusedElementID = bundleInt.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+                focusedElementID = BundleExtra.getBundleString(bundleInt, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
                 songsIDs = bundleInt.getStringArrayList(BundleExtra.SONGS_ID_LIST);
                 addRandomButton = bundleInt.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
             } else {
-                focusedElementID = bundleArg.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+                focusedElementID = BundleExtra.getBundleString(bundleArg, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
                 songsIDs = bundleArg.getStringArrayList(BundleExtra.SONGS_ID_LIST);
                 addRandomButton = bundleArg.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
             }

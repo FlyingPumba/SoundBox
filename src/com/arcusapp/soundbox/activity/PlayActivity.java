@@ -75,7 +75,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
         try {
             Bundle bundle = this.getIntent().getExtras();
-            currentID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+            currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
             songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
         } catch (Exception ex) {
         }
@@ -91,7 +91,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             if (resultCode == RESULT_OK) {
                 // The user picked a song
                 Bundle bundle = data.getExtras();
-                currentID = bundle.getString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+                currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
                 songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
                 playBundleExtraSongs();
             }

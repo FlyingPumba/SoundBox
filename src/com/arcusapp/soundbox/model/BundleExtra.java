@@ -20,11 +20,21 @@
 
 package com.arcusapp.soundbox.model;
 
+import android.os.Bundle;
+
 public class BundleExtra {
     public final static String CURRENT_ID = "currentid";
     public final static String SONGS_ID_LIST = "songsidlist";
 
     public class DefaultValues {
         public final static String DEFAULT_ID = "-1";
+    }
+
+    public static String getBundleString(Bundle b, String key, String def) {
+        String value = b.getString(key);
+        if(value == null) {
+            value = def;
+        }
+        return value;
     }
 }
