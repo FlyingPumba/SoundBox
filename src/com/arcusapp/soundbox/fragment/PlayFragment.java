@@ -104,7 +104,9 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
                 registerToMediaService();
-                FetchLastPlayedSongs();
+                if(!mediaService.isPlaying()) {
+                    FetchLastPlayedSongs();
+                }
                 updateUI();
             }
 
