@@ -149,6 +149,12 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
             holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
             holder.text = (TextView) item.findViewById(R.id.itemText);
 
+            holder.icon.setBackgroundResource(R.drawable.icon_album);
+            // set left margin
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(20, 0, 0, 0);
+            holder.icon.setLayoutParams(lp);
+
             item.setTag(holder);
         }
         else
@@ -156,12 +162,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
             holder = (ViewHolder) item.getTag();
         }
 
-        holder.icon.setBackgroundResource(R.drawable.icon_album);
         holder.text.setText(mAlbums.get(groupPosition).get(childPosition));
-        // set left margin
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(20, 0, 0, 0);
-        holder.icon.setLayoutParams(lp);
 
         return (item);
     }

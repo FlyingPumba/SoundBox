@@ -111,6 +111,8 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
             holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
             holder.text = (TextView) item.findViewById(R.id.itemText);
 
+            holder.icon.setBackgroundResource(R.drawable.icon_song);
+
             item.setTag(holder);
         }
         else
@@ -118,7 +120,6 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
             holder = (ViewHolder) item.getTag();
         }
 
-        holder.icon.setBackgroundResource(R.drawable.icon_song);
         holder.text.setText(playlists.get(position).getValue());
 
         return (item);

@@ -53,44 +53,47 @@ public class SongsListFragment extends Fragment {
     private boolean addRandomButton = false;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // try to get the bundle from the arguments
+        Bundle bundleArg = getArguments();
+        Bundle bundleInt = getActivity().getIntent().getExtras();
+
+        if (bundleInt != null) {
+            focusedElementID = BundleExtra.getBundleString(bundleInt, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+            songsIDs = bundleInt.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+            addRandomButton = bundleInt.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
+        } else {
+            focusedElementID = BundleExtra.getBundleString(bundleArg, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+            songsIDs = bundleArg.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+            addRandomButton = bundleArg.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
+        }
+
+        myAdapter = new SongsListActivityAdapter(this.getActivity(), focusedElementID, songsIDs, addRandomButton);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs_list, container, false);
 
         myListView = (ListView) rootView.findViewById(R.id.songslistActivityList);
 
-        // try to get the bundle from the arguments
-        Bundle bundleArg = getArguments();
-        Bundle bundleInt = getActivity().getIntent().getExtras();
-        try {
-            if (bundleInt != null) {
-                focusedElementID = BundleExtra.getBundleString(bundleInt, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-                songsIDs = bundleInt.getStringArrayList(BundleExtra.SONGS_ID_LIST);
-                addRandomButton = bundleInt.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
-            } else {
-                focusedElementID = BundleExtra.getBundleString(bundleArg, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-                songsIDs = bundleArg.getStringArrayList(BundleExtra.SONGS_ID_LIST);
-                addRandomButton = bundleArg.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
-            }
-
-            // NOTE: Call this before calling setAdapter. This is so ListView can wrap the supplied cursor with one that will also account for header and footer views.
-            if (addRandomButton) {
-                addRandomButton();
-            }
-
-            myAdapter = new SongsListActivityAdapter(this.getActivity(), focusedElementID, songsIDs, addRandomButton);
-            myListView.setAdapter(myAdapter);
-            myListView.setOnItemClickListener(new OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                    myAdapter.onSongClick(position);
-                }
-            });
-
-            myListView.setSelection(myAdapter.getFocusedIDPosition());
-        } catch (Exception e) {
-            Toast.makeText(SoundBoxApplication.getApplicationContext(), "Error while trying to show the songs", Toast.LENGTH_LONG).show();
+        // NOTE: Call this before calling setAdapter. This is so ListView can wrap the supplied cursor with one that will also account for header and footer views.
+        if (addRandomButton) {
+            addRandomButton();
         }
+
+        myListView.setAdapter(myAdapter);
+        myListView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+                myAdapter.onSongClick(position);
+            }
+        });
+
+        myListView.setSelection(myAdapter.getFocusedIDPosition());
 
         return rootView;
     }

@@ -146,6 +146,10 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         private final int SONGSLIST_FRAGMENT_POSITION = 1;
         private final int PLAYLISTS_FRAGMENT_POSITION = 2;
 
+        ArtistsFragment mArtistsFragment;
+        SongsListFragment mSongsListFragment;
+        PlaylistsFragment mPlaylistsFragment;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -155,18 +159,27 @@ public class MainActivity extends ActionBarActivity implements android.support.v
 
             switch (position) {
                 case ARTIST_FRAGMENT_POSITION:
-                    return new ArtistsFragment();
+                    if(mArtistsFragment == null) {
+                        mArtistsFragment = new ArtistsFragment();
+                    }
+                    return mArtistsFragment;
                 case SONGSLIST_FRAGMENT_POSITION:
-                    MediaProvider media = new MediaProvider();
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
-                    bundle.putBoolean(SongsListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
+                    if(mSongsListFragment == null) {
+                        MediaProvider media = new MediaProvider();
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
+                        bundle.putBoolean(SongsListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
 
-                    SongsListFragment fragment = new SongsListFragment();
-                    fragment.setArguments(bundle);
-                    return fragment;
+                        mSongsListFragment = new SongsListFragment();
+                        mSongsListFragment.setArguments(bundle);
+                    }
+
+                    return mSongsListFragment;
                 case PLAYLISTS_FRAGMENT_POSITION:
-                    return new PlaylistsFragment();
+                    if(mPlaylistsFragment == null) {
+                        mPlaylistsFragment = new PlaylistsFragment();
+                    }
+                    return mPlaylistsFragment;
             }
             return null;
         }
@@ -179,10 +192,8 @@ public class MainActivity extends ActionBarActivity implements android.support.v
 
         @Override
         public CharSequence getPageTitle(int position) {
-            // Locale l = Locale.getDefault();
             switch (position) {
                 case ARTIST_FRAGMENT_POSITION:
-                    // getString(R.string.title_section2).toUpperCase(l);
                     return "ARTISTS";
                 case SONGSLIST_FRAGMENT_POSITION:
                     return "SONGS";

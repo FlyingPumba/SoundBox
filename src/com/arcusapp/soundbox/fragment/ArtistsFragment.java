@@ -38,10 +38,15 @@ public class ArtistsFragment extends Fragment {
     ArtistsActivityAdapter myAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         myAdapter = new ArtistsActivityAdapter(this.getActivity());
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
 
         ExpandableListView myExpandableList = (ExpandableListView) rootView.findViewById(R.id.expandableListArtists);
         myExpandableList.setGroupIndicator(null);
