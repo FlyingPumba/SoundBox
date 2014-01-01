@@ -5,10 +5,6 @@
     android:versionCode="4"
     android:versionName="algebraic" >
 
-    <uses-sdk
-        android:minSdkVersion="12"
-        android:targetSdkVersion="18" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     
     <application
