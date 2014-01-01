@@ -55,6 +55,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private RepeatState repeatState = RepeatState.Off;
     private RandomState randomState = RandomState.Off;
 
+    private boolean isPlaying = false;
+
     private MediaPlayer mediaPlayer;
     private List<MediaPlayerServiceListener> currentListeners;
     private final IBinder mBinder = new MyBinder();
@@ -67,6 +69,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             if (mediaPlayer != null) {
                 if(mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
+                    isPlaying = false;
                     fireListenersOnMediaPlayerStateChanged();
                 }
             }
@@ -96,6 +99,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                         if (mediaPlayer != null) {
                             if(mediaPlayer.isPlaying()) {
                                 mediaPlayer.pause();
+                                isPlaying = false;
                                 fireListenersOnMediaPlayerStateChanged();
                             }
                         }
@@ -112,6 +116,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         super.onDestroy();
         if (mediaPlayer != null) {
             mediaPlayer.stop();
+            isPlaying = false;
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -193,7 +198,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        return isPlaying;
     }
 
     public RandomState getRandomState() {
@@ -248,9 +253,11 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     public void playAndPause() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
+            isPlaying = true;
         }
         else {
             mediaPlayer.pause();
+            isPlaying = false;
         }
         fireListenersOnMediaPlayerStateChanged();
     }
@@ -307,6 +314,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private void playCurrentSong() {
         prepareMediaPlayer();
         mediaPlayer.start();
+        isPlaying = true;
     }
 
     private void prepareMediaPlayer() {
