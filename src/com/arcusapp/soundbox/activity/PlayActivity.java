@@ -265,6 +265,11 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             int duration = mediaService.getDuration();
             txtTimeTotal.setText(formatDuration(duration));
             seekBar.setMax(duration);
+
+            // Update the seek bar position
+            int position = mediaService.getCurrentPosition();
+            txtTimeCurrent.setText(formatDuration(position));
+            seekBar.setProgress(position);
         }
         catch (Exception ex) {
             //Toast.makeText(this.getApplicationContext(), "Application unable to update the UI. "+ex.getMessage(), Toast.LENGTH_LONG).show();
