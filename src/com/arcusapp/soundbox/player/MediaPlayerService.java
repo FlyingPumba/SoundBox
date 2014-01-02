@@ -120,6 +120,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        if(headsetReceiver != null) {
+            unregisterReceiver(headsetReceiver);
+        }
     }
 
     @Override
