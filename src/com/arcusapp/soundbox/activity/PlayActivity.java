@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
@@ -205,6 +206,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             Bundle b = new Bundle();
             b.putString(BundleExtra.CURRENT_ID, currentSong.getID());
             b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaService.getSongsIDList()));
+            b.putBoolean(SongsListFragment.START_FOR_RESULT, true);
             intent.putExtras(b);
 
             startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);

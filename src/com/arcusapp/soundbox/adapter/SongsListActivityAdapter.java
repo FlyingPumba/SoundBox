@@ -53,13 +53,15 @@ public class SongsListActivityAdapter extends BaseAdapter {
 
     private String focusedID;
     private boolean hasHeader;
+    private boolean startForResult;
 
-    public SongsListActivityAdapter(Activity activity, String focusedID, List<String> songsID, boolean hasHeader) {
+    public SongsListActivityAdapter(Activity activity, String focusedID, List<String> songsID, boolean hasHeader, boolean startForResult) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
         mediaEntryHelper = new MediaEntryHelper<SongEntry>();
 
         this.hasHeader = hasHeader;
+        this.startForResult = startForResult;
 
         List<SongEntry> temp_songs = mediaProvider.getValueFromSongs(songsID, projection);
         songs = new ArrayList<SongEntry>();
@@ -78,8 +80,8 @@ public class SongsListActivityAdapter extends BaseAdapter {
     }
 
     public void onSongClick(int position) {
-        Intent playActivityReturnIntent = new Intent();
-        playActivityReturnIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
         int finalpos = position;
         if (hasHeader) {
@@ -90,9 +92,14 @@ public class SongsListActivityAdapter extends BaseAdapter {
         b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID().toString());
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
 
-        playActivityReturnIntent.putExtras(b);
-        mActivity.setResult(Activity.RESULT_OK, playActivityReturnIntent);
-        mActivity.finish();
+        playActivityIntent.putExtras(b);
+
+        if(startForResult) {
+            mActivity.setResult(Activity.RESULT_OK, playActivityIntent);
+            mActivity.finish();
+        } else {
+            mActivity.startActivity(playActivityIntent);
+        }
     }
 
     public int getFocusedIDPosition() {

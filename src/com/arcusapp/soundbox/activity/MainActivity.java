@@ -169,6 +169,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
                         Bundle bundle = new Bundle();
                         bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
                         bundle.putBoolean(SongsListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
+                        bundle.putBoolean(SongsListFragment.START_FOR_RESULT, false);
 
                         mSongsListFragment = new SongsListFragment();
                         mSongsListFragment.setArguments(bundle);
