@@ -20,12 +20,13 @@
 
 package com.arcusapp.soundbox;
 
+import android.app.Application;
 import android.content.Context;
 
 /**
  * Stores general information for the application that can be accessed within any other class
  */
-public abstract class SoundBoxApplication {
+public class SoundBoxApplication extends Application {
     private static Context appContext;
 
     public static final String ACTION_MAIN_ACTIVITY = "com.arcusapp.soundbox.action.MAIN_ACTIVITY";
@@ -38,11 +39,14 @@ public abstract class SoundBoxApplication {
 
     public static final int PICK_SONG_REQUEST = 1;
 
-    public static void setInitialContext(Context context) {
-        appContext = context;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        this.appContext = getApplicationContext();
     }
 
-    public static Context getApplicationContext() {
+    public static Context getContext() {
         return appContext;
     }
 }

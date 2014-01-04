@@ -38,7 +38,7 @@ public class SoundBoxPreferences {
 
     public static class LastSongs {
         public static List<String> getLastSongs() {    
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getApplicationContext());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
             
             List<String> songs = new ArrayList<String>();
             try {
@@ -53,7 +53,7 @@ public class SoundBoxPreferences {
         }
     
         public static void setLastSongs(List<String> songsID) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getApplicationContext());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
             SharedPreferences.Editor editor = preferences.edit();
     
             String serializedString = new JSONArray(songsID).toString();
@@ -64,14 +64,14 @@ public class SoundBoxPreferences {
     
     public static class LastPlayedSong {
         public static String getLastPlayedSong() {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getApplicationContext());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
             String song = preferences.getString(LAST_PLAYED_SONG, BundleExtra.DefaultValues.DEFAULT_ID);
     
             return song;
         }
     
         public static void setLastPlayedSong(String songID) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getApplicationContext());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
             SharedPreferences.Editor editor = preferences.edit();
             
             editor.putString(LAST_PLAYED_SONG, songID);

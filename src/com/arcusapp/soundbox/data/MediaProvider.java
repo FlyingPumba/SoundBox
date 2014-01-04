@@ -109,7 +109,7 @@ public class MediaProvider {
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
         String sortOrder = MediaStore.Audio.Media.TITLE;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, cursorProjection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -132,7 +132,7 @@ public class MediaProvider {
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " not null ";
         String sortOrder = MediaStore.Audio.Artists.ARTIST;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -155,7 +155,7 @@ public class MediaProvider {
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
         String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -179,7 +179,7 @@ public class MediaProvider {
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
         String sortOrder = MediaStore.Audio.Media.TITLE;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -203,7 +203,7 @@ public class MediaProvider {
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = '" + album + "'";
         String sortOrder = MediaStore.Audio.Media.TITLE;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -224,7 +224,7 @@ public class MediaProvider {
 
         String[] projection = new String[] { MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME };
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, projection, null, null, null);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -251,7 +251,7 @@ public class MediaProvider {
         String[] projection = { MediaStore.Audio.Playlists.Members.AUDIO_ID, MediaStore.Audio.Playlists.Members.TITLE };
         String sortOrder = MediaStore.Audio.Playlists.Members.TITLE;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), specialUri, projection, null, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), specialUri, projection, null, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -272,7 +272,7 @@ public class MediaProvider {
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " = ?";
         String[] selectionArgs = new String[] { songID };
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, projection, selection, selectionArgs, null);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, null);
         myCursor = cl.loadInBackground();
 
         myCursor.moveToNext();
@@ -308,7 +308,7 @@ public class MediaProvider {
             selection += "?, ";
         selection += "?)";
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), defaultDirectoryUri, cursorProjection, selection, ids, null);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, cursorProjection, selection, ids, null);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -364,14 +364,14 @@ public class MediaProvider {
 
         String sortOrder = MediaStore.Audio.Media.TITLE;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getApplicationContext(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
             songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
         }
 
-        CursorLoader cl2 = new CursorLoader(SoundBoxApplication.getApplicationContext(), MediaStore.Audio.Media.INTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
+        CursorLoader cl2 = new CursorLoader(SoundBoxApplication.getContext(), MediaStore.Audio.Media.INTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
         myCursor = cl2.loadInBackground();
 
         while (myCursor.moveToNext()) {

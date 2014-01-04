@@ -60,8 +60,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SoundBoxApplication.setInitialContext(getApplicationContext());
-
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
