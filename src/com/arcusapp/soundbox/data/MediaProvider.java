@@ -45,56 +45,13 @@ public class MediaProvider {
     private File defaultDirectory;
     private Uri defaultDirectoryUri;
 
-    List<File> sdCards;
-
-    File musicDirectory;
-
     private Cursor myCursor;
 
     public MediaProvider() {
         myFilter = new OnlyDirsFilter();
 
-        musicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-        searchForSDCards();
-        defaultDirectory = sdCards.get(0);
+        defaultDirectory = SoundBoxApplication.getSDCards().get(0);
         defaultDirectoryUri = MediaStore.Audio.Media.getContentUriForPath(defaultDirectory.getPath());
-    }
-
-    private void searchForSDCards() {
-        sdCards = new ArrayList<File>();
-        File primarysdCard = Environment.getExternalStorageDirectory();
-        String[] sdCardDirectories = DirectoryHelper.getStorageDirectories();
-        String[] othersdCardDirectories = DirectoryHelper.getOtherStorageDirectories();
-
-        sdCards.add(primarysdCard);
-        for (String s : sdCardDirectories) {
-            File directory = new File(s);
-            if (!sdCards.contains(directory)) {
-                sdCards.add(directory);
-            }
-        }
-        for (String s : othersdCardDirectories) {
-            File directory = new File(s);
-            if (!sdCards.contains(directory)) {
-                sdCards.add(directory);
-            }
-        }
-
-    }
-
-    public File getDefaultDirectory() {
-        return defaultDirectory;
-    }
-
-    public List<File> getDefaultUserOptions() {
-        List<File> defaultUserOptions = new ArrayList<File>();
-        defaultUserOptions.add(musicDirectory);
-        defaultUserOptions.addAll(sdCards);
-        return defaultUserOptions;
-    }
-
-    public List<File> getSDCards() {
-        return sdCards;
     }
 
     /**

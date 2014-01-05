@@ -48,8 +48,7 @@ public class DirectoryHelper {
      * 
      * @return
      */
-    public static String[] getStorageDirectories()
-    {
+    public static String[] getStorageDirectories() {
         String[] dirs = null;
         BufferedReader bufReader = null;
         try {

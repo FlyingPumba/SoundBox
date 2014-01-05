@@ -74,7 +74,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 
         // set the first options for the user
         songs = new ArrayList<SongEntry>();
-        subDirs = mediaProvider.getDefaultUserOptions();
+        subDirs = SoundBoxApplication.getDefaultUserDirectoriesOptions();
 
         displayList = new ArrayList<String>();
         makeDisplayList();
@@ -116,7 +116,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 
     public void backPressed() {
         // check if the current dir is not an sd card and is not the MainUserOptions
-        if (!mediaProvider.getSDCards().contains(currentDir) && currentDir != MAIN_USER_OPTIONS) {
+        if (!SoundBoxApplication.getSDCards().contains(currentDir) && currentDir != MAIN_USER_OPTIONS) {
             // list parent folder
             currentDir = currentDir.getParentFile();
 
@@ -128,7 +128,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
             currentDir = MAIN_USER_OPTIONS;
 
             songs = new ArrayList<SongEntry>();
-            subDirs = mediaProvider.getDefaultUserOptions();
+            subDirs = SoundBoxApplication.getDefaultUserDirectoriesOptions();
 
             makeDisplayList();
         } else {

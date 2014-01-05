@@ -22,6 +22,14 @@ package com.arcusapp.soundbox;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
+import android.os.Environment;
+
+import com.arcusapp.soundbox.util.DirectoryHelper;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Stores general information for the application that can be accessed within any other class
@@ -39,14 +47,53 @@ public class SoundBoxApplication extends Application {
 
     public static final int PICK_SONG_REQUEST = 1;
 
+    private static List<File> sdCards;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         this.appContext = getApplicationContext();
+        searchForSDCards();
     }
 
     public static Context getContext() {
         return appContext;
+    }
+
+    public static List<File> getSDCards() {
+        return sdCards;
+    }
+
+    public static List<File> getDefaultUserDirectoriesOptions() {
+        List<File> defaultUserOptions = new ArrayList<File>();
+
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
+            File musicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+            defaultUserOptions.add(musicDirectory);
+        }
+        defaultUserOptions.addAll(sdCards);
+        return defaultUserOptions;
+    }
+
+    private void searchForSDCards() {
+        sdCards = new ArrayList<File>();
+        File primarysdCard = Environment.getExternalStorageDirectory();
+        String[] sdCardDirectories = DirectoryHelper.getStorageDirectories();
+        String[] othersdCardDirectories = DirectoryHelper.getOtherStorageDirectories();
+
+        sdCards.add(primarysdCard);
+        for (String s : sdCardDirectories) {
+            File directory = new File(s);
+            if (!sdCards.contains(directory)) {
+                sdCards.add(directory);
+            }
+        }
+        for (String s : othersdCardDirectories) {
+            File directory = new File(s);
+            if (!sdCards.contains(directory)) {
+                sdCards.add(directory);
+            }
+        }
     }
 }

@@ -50,7 +50,6 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
 
@@ -340,7 +339,10 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
      * @return
      */
     private String formatDuration(int duration) {
-        return String.format(Locale.getDefault(), "%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(duration),
-                TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
+        int seconds = (duration / 1000);
+        int minutes = duration / (1000*60);
+        int remainder = seconds - minutes*60;
+
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, remainder);
     }
 }
