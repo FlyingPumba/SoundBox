@@ -273,6 +273,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 if (repeatState == RepeatState.Off) {
                     // prepare the first song of the list, but do not play it.
                     mediaPlayer.stop();
+                    isPlaying = false;
                     Song currentSong = currentSongStack.getCurrentSong();
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(currentSong.getFile().getPath());
