@@ -109,10 +109,11 @@ public class MediaProvider {
         List<String> albums = new ArrayList<String>();
 
         String[] projection = { "DISTINCT " + MediaStore.Audio.Artists.Albums.ALBUM };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = ?";
         String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM;
+        String[] selectionArgs = new String[] { artist };
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -133,10 +134,11 @@ public class MediaProvider {
         List<String> ids = new ArrayList<String>();
 
         String[] projection = { MediaStore.Audio.Media._ID };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = '" + artist + "'";
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = ?";
         String sortOrder = MediaStore.Audio.Media.TITLE;
+        String[] selectionArgs = new String[] { artist };
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -157,10 +159,11 @@ public class MediaProvider {
         List<String> ids = new ArrayList<String>();
 
         String[] projection = { MediaStore.Audio.Media._ID };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = '" + album + "'";
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = ?";
         String sortOrder = MediaStore.Audio.Media.TITLE;
+        String[] selectionArgs = new String[] { album };
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
@@ -262,7 +265,9 @@ public class MediaProvider {
 
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Media._ID + " IN (";
         for (int i = 0; i < songsID.size() - 1; i++)
+        {
             selection += "?, ";
+        }
         selection += "?)";
 
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, cursorProjection, selection, ids, null);
