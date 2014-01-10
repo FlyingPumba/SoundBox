@@ -39,19 +39,21 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.List;
 
-public class PlayFragment extends Fragment implements MediaPlayerServiceListener {
+public class PlayFragment extends Fragment {
+
     private TextView txtSongTitle;
     private ImageButton btnPlayPause;
+
     private MediaPlayerService mediaService;
-    private boolean isCurrentSongNull = false;
     private ServiceConnection myServiceConnection;
+    private MediaPlayerServiceListener serviceListener;
+    private boolean isCurrentSongNull = false;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,18 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
         
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
-        
-        initServiceConnection();
+
+        serviceListener = new MediaPlayerServiceListener() {
+            @Override
+            public void onMediaPlayerStateChanged() {
+                updateUI();
+            }
+
+            @Override
+            public void onExceptionRaised(Exception ex) {
+                bindMediaPlayerService();
+            }
+        };
     }
     
     @Override
@@ -78,42 +90,28 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
     }
 
     @Override
-    public void onMediaPlayerStateChanged() {
-        updateUI();
-    }
-
-    @Override
-    public void onExceptionRaised(Exception ex) {
-        //Toast.makeText(getActivity(), "EXCEPTION", Toast.LENGTH_LONG).show();
-        initServiceConnection();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        if (mediaService != null) {
-            updateUI();
+        if (mediaService == null) {
+            bindMediaPlayerService();
         }
     }
-    
+
     @Override
-    public void onDestroy() {
+    public void onPause() {
+        super.onPause();
         if (mediaService != null) {
-            mediaService.unRegisterListener(this);
+            mediaService.unRegisterListener(serviceListener);
             getActivity().unbindService(myServiceConnection);
+            mediaService = null;
         }
-        
-        super.onDestroy();
     }
     
-    private void initServiceConnection() {
+    private void bindMediaPlayerService() {
         myServiceConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder binder) {
                 mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                registerToMediaService();
-                if(!mediaService.isPlaying()) {
-                    FetchLastPlayedSongs();
-                }
+                mediaService.registerListener(serviceListener);
                 updateUI();
             }
 
@@ -124,40 +122,7 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
 
         Intent intent = new Intent();
         intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        getActivity().startService(intent);
         getActivity().bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void FetchLastPlayedSongs() {
-        List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
-        String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
-
-        mediaService.loadSongs(songsID, lastSong);
-    }
-    
-    private void updateUI() {
-        Song currentSong = mediaService.getCurrentSong();
-
-        if (currentSong != null) {
-            isCurrentSongNull = false;
-            txtSongTitle.setText(currentSong.getTitle());
-
-            if (mediaService.isPlaying()) {
-                btnPlayPause.setImageResource(R.drawable.icon_pause);
-            } else {
-                btnPlayPause.setImageResource(R.drawable.icon_play);
-            }
-            btnPlayPause.setClickable(true);
-        } else {
-            isCurrentSongNull = true;
-            txtSongTitle.setText("---");
-            btnPlayPause.setImageResource(R.drawable.icon_play);
-            btnPlayPause.setClickable(false);
-        }
-    }
-
-    private void registerToMediaService() {
-        mediaService.registerListener(this);
     }
 
     private void initUI(View rootView) {
@@ -194,5 +159,26 @@ public class PlayFragment extends Fragment implements MediaPlayerServiceListener
                 mediaService.playAndPause();
             }
         });
+    }
+
+    private void updateUI() {
+        Song currentSong = mediaService.getCurrentSong();
+
+        if (currentSong != null) {
+            isCurrentSongNull = false;
+            txtSongTitle.setText(currentSong.getTitle());
+
+            if (mediaService.isPlaying()) {
+                btnPlayPause.setImageResource(R.drawable.icon_pause);
+            } else {
+                btnPlayPause.setImageResource(R.drawable.icon_play);
+            }
+            btnPlayPause.setClickable(true);
+        } else {
+            isCurrentSongNull = true;
+            txtSongTitle.setText("---");
+            btnPlayPause.setImageResource(R.drawable.icon_play);
+            btnPlayPause.setClickable(false);
+        }
     }
 }

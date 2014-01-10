@@ -39,7 +39,6 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
@@ -51,7 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class PlayActivity extends Activity implements OnClickListener, MediaPlayerServiceListener {
+public class PlayActivity extends Activity implements OnClickListener {
 
     private TextView txtTitle, txtArtist, txtAlbum, txtTimeCurrent, txtTimeTotal;
     private ImageButton btnSwitchRandom, btnSwitchRepeat, btnPlayAndPause;
@@ -59,9 +58,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
 
     private MediaPlayerService mediaService;
     private ServiceConnection myServiceConnection;
-
-    private String currentID;
-    private List<String> songsID;
+    private MediaPlayerServiceListener serviceListener;
 
     private Song currentSong;
     private Handler myHandler;
@@ -71,37 +68,73 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
+        serviceListener = new MediaPlayerServiceListener() {
+            @Override
+            public void onMediaPlayerStateChanged() {
+                updateUI();
+            }
+
+            @Override
+            public void onExceptionRaised(Exception ex) {
+                finish();
+            }
+        };
+
         initUI();
-
-        try {
-            Bundle bundle = this.getIntent().getExtras();
-            currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-            songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
-        } catch (Exception ex) {
-        }
-
-        initServiceConnection(savedInstanceState);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == SoundBoxApplication.PICK_SONG_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a song
-                Bundle bundle = data.getExtras();
-                currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-                songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
-                playBundleExtraSongs();
-            }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.play, menu);
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaService == null) {
+            bindMediaPlayerService();
         }
     }
 
-    private void initiRunnableSeekBar() {
-        myHandler = new Handler();
-        myHandler.removeCallbacks(moveSeekBarThread);
-        myHandler.postDelayed(moveSeekBarThread, 100);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaService != null) {
+            mediaService.unRegisterListener(serviceListener);
+            unbindService(myServiceConnection);
+            mediaService = null;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+
+        super.onBackPressed();
+    }
+
+    private void bindMediaPlayerService() {
+        myServiceConnection = new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder binder) {
+                mediaService = ((MediaPlayerService.MyBinder) binder).getService();
+
+                mediaService.registerListener(serviceListener);
+                updateUI();
+                initRunnableSeekBar();
+            }
+
+            public void onServiceDisconnected(ComponentName className) {
+                mediaService = null;
+            }
+        };
+
+        Intent intent = new Intent();
+        intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
+        bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void initUI() {
@@ -124,12 +157,10 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -143,43 +174,13 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
         });
     }
 
-    private void initServiceConnection(final Bundle savedInstanceState) {
-        myServiceConnection = new ServiceConnection() {
-            public void onServiceConnected(ComponentName className, IBinder binder) {
-                mediaService = ((MediaPlayerService.MyBinder) binder).getService();
-                if(savedInstanceState == null) {
-                    playBundleExtraSongs();
-                }
-
-                registerToMediaService();
-                updateUI();
-                initiRunnableSeekBar();
-            }
-
-            public void onServiceDisconnected(ComponentName className) {
-                mediaService = null;
-            }
-        };
-
-        Intent intent = new Intent();
-        intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        this.startService(intent);
-        this.bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.play, menu);
-        return true;
-    }
-
     @Override
     public void onClick(View v) {
         if(currentSong == null || mediaService == null) {
             finish();
             return;
         }
-        
+
         if (v.getId() == R.id.btnPlayPause) {
             mediaService.playAndPause();
         }
@@ -202,45 +203,14 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             Intent intent = new Intent();
             intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
 
-            Bundle b = new Bundle();
-            b.putString(BundleExtra.CURRENT_ID, currentSong.getID());
-            b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaService.getSongsIDList()));
-            b.putBoolean(SongsListFragment.START_FOR_RESULT, true);
-            intent.putExtras(b);
+            Bundle mExtras = new Bundle();
+            List<String> songsID = mediaService.getSongsIDList();
+            mExtras.putStringArrayList(BundleExtra.SONGS_ID_LIST, (ArrayList<String>)songsID);
+            String currentSongID = mediaService.getCurrentSong().getID();
+            mExtras.putString(BundleExtra.CURRENT_ID, currentSongID);
 
-            startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mediaService != null) {
-            mediaService.unRegisterListener(this);
-            unbindService(myServiceConnection);
-        }
-        
-        super.onDestroy();
-    }
-
-    @Override
-    public void onMediaPlayerStateChanged() {
-        updateUI();
-    }
-
-    @Override
-    public void onExceptionRaised(Exception ex) {
-       // Toast.makeText(this.getApplicationContext(), "Error raised on the media player service. PLAY ACTIVITY", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    private void registerToMediaService() {
-        mediaService.registerListener(this);
-    }
-
-    private void playBundleExtraSongs() {
-        if (songsID != null) {
-            mediaService.loadSongs(songsID, currentID);
-            mediaService.playAndPause();
+            intent.putExtras(mExtras);
+            startActivity(intent);
         }
     }
 
@@ -276,6 +246,12 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
             //Toast.makeText(this.getApplicationContext(), "Application unable to update the UI. "+ex.getMessage(), Toast.LENGTH_LONG).show();
             this.finish();
         }
+    }
+
+    private void initRunnableSeekBar() {
+        myHandler = new Handler();
+        myHandler.removeCallbacks(moveSeekBarThread);
+        myHandler.postDelayed(moveSeekBarThread, 100);
     }
 
     private int repeatStateIcon(RepeatState state) {
@@ -325,10 +301,7 @@ public class PlayActivity extends Activity implements OnClickListener, MediaPlay
                 txtTimeCurrent.setText(formatDuration(position));
                 seekBar.setProgress(position);
                 myHandler.postDelayed(this, 100);
-            }
-            catch (Exception ex) {
-                seekBar.setProgress(0);
-            }
+            } catch (Exception ex) { }
         }
     };
 

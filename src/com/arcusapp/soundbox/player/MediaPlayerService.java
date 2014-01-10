@@ -28,6 +28,7 @@ import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -45,6 +46,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     private static final String TAG = "MediaPlayerService";
     public static final String INCOMMING_CALL = "incomming_call";
+    public static final String PLAY_NEW_SONGS = "play_new_songs";
 
     private BroadcastReceiver headsetReceiver;
 
@@ -65,13 +67,23 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Check if this is an intent from the AudioBecomingNoisyHandler
-        if(intent != null && intent.getBooleanExtra(INCOMMING_CALL, false)) {
-            if (mediaPlayer != null) {
-                if(mediaPlayer.isPlaying()) {
-                    mediaPlayer.pause();
-                    isPlaying = false;
-                    fireListenersOnMediaPlayerStateChanged();
+        if(intent != null) {
+            if(intent.getBooleanExtra(INCOMMING_CALL, false)) {
+                if (mediaPlayer != null) {
+                    if(mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                        isPlaying = false;
+                        fireListenersOnMediaPlayerStateChanged();
+                    }
                 }
+            } else if(intent.getBooleanExtra(PLAY_NEW_SONGS, false)) {
+                Bundle bundle = intent.getExtras();
+                String currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+                List<String> songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+
+                loadSongs(songsID, currentID);
+                mediaPlayer.start();
+                isPlaying = true;
             }
         }
 
@@ -81,6 +93,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public void onCreate() {
+        super.onCreate();
+
         // Called when the Service object is instantiated. Theoretically, only once.
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
@@ -89,6 +103,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         if(currentListeners == null) {
             currentListeners = new ArrayList<MediaPlayerServiceListener>();
         }
+
+        FetchLastPlayedSongs();
+
         if(headsetReceiver == null) {
             headsetReceiver = new BroadcastReceiver() {
                 @Override
@@ -108,7 +125,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             };
             registerReceiver(headsetReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         }
-        super.onCreate();
     }
 
     @Override
@@ -132,7 +148,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public boolean onUnbind(Intent arg0) {
-        currentListeners = null;
         return true;
     }
 
@@ -147,8 +162,14 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             stopSelf();
             return;
         }
+
         if(!currentListeners.contains(listener) ) {
             currentListeners.add(listener);
+        }
+
+        if(!currentListeners.isEmpty()){
+            //dismiss the notification
+            stopForeground(true);
         }
     }
     
@@ -158,6 +179,19 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             return;
         }
         currentListeners.remove(listener);
+
+        if(currentListeners.isEmpty()){
+            //start the service as ForeGround so it keeps playing even if we close the app
+            MediaPlayerNotification notification = new MediaPlayerNotification();
+            startForeground(1337, notification.getNotification());
+        }
+    }
+
+    private void FetchLastPlayedSongs() {
+        List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
+        String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
+
+        loadSongs(songsID, lastSong);
     }
 
     public void loadSongs(List<String> songsID, String currentSongID) {
@@ -184,19 +218,12 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
         prepareMediaPlayer();
     }
+
     public Song getCurrentSong() {
         if (currentSongStack != null) {
             return currentSongStack.getCurrentSong();
         } else {
             return null;
-        }
-    }
-
-    public List<String> getSongsIDList() {
-        if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
-            return songsIDList;
-        } else {
-            return currentSongStack.getCurrentSongsIDList();
         }
     }
 
@@ -297,6 +324,14 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             playCurrentSong();
         } catch (Exception e) {
             fireListenersOnErrorRaised(e);
+        }
+    }
+
+    public List<String> getSongsIDList() {
+        if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
+            return songsIDList;
+        } else {
+            return currentSongStack.getCurrentSongsIDList();
         }
     }
 

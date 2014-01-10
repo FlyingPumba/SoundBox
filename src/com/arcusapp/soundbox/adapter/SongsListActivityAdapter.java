@@ -37,6 +37,7 @@ import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
+import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 
 import java.util.ArrayList;
@@ -53,15 +54,13 @@ public class SongsListActivityAdapter extends BaseAdapter {
 
     private String focusedID;
     private boolean hasHeader;
-    private boolean startForResult;
 
-    public SongsListActivityAdapter(Activity activity, String focusedID, List<String> songsID, boolean hasHeader, boolean startForResult) {
+    public SongsListActivityAdapter(Activity activity, String focusedID, List<String> songsID, boolean hasHeader) {
         mActivity = activity;
         mediaProvider = new MediaProvider();
         mediaEntryHelper = new MediaEntryHelper<SongEntry>();
 
         this.hasHeader = hasHeader;
-        this.startForResult = startForResult;
 
         List<SongEntry> temp_songs = mediaProvider.getValueFromSongs(songsID, projection);
         songs = new ArrayList<SongEntry>();
@@ -80,8 +79,9 @@ public class SongsListActivityAdapter extends BaseAdapter {
     }
 
     public void onSongClick(int position) {
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        //call the service to play new songs
+        Intent serviceIntent = new Intent();
+        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
 
         int finalpos = position;
         if (hasHeader) {
@@ -91,15 +91,16 @@ public class SongsListActivityAdapter extends BaseAdapter {
         Bundle b = new Bundle();
         b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID().toString());
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
+        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
-        playActivityIntent.putExtras(b);
+        serviceIntent.putExtras(b);
+        mActivity.startService(serviceIntent);
 
-        if(startForResult) {
-            mActivity.setResult(Activity.RESULT_OK, playActivityIntent);
-            mActivity.finish();
-        } else {
-            mActivity.startActivity(playActivityIntent);
-        }
+        //start the playActivity
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        mActivity.startActivity(playActivityIntent);
     }
 
     public int getFocusedIDPosition() {

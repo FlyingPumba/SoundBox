@@ -60,6 +60,11 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //start the MediaPlayerService
+        Intent intent = new Intent();
+        intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
+        startService(intent);
+
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -99,24 +104,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == SoundBoxApplication.PICK_SONG_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a song
-                Bundle bundle = data.getExtras();
-
-                Intent playActivityIntent = new Intent();
-                playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-
-                playActivityIntent.putExtras(bundle);
-                startActivity(playActivityIntent);
-            }
-        }
     }
 
     @Override
@@ -167,7 +154,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
                         Bundle bundle = new Bundle();
                         bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
                         bundle.putBoolean(SongsListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
-                        bundle.putBoolean(SongsListFragment.START_FOR_RESULT, false);
 
                         mSongsListFragment = new SongsListFragment();
                         mSongsListFragment.setArguments(bundle);

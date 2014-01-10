@@ -36,6 +36,7 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,28 +63,44 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
     }
 
     public void onArtistLongClick(int position) {
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        //call the service to play new songs
+        Intent serviceIntent = new Intent();
+        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
 
         Bundle b = new Bundle();
         List<String> ids = mediaProvider.getSongsFromArtist(mArtists.get(position));
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(ids));
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-        playActivityIntent.putExtras(b);
+        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
+        serviceIntent.putExtras(b);
+        mActivity.startService(serviceIntent);
+
+        //start the playActivity
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         mActivity.startActivity(playActivityIntent);
     }
 
     public void onAlbumLongClick(int groupPosition, int childPosition) {
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        //call the service to play new songs
+        Intent serviceIntent = new Intent();
+        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
 
         Bundle b = new Bundle();
         List<String> ids = mediaProvider.getSongsFromAlbum(mAlbums.get(groupPosition).get(childPosition));
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(ids));
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-        playActivityIntent.putExtras(b);
+        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
+        serviceIntent.putExtras(b);
+        mActivity.startService(serviceIntent);
+
+        //start the playActivity
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         mActivity.startActivity(playActivityIntent);
     }
 
@@ -97,7 +114,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
         intent.putExtras(b);
 
-        mActivity.startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
+        mActivity.startActivity(intent);
     }
 
     @Override

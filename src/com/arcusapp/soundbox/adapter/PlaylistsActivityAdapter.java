@@ -35,6 +35,7 @@ import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.PlaylistEntry;
+import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,22 +63,29 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
         intent.putExtras(b);
 
-        mActivity.startActivityForResult(intent, SoundBoxApplication.PICK_SONG_REQUEST);
+        mActivity.startActivity(intent);
     }
 
     public void onPlaylistLongClick(int position) {
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        //call the service to play new songs
+        Intent serviceIntent = new Intent();
+        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
 
         Bundle b = new Bundle();
-
         // we play directly the playlist so we dont have a specific first song
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
 
         String playlistID = playlists.get(position).getID();
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
+        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
-        playActivityIntent.putExtras(b);
+        serviceIntent.putExtras(b);
+        mActivity.startService(serviceIntent);
+
+        //start the playActivity
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         mActivity.startActivity(playActivityIntent);
     }
 

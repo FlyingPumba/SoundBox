@@ -41,11 +41,4 @@ public class SongsListActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.songs_list, menu);
         return true;
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(RESULT_CANCELED, returnIntent);
-        finish();
-    }
 }

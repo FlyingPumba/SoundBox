@@ -44,7 +44,6 @@ import java.util.List;
 public class SongsListFragment extends Fragment {
 
     public static String ADD_PLAYALLRANDOM_BUTTON = "addRandomButton";
-    public static String START_FOR_RESULT = "startforresult";
 
     ListView myListView;
     private SongsListActivityAdapter myAdapter;
@@ -59,21 +58,18 @@ public class SongsListFragment extends Fragment {
         // try to get the bundle from the arguments
         Bundle bundleArg = getArguments();
         Bundle bundleInt = getActivity().getIntent().getExtras();
-        boolean startForResult = false;
 
         if (bundleInt != null) {
             focusedElementID = BundleExtra.getBundleString(bundleInt, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
             songsIDs = bundleInt.getStringArrayList(BundleExtra.SONGS_ID_LIST);
             addRandomButton = bundleInt.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
-            startForResult = bundleInt.getBoolean(START_FOR_RESULT, false);
         } else {
             focusedElementID = BundleExtra.getBundleString(bundleArg, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
             songsIDs = bundleArg.getStringArrayList(BundleExtra.SONGS_ID_LIST);
             addRandomButton = bundleArg.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
-            startForResult = bundleArg.getBoolean(START_FOR_RESULT, false);
         }
 
-        myAdapter = new SongsListActivityAdapter(this.getActivity(), focusedElementID, songsIDs, addRandomButton, startForResult);
+        myAdapter = new SongsListActivityAdapter(this.getActivity(), focusedElementID, songsIDs, addRandomButton);
     }
 
     @Override
