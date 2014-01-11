@@ -36,6 +36,7 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.adapter.SongsListActivityAdapter;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,16 +108,24 @@ public class SongsListFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Intent playActivityIntent = new Intent();
-                playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-
-                Collections.shuffle(songsIDs);
+                //call the service to play new songs
+                Intent serviceIntent = new Intent();
+                serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
 
                 Bundle b = new Bundle();
+                Collections.shuffle(songsIDs);
                 b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(songsIDs));
+                b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+                b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
-                playActivityIntent.putExtras(b);
-                startActivity(playActivityIntent);
+                serviceIntent.putExtras(b);
+                getActivity().startService(serviceIntent);
+
+                //start the playActivity
+                Intent playActivityIntent = new Intent();
+                playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+                playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                getActivity().startActivity(playActivityIntent);
             }
         });
 
