@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.SoundBoxApplication;
 
 public class SongsListActivity extends FragmentActivity {
 
@@ -40,5 +41,17 @@ public class SongsListActivity extends FragmentActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.songs_list, menu);
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SoundBoxApplication.notifyForegroundStateChanged(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SoundBoxApplication.notifyForegroundStateChanged(false);
     }
 }

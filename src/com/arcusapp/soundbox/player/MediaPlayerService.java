@@ -47,6 +47,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private static final String TAG = "MediaPlayerService";
     public static final String INCOMMING_CALL = "incomming_call";
     public static final String PLAY_NEW_SONGS = "play_new_songs";
+    public static final String NOW_IN_FOREGROUND = "now_in_foreground";
 
     private BroadcastReceiver headsetReceiver;
 
@@ -62,6 +63,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private MediaPlayer mediaPlayer;
     private List<MediaPlayerServiceListener> currentListeners;
     private final IBinder mBinder = new MyBinder();
+
+    private boolean isOnForeground = false;
 
     // Called every time a client starts the service using startService
     @Override
@@ -84,6 +87,17 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 loadSongs(songsID, currentID);
                 mediaPlayer.start();
                 isPlaying = true;
+            }
+
+            boolean nowInForeground = intent.getBooleanExtra(NOW_IN_FOREGROUND, false);
+
+            if(isOnForeground && !nowInForeground) {
+                stopForeground(true);
+                isOnForeground = false;
+            } else if (!isOnForeground && nowInForeground && isPlaying) {
+                MediaPlayerNotification notification = new MediaPlayerNotification();
+                startForeground(1337, notification.getNotification());
+                isOnForeground = true;
             }
         }
 
@@ -166,11 +180,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         if(!currentListeners.contains(listener) ) {
             currentListeners.add(listener);
         }
-
-        if(!currentListeners.isEmpty()){
-            //dismiss the notification
-            stopForeground(true);
-        }
     }
     
     public void unRegisterListener(MediaPlayerServiceListener listener) {
@@ -179,12 +188,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             return;
         }
         currentListeners.remove(listener);
-
-        if(currentListeners.isEmpty()){
-            //start the service as ForeGround so it keeps playing even if we close the app
-            MediaPlayerNotification notification = new MediaPlayerNotification();
-            startForeground(1337, notification.getNotification());
-        }
     }
 
     private void FetchLastPlayedSongs() {

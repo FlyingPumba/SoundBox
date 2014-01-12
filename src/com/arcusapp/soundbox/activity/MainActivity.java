@@ -100,6 +100,18 @@ public class MainActivity extends ActionBarActivity implements android.support.v
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SoundBoxApplication.notifyForegroundStateChanged(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SoundBoxApplication.notifyForegroundStateChanged(false);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);

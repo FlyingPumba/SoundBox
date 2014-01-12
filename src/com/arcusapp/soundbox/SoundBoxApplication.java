@@ -22,9 +22,11 @@ package com.arcusapp.soundbox;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Environment;
 
+import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.DirectoryHelper;
 
 import java.io.File;
@@ -45,9 +47,9 @@ public class SoundBoxApplication extends Application {
     public static final String ACTION_PLAYLISTS_ACTIVITY = "com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY";
     public static final String ACTION_MEDIA_PLAYER_SERVICE = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE";
 
-    public static final int PICK_SONG_REQUEST = 1;
-
     private static List<File> sdCards;
+
+    private static int mForegroundActivities = 0;
 
     @Override
     public void onCreate() {
@@ -59,6 +61,23 @@ public class SoundBoxApplication extends Application {
 
     public static Context getContext() {
         return appContext;
+    }
+
+    public static void notifyForegroundStateChanged(boolean inForeground) {
+        int old = mForegroundActivities;
+        if (inForeground) {
+            mForegroundActivities++;
+        } else {
+            mForegroundActivities--;
+        }
+
+        if (old == 0 || mForegroundActivities == 0) {
+            Intent intent = new Intent();
+            intent.setAction(ACTION_MEDIA_PLAYER_SERVICE);
+            intent.putExtra(MediaPlayerService.NOW_IN_FOREGROUND, mForegroundActivities == 0);
+            appContext.startService(intent);
+        }
+
     }
 
     public static List<File> getSDCards() {

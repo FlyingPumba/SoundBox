@@ -90,6 +90,12 @@ public class PlayActivity extends Activity implements OnClickListener {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SoundBoxApplication.notifyForegroundStateChanged(true);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (mediaService == null) {
@@ -105,6 +111,12 @@ public class PlayActivity extends Activity implements OnClickListener {
             unbindService(myServiceConnection);
             mediaService = null;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SoundBoxApplication.notifyForegroundStateChanged(false);
     }
 
     @Override
