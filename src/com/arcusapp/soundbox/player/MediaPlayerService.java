@@ -357,6 +357,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         prepareMediaPlayer();
         mediaPlayer.start();
         isPlaying = true;
+        fireListenersOnMediaPlayerStateChanged();
     }
 
     private void prepareMediaPlayer() {
