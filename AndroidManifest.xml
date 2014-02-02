@@ -47,9 +47,15 @@
             android:label="@string/app_name"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
+                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE.TOGGLEPLAYPAUSE" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.PRVIOUS" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.NEXT" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.STOP" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.INCOMMING_CALL" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.PLAY_NEW_SONGS" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.CHANGE_FOREGROUND_STATE" />
             </intent-filter>
         </service>
 

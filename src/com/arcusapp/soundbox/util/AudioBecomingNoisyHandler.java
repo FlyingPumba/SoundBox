@@ -48,8 +48,7 @@ public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver
 
     private void initServiceconnectionAndPause() {
         Intent intent = new Intent();
-        intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        intent.putExtra(MediaPlayerService.INCOMMING_CALL, true);
+        intent.setAction(MediaPlayerService.INCOMMING_CALL);
         context.startService(intent);
     }
 

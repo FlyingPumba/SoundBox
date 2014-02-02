@@ -37,6 +37,7 @@ import com.arcusapp.soundbox.fragment.ArtistsFragment;
 import com.arcusapp.soundbox.fragment.PlaylistsFragment;
 import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.ArrayList;
 
@@ -61,9 +62,13 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         setContentView(R.layout.activity_main);
 
         //start the MediaPlayerService
-        Intent intent = new Intent();
+
+        Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
+        startService(serviceIntent);
+
+        /*Intent intent = new Intent();
         intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        startService(intent);
+        startService(intent);*/
 
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();

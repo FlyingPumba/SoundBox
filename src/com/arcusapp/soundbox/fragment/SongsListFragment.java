@@ -108,24 +108,22 @@ public class SongsListFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //call the service to play new songs
-                Intent serviceIntent = new Intent();
-                serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-
-                Bundle b = new Bundle();
-                Collections.shuffle(songsIDs);
-                b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(songsIDs));
-                b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-                b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
-
-                serviceIntent.putExtras(b);
-                getActivity().startService(serviceIntent);
-
                 //start the playActivity
                 Intent playActivityIntent = new Intent();
                 playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
                 playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 getActivity().startActivity(playActivityIntent);
+
+                //call the service to play new songs
+                Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
+
+                Bundle b = new Bundle();
+                Collections.shuffle(songsIDs);
+                b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(songsIDs));
+                b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+
+                serviceIntent.putExtras(b);
+                getActivity().startService(serviceIntent);
             }
         });
 

@@ -20,6 +20,7 @@
 
 package com.arcusapp.soundbox.player;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -45,9 +46,19 @@ import java.util.List;
 public class MediaPlayerService extends Service implements OnCompletionListener {
 
     private static final String TAG = "MediaPlayerService";
-    public static final String INCOMMING_CALL = "incomming_call";
-    public static final String PLAY_NEW_SONGS = "play_new_songs";
+    public static final String INCOMMING_CALL = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE.INCOMMING_CALL";
+    public static final String PLAY_NEW_SONGS = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE.PLAY_NEW_SONGS";
+    public static final String CHANGE_FOREGROUND_STATE = "com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.CHANGE_FOREGROUND_STATE";
     public static final String NOW_IN_FOREGROUND = "now_in_foreground";
+
+    /**
+     * Possible actions that can be called from the MediaPlayerNotification
+     */
+    public static final String TOGGLEPLAYPAUSE_ACTION = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE.TOGGLEPLAYPAUSE";
+    public static final String PREVIOUS_ACTION = "com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.PRVIOUS";
+    public static final String NEXT_ACTION = "com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.NEXT";
+    public static final String STOP_ACTION = "com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.STOP";
+
 
     private BroadcastReceiver headsetReceiver;
 
@@ -65,44 +76,74 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private final IBinder mBinder = new MyBinder();
 
     private boolean isOnForeground = false;
+    MediaPlayerNotification mNotification;
 
     // Called every time a client starts the service using startService
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Check if this is an intent from the AudioBecomingNoisyHandler
+
         if(intent != null) {
-            if(intent.getBooleanExtra(INCOMMING_CALL, false)) {
-                if (mediaPlayer != null) {
-                    if(mediaPlayer.isPlaying()) {
-                        mediaPlayer.pause();
-                        isPlaying = false;
-                        fireListenersOnMediaPlayerStateChanged();
-                    }
-                }
-            } else if(intent.getBooleanExtra(PLAY_NEW_SONGS, false)) {
-                Bundle bundle = intent.getExtras();
-                String currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-                List<String> songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
-
-                loadSongs(songsID, currentID);
-                mediaPlayer.start();
-                isPlaying = true;
-            }
-
-            boolean nowInForeground = intent.getBooleanExtra(NOW_IN_FOREGROUND, false);
-
-            if(isOnForeground && !nowInForeground) {
-                stopForeground(true);
-                isOnForeground = false;
-            } else if (!isOnForeground && nowInForeground && isPlaying) {
-                MediaPlayerNotification notification = new MediaPlayerNotification();
-                startForeground(1337, notification.getNotification());
-                isOnForeground = true;
-            }
+            handleCommandIntent(intent);
         }
 
         // We want this service to continue running until it is explicitly stopped, so return sticky.
         return Service.START_STICKY;
+    }
+
+    private void handleCommandIntent(Intent intent) {
+        String action = intent.getAction();
+
+        // Check if this is an intent from the AudioBecomingNoisyHandler
+        if(INCOMMING_CALL.equals(action)) {
+            if (mediaPlayer != null) {
+                if(mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    isPlaying = false;
+                    fireListenersOnMediaPlayerStateChanged();
+                }
+            }
+        } // Check if we have a request to play new songs
+        else if(PLAY_NEW_SONGS.equals(action)) {
+            Bundle bundle = intent.getExtras();
+            String currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+            List<String> songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+
+            loadSongs(songsID, currentID);
+            mediaPlayer.start();
+            isPlaying = true;
+        } // Check if the foreground state needs to be changed
+        else if (CHANGE_FOREGROUND_STATE.equals(action)) {
+            boolean nowInForeground = intent.getBooleanExtra(NOW_IN_FOREGROUND, false);
+            if(isOnForeground && !nowInForeground) {
+                stopForeground(true);
+                isOnForeground = false;
+            } else if (!isOnForeground && nowInForeground) {
+                // check if we are playing. In case we are not, stop the service
+                if(isPlaying) {
+                    Song currentSong = getCurrentSong();
+                    Notification notification = mNotification.getNotification(currentSong.getArtist(), currentSong.getAlbum(), currentSong.getTitle(), isPlaying);
+                    startForeground(MediaPlayerNotification.MEDIA_PLAYER_NOTIFICATION_ID, notification);
+                    isOnForeground = true;
+                } else {
+                    stopSelf();
+                }
+
+            }
+        }
+
+        //Check if there is an action from the MediaPlayerNotification
+        if(isOnForeground) {
+            if(TOGGLEPLAYPAUSE_ACTION.equals(action)) {
+                playAndPause();
+            } else if(NEXT_ACTION.equals(action)) {
+                playNextSong();
+            } else if(PREVIOUS_ACTION.equals(action)) {
+                playPreviousSong();
+            } else if(STOP_ACTION.equals(action)) {
+                stopForeground(true);
+                stopSelf();
+            }
+        }
     }
 
     @Override
@@ -116,6 +157,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
         if(currentListeners == null) {
             currentListeners = new ArrayList<MediaPlayerServiceListener>();
+        }
+        if(mNotification == null){
+            mNotification = new MediaPlayerNotification();
         }
 
         FetchLastPlayedSongs();
@@ -380,12 +424,15 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
     
     private void fireListenersOnMediaPlayerStateChanged() {
-        if(currentListeners == null){
-            stopSelf();
-            return;
+        if(currentListeners != null){
+            for (MediaPlayerServiceListener listener : currentListeners) {
+                listener.onMediaPlayerStateChanged();
+            }
         }
-        for (MediaPlayerServiceListener listener : currentListeners) {
-            listener.onMediaPlayerStateChanged();            
+        // if we are playing on foreground, update the notification
+        if(isOnForeground) {
+            Song currentSong = getCurrentSong();
+            mNotification.updateNotification(currentSong.getArtist(), currentSong.getAlbum(), currentSong.getTitle(), isPlaying);
         }
     }
 
@@ -396,6 +443,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
         for (MediaPlayerServiceListener listener : currentListeners) {
             listener.onExceptionRaised(ex);            
+        }
+        if(isOnForeground) {
+            stopForeground(true);
         }
     }
 }

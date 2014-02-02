@@ -11,8 +11,14 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
         android:layout_toLeftOf="@+id/fragmentPlay.btnPlayPause"
-        android:textSize="17sp" />
+        style="@android:style/TextAppearance.Large">
+    </TextView>
 
     <ImageButton
         android:id="@+id/fragmentPlay.btnPlayPause"

@@ -139,6 +139,7 @@ public class PlayFragment extends Fragment {
         });
 
         txtSongTitle = (TextView) rootView.findViewById(R.id.fargmentPlay_txtSongTitle);
+        txtSongTitle.setSelected(true);
         txtSongTitle.setTypeface(null, Typeface.BOLD);
         txtSongTitle.setOnClickListener(new OnClickListener() {
 
@@ -166,7 +167,14 @@ public class PlayFragment extends Fragment {
 
         if (currentSong != null) {
             isCurrentSongNull = false;
-            txtSongTitle.setText(currentSong.getTitle());
+
+            // Check if the song changed before setting the new text
+            // This way we don't interrupt the marquee.
+            String newTitle = currentSong.getTitle();
+            String oldTitle = txtSongTitle.getText().toString();
+            if(!oldTitle.equals(newTitle)) {
+                txtSongTitle.setText(currentSong.getTitle());
+            }
 
             if (mediaService.isPlaying()) {
                 btnPlayPause.setImageResource(R.drawable.icon_pause);
