@@ -1,6 +1,6 @@
 /*
  * SoundBox - Android Music Player
- * Copyright (C) 2013  Iván Arcuschin Moreno
+ * Copyright (C) 2013 Iván Arcuschin Moreno
  *
  * This file is part of SoundBox.
  *
