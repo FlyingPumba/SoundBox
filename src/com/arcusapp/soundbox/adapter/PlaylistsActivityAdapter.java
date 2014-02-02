@@ -67,9 +67,14 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
     }
 
     public void onPlaylistLongClick(int position) {
+        //start the playActivity
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        mActivity.startActivity(playActivityIntent);
+
         //call the service to play new songs
-        Intent serviceIntent = new Intent();
-        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
+        Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
 
         Bundle b = new Bundle();
         // we play directly the playlist so we dont have a specific first song
@@ -77,16 +82,9 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
 
         String playlistID = playlists.get(position).getID();
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
-        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
         serviceIntent.putExtras(b);
         mActivity.startService(serviceIntent);
-
-        //start the playActivity
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        mActivity.startActivity(playActivityIntent);
     }
 
     @Override

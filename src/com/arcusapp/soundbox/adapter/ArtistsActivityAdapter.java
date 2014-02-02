@@ -63,45 +63,41 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
     }
 
     public void onArtistLongClick(int position) {
+        //start the playActivity
+        Intent playActivityIntent = new Intent();
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        mActivity.startActivity(playActivityIntent);
+
         //call the service to play new songs
-        Intent serviceIntent = new Intent();
-        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
+        Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
 
         Bundle b = new Bundle();
         List<String> ids = mediaProvider.getSongsFromArtist(mArtists.get(position));
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(ids));
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
         serviceIntent.putExtras(b);
         mActivity.startService(serviceIntent);
+    }
 
+    public void onAlbumLongClick(int groupPosition, int childPosition) {
         //start the playActivity
         Intent playActivityIntent = new Intent();
         playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
         playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         mActivity.startActivity(playActivityIntent);
-    }
 
-    public void onAlbumLongClick(int groupPosition, int childPosition) {
         //call the service to play new songs
-        Intent serviceIntent = new Intent();
-        serviceIntent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
+        Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
 
         Bundle b = new Bundle();
         List<String> ids = mediaProvider.getSongsFromAlbum(mAlbums.get(groupPosition).get(childPosition));
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(ids));
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-        b.putBoolean(MediaPlayerService.PLAY_NEW_SONGS, true);
 
         serviceIntent.putExtras(b);
         mActivity.startService(serviceIntent);
-
-        //start the playActivity
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        mActivity.startActivity(playActivityIntent);
     }
 
     public void onAlbumClick(int groupPosition, int childPosition) {

@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  SoundBox - Android Music Player
+  Copyright (C) 2013 Iván Arcuschin Moreno
+
+  This file is part of SoundBox.
+
+  SoundBox is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  SoundBox is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arcusapp.soundbox"
     android:installLocation="preferExternal"
@@ -27,9 +47,15 @@
             android:label="@string/app_name"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE" />
+                <action android:name="com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE.TOGGLEPLAYPAUSE" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.PRVIOUS" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.NEXT" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.STOP" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.INCOMMING_CALL" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.PLAY_NEW_SONGS" />
+                <action android:name="com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.CHANGE_FOREGROUND_STATE" />
             </intent-filter>
         </service>
 

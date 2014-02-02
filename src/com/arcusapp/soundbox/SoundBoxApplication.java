@@ -41,10 +41,8 @@ public class SoundBoxApplication extends Application {
 
     public static final String ACTION_MAIN_ACTIVITY = "com.arcusapp.soundbox.action.MAIN_ACTIVITY";
     public static final String ACTION_FOLDERS_ACTIVITY = "com.arcusapp.soundbox.action.FOLDERS_ACTIVITY";
-    public static final String ACTION_ARTISTS_ACTIVITY = "com.arcusapp.soundbox.action.ARTISTS_ACTIVITY";
     public static final String ACTION_PLAY_ACTIVITY = "com.arcusapp.soundbox.action.PLAY_ACTIVITY";
     public static final String ACTION_SONGSLIST_ACTIVITY = "com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY";
-    public static final String ACTION_PLAYLISTS_ACTIVITY = "com.arcusapp.soundbox.action.PLAYLISTS_ACTIVITY";
     public static final String ACTION_MEDIA_PLAYER_SERVICE = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE";
 
     private static List<File> sdCards;
@@ -73,7 +71,7 @@ public class SoundBoxApplication extends Application {
 
         if (old == 0 || mForegroundActivities == 0) {
             Intent intent = new Intent();
-            intent.setAction(ACTION_MEDIA_PLAYER_SERVICE);
+            intent.setAction(MediaPlayerService.CHANGE_FOREGROUND_STATE);
             intent.putExtra(MediaPlayerService.NOW_IN_FOREGROUND, mForegroundActivities == 0);
             appContext.startService(intent);
         }
