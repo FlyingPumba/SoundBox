@@ -68,8 +68,8 @@
 
     <ImageButton
         android:id="@+id/notificationBasePlay"
-        android:layout_height="32dip"
-        android:layout_width="32dip"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
         android:scaleType="fitCenter"
         android:gravity="center"
         style="@style/icon"
@@ -77,8 +77,8 @@
 
     <ImageButton
         android:id="@+id/notificationBaseNext"
-        android:layout_height="32dip"
-        android:layout_width="32dip"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
         android:scaleType="fitCenter"
         android:gravity="center"
         style="@style/icon"
@@ -86,8 +86,8 @@
 
     <ImageButton
         android:id="@+id/notificationBaseCollapse"
-        android:layout_height="32dip"
-        android:layout_width="32dip"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
         android:scaleType="fitCenter"
         android:gravity="center"
         style="@style/icon"

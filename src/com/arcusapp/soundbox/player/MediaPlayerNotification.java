@@ -47,12 +47,6 @@ public class MediaPlayerNotification {
         mNotificationManager = (NotificationManager)SoundBoxApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(SoundBoxApplication.getContext());
         mNotificationBuilder.setSmallIcon(R.drawable.icon_soundbox);
-        //Bitmap largeIcon = BitmapFactory.decodeResource(SoundBoxApplication.getContext().getResources(), R.drawable.icon_soundbox);
-        //mNotificationBuilder.setLargeIcon(largeIcon);
-
-        //Pause the music when the user swipes out the notification
-        //PendingIntent deletePendingIntent = PendingIntent.getActivity(SoundBoxApplication.getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //mNotificationBuilder.setDeleteIntent(deletePendingIntent);
 
         //mNotificationBuilder.setContentTitle("SoundBox is awesome.");
         //mNotificationBuilder.setContentText("You are awesome too !");
@@ -72,9 +66,13 @@ public class MediaPlayerNotification {
         mBaseView.setImageViewResource(R.id.notificationBasePlay,
                     isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
 
-        mNotificationBuilder.setContent(mBaseView);
+        // Compat builder ignores: mNotificationBuilder.setContent(mBaseView);
+        // Workaround to possible support library bug:
+        // http://stackoverflow.com/questions/12574386/custom-notification-layout-dont-work-on-android-2-3-or-lower
+        Notification noti = mNotificationBuilder.build();
+        noti.contentView = mBaseView;
 
-        mNotificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, mNotificationBuilder.build());
+        mNotificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, noti);
     }
 
     public Notification getNotification(String artistName, String albumName,
@@ -86,9 +84,12 @@ public class MediaPlayerNotification {
         mBaseView.setImageViewResource(R.id.notificationBasePlay,
                 isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
 
-        mNotificationBuilder.setContent(mBaseView);
+        //mNotificationBuilder.setContent(mBaseView);
 
-        return mNotificationBuilder.build();
+        Notification noti = mNotificationBuilder.build();
+        noti.contentView = mBaseView;
+
+        return noti;
     }
 
     private void setUpMediaPlayerActions() {
