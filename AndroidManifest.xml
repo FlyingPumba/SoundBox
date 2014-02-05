@@ -22,8 +22,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arcusapp.soundbox"
     android:installLocation="preferExternal"
-    android:versionCode="6"
-    android:versionName="algebraic">
+    android:versionCode="7"
+    android:versionName="bananaguard">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
