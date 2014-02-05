@@ -23,12 +23,11 @@ package com.arcusapp.soundbox.player;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.arcusapp.soundbox.R;
@@ -60,11 +59,7 @@ public class MediaPlayerNotification {
     public void updateNotification(String artistName, String albumName,
                                    String songName, boolean isPlaying) {
 
-        mBaseView.setImageViewResource(R.id.notificationBaseIcon, R.drawable.icon_soundbox);
-        mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
-        mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
-        mBaseView.setImageViewResource(R.id.notificationBasePlay,
-                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
+        updateRemoteViews(artistName, albumName, songName, isPlaying);
 
         // Compat builder ignores: mNotificationBuilder.setContent(mBaseView);
         // Workaround to possible support library bug:
@@ -77,19 +72,31 @@ public class MediaPlayerNotification {
 
     public Notification getNotification(String artistName, String albumName,
                                         String songName, boolean isPlaying) {
-        mBaseView.setImageViewResource(R.id.notificationBaseIcon, R.drawable.icon_soundbox);
 
-        mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
-        mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
-        mBaseView.setImageViewResource(R.id.notificationBasePlay,
-                isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
-
+        updateRemoteViews(artistName, albumName, songName, isPlaying);
         //mNotificationBuilder.setContent(mBaseView);
-
         Notification noti = mNotificationBuilder.build();
         noti.contentView = mBaseView;
 
         return noti;
+    }
+
+    private void updateRemoteViews(String artistName, String albumName,
+                                   String songName, boolean isPlaying) {
+        mBaseView.setImageViewResource(R.id.notificationBaseIcon, R.drawable.icon_soundbox);
+
+        mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
+        mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mBaseView.setImageViewResource(R.id.notificationBasePlay,
+                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
+        } else {
+            mBaseView.setViewVisibility(R.id.notificationBasePlay, View.GONE);
+            mBaseView.setViewVisibility(R.id.notificationBaseNext, View.GONE);
+            mBaseView.setViewVisibility(R.id.notificationBaseCollapse, View.GONE);
+        }
+
     }
 
     private void setUpMediaPlayerActions() {
