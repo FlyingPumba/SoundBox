@@ -66,6 +66,7 @@ public class MediaPlayerNotification {
         // http://stackoverflow.com/questions/12574386/custom-notification-layout-dont-work-on-android-2-3-or-lower
         Notification noti = mNotificationBuilder.build();
         noti.contentView = mBaseView;
+        noti.bigContentView = mExpandedView;
 
         mNotificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, noti);
     }
@@ -74,21 +75,32 @@ public class MediaPlayerNotification {
                                         String songName, boolean isPlaying) {
 
         updateRemoteViews(artistName, albumName, songName, isPlaying);
-        //mNotificationBuilder.setContent(mBaseView);
+
         Notification noti = mNotificationBuilder.build();
         noti.contentView = mBaseView;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            noti.bigContentView = mExpandedView;
+        }
 
         return noti;
     }
 
     private void updateRemoteViews(String artistName, String albumName,
                                    String songName, boolean isPlaying) {
-        mBaseView.setImageViewResource(R.id.notificationBaseIcon, R.drawable.icon_soundbox);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mExpandedView.setTextViewText(R.id.notificationExpandedSongName, songName);
+            mExpandedView.setTextViewText(R.id.notificationExpandedArtistName, artistName);
+            mExpandedView.setTextViewText(R.id.notificationExpandedAlbumName, albumName);
+            mExpandedView.setImageViewResource(R.id.notificationExpandedPlay,
+                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
+            mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
+            mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
+            mBaseView.setImageViewResource(R.id.notificationBasePlay,
+                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
 
-        mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
-        mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
+            mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
             mBaseView.setImageViewResource(R.id.notificationBasePlay,
                     isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
         } else {
@@ -96,7 +108,6 @@ public class MediaPlayerNotification {
             mBaseView.setViewVisibility(R.id.notificationBaseNext, View.GONE);
             mBaseView.setViewVisibility(R.id.notificationBaseCollapse, View.GONE);
         }
-
     }
 
     private void setUpMediaPlayerActions() {
@@ -107,16 +118,23 @@ public class MediaPlayerNotification {
         mNotificationBuilder.setContentIntent(clickPendingIntent);
 
         Intent togglePlayPauseIntent = new Intent(MediaPlayerService.TOGGLEPLAYPAUSE_ACTION, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
-        PendingIntent togglePlayPausePendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 2, togglePlayPauseIntent, 0);
+        PendingIntent togglePlayPausePendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 2, togglePlayPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBaseView.setOnClickPendingIntent(R.id.notificationBasePlay, togglePlayPausePendingIntent);
+        mExpandedView.setOnClickPendingIntent(R.id.notificationExpandedPlay, togglePlayPausePendingIntent);
 
         Intent nextIntent = new Intent(MediaPlayerService.NEXT_ACTION, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
-        PendingIntent nextPendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 3, nextIntent, 0);
+        PendingIntent nextPendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 3, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBaseView.setOnClickPendingIntent(R.id.notificationBaseNext, nextPendingIntent);
+        mExpandedView.setOnClickPendingIntent(R.id.notificationExpandedNext, nextPendingIntent);
 
         Intent collapseIntent = new Intent(MediaPlayerService.STOP_ACTION, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
-        PendingIntent collapsePendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 4, collapseIntent, 0);
+        PendingIntent collapsePendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 4, collapseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBaseView.setOnClickPendingIntent(R.id.notificationBaseCollapse, collapsePendingIntent);
+        mExpandedView.setOnClickPendingIntent(R.id.notificationExpandedCollapse, collapsePendingIntent);
+
+        Intent previousIntent = new Intent(MediaPlayerService.PREVIOUS_ACTION, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
+        PendingIntent previousPendingIntent = PendingIntent.getService(SoundBoxApplication.getContext(), 5, previousIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mExpandedView.setOnClickPendingIntent(R.id.notificationExpandedPrevious, previousPendingIntent);
     }
 
 }
