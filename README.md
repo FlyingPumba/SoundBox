@@ -3,7 +3,7 @@
 
 ####Open Source Android Music Player.
 
-SoundBox is designed to have a minimalistic and funcitonal philosophy. With a smooth and simple UI, while very easy to use. No images for the album covers, neither weird mosaic presentations and, of course, no adds.
+SoundBox is designed to have a minimalistic and functional philosophy. With a smooth and simple UI, while very easy to use. No images for the album covers, neither weird mosaic presentations and, of course, no adds.
 
 ## How to contribute:
 
