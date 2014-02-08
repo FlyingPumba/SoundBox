@@ -45,7 +45,7 @@ public class MediaPlayerNotification {
     public MediaPlayerNotification() {
         mNotificationManager = (NotificationManager)SoundBoxApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(SoundBoxApplication.getContext());
-        mNotificationBuilder.setSmallIcon(R.drawable.icon_soundbox);
+        mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher);
 
         //mNotificationBuilder.setContentTitle("SoundBox is awesome.");
         //mNotificationBuilder.setContentText("You are awesome too !");

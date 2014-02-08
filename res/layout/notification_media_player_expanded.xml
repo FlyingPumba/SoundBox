@@ -31,7 +31,7 @@
         android:layout_height="64dip"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/icon_soundbox"
+        android:src="@drawable/ic_launcher"
         android:layout_above="@+id/notificationExpandedButtons" />
 
     <LinearLayout
