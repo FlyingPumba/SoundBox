@@ -43,6 +43,7 @@ import com.arcusapp.soundbox.fragment.PlaylistsFragment;
 import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.player.MediaPlayerService;
+import com.arcusapp.soundbox.util.CustomViewPager;
 import com.arcusapp.soundbox.util.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    CustomViewPager mViewPager;
     SlidingUpPanelLayout mSlidingLayout;
 
     @Override
@@ -87,13 +88,15 @@ public class MainActivity extends ActionBarActivity implements android.support.v
             @Override
             public void onPanelCollapsed(View panel) {
                 //enable Fragments
-                mSectionsPagerAdapter.setContentEnabled(true);
+                mViewPager.setContentEnabled(true);
+                mViewPager.setEnabled(true);
             }
 
             @Override
             public void onPanelExpanded(View panel) {
                 //disable Fragments
-                mSectionsPagerAdapter.setContentEnabled(false);
+                mViewPager.setContentEnabled(false);
+                mViewPager.setEnabled(false);
                 //Change play panel button for Current Song List button
             }
 
@@ -112,8 +115,9 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setContentEnabled(true);
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -156,6 +160,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         return true;
     }
 
+    ActionBar.Tab currentTab;
     @Override
     public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
@@ -184,15 +189,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         ArtistsFragment mArtistsFragment;
         SongsListFragment mSongsListFragment;
         PlaylistsFragment mPlaylistsFragment;
-
-        public void setContentEnabled(boolean enabled) {
-            if(mArtistsFragment != null)
-                enableDisableViewGroup((ViewGroup)mArtistsFragment.getView(), enabled);
-            if(mSongsListFragment != null)
-                enableDisableViewGroup((ViewGroup)mSongsListFragment.getView(), enabled);
-            if(mPlaylistsFragment != null)
-                enableDisableViewGroup((ViewGroup)mPlaylistsFragment.getView(), enabled);
-        }
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -245,24 +241,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
                     return "PLAYLISTS";
             }
             return null;
-        }
-
-        /**
-         * Enables/Disables all child views in a view group.
-         *
-         * @param viewGroup the view group
-         * @param enabled <code>true</code> to enable, <code>false</code> to disable
-         * the views.
-         */
-        private void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
-            int childCount = viewGroup.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View view = viewGroup.getChildAt(i);
-                view.setEnabled(enabled);
-                if (view instanceof ViewGroup) {
-                    enableDisableViewGroup((ViewGroup) view, enabled);
-                }
-            }
         }
     }
 }
