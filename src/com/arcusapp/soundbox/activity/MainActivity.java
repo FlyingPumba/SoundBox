@@ -29,6 +29,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
@@ -38,6 +43,7 @@ import com.arcusapp.soundbox.fragment.PlaylistsFragment;
 import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.player.MediaPlayerService;
+import com.arcusapp.soundbox.util.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -55,6 +61,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    SlidingUpPanelLayout mSlidingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +69,39 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         setContentView(R.layout.activity_main);
 
         //start the MediaPlayerService
-
         Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
         startService(serviceIntent);
 
-        /*Intent intent = new Intent();
-        intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        startService(intent);*/
+        //set up the sliding layout
+        mSlidingLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mSlidingLayout.setPanelHeight(66);
+        TextView dragerView = (TextView) findViewById(R.id.txtSongTitle);
+        mSlidingLayout.setDragView(dragerView);
+
+        mSlidingLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel) {
+                //enable Fragments
+                mSectionsPagerAdapter.setContentEnabled(true);
+            }
+
+            @Override
+            public void onPanelExpanded(View panel) {
+                //disable Fragments
+                mSectionsPagerAdapter.setContentEnabled(false);
+                //Change play panel button for Current Song List button
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+
+            }
+        });
 
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -152,6 +185,15 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         SongsListFragment mSongsListFragment;
         PlaylistsFragment mPlaylistsFragment;
 
+        public void setContentEnabled(boolean enabled) {
+            if(mArtistsFragment != null)
+                enableDisableViewGroup((ViewGroup)mArtistsFragment.getView(), enabled);
+            if(mSongsListFragment != null)
+                enableDisableViewGroup((ViewGroup)mSongsListFragment.getView(), enabled);
+            if(mPlaylistsFragment != null)
+                enableDisableViewGroup((ViewGroup)mPlaylistsFragment.getView(), enabled);
+        }
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -203,6 +245,24 @@ public class MainActivity extends ActionBarActivity implements android.support.v
                     return "PLAYLISTS";
             }
             return null;
+        }
+
+        /**
+         * Enables/Disables all child views in a view group.
+         *
+         * @param viewGroup the view group
+         * @param enabled <code>true</code> to enable, <code>false</code> to disable
+         * the views.
+         */
+        private void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
+            int childCount = viewGroup.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View view = viewGroup.getChildAt(i);
+                view.setEnabled(enabled);
+                if (view instanceof ViewGroup) {
+                    enableDisableViewGroup((ViewGroup) view, enabled);
+                }
+            }
         }
     }
 }

@@ -24,20 +24,173 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/pager"
+    <com.arcusapp.soundbox.util.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="85"
-        tools:context=".MainActivity" />
+        android:layout_height="match_parent"
+        android:gravity="bottom">
 
-    <fragment
-        android:id="@+id/playFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="15"
-        class="com.arcusapp.soundbox.fragment.PlayFragment" />
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#E6E6E6">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:id="@+id/draggerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtSongTitle"
+                        android:text="Titulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="marquee"
+                        android:fadingEdge="horizontal"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:scrollHorizontally="true"
+                        style="@android:style/TextAppearance.Large">
+                    </TextView>
+
+                 </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnPanel"
+                    style="@style/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_play" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtSongArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Artista"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtSongAlbum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Album"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp">
+
+                <TextView
+                    android:id="@+id/txtTimeCurrent"
+                    android:text="00:01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtTimeTotal"
+                    android:text="09:59"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentRight="true"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:max="50" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp">
+
+                <ImageButton
+                    android:id="@+id/btnSwitchRandom"
+                    style="@style/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/icon_random_off"/>
+
+                <ImageButton
+                    android:id="@+id/btnPlayPause"
+                    style="@style/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/icon_play" />
+
+                <ImageButton
+                    android:id="@+id/btnSwitchRepeat"
+                    style="@style/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/icon_repeat_off"/>
+
+                <ImageButton
+                    android:id="@+id/btnNextSong"
+                    style="@style/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btnPlayPause"
+                    android:layout_toLeftOf="@id/btnSwitchRepeat"
+                    android:src="@drawable/icon_next" />
+
+                <ImageButton
+                    android:id="@+id/btnPrevSong"
+                    style="@style/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btnSwitchRandom"
+                    android:layout_toLeftOf="@id/btnPlayPause"
+                    android:src="@drawable/icon_previous" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        </FrameLayout>
+
+    </com.arcusapp.soundbox.util.SlidingUpPanelLayout>
 
 </LinearLayout>
