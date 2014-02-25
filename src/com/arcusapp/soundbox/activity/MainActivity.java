@@ -39,6 +39,7 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.fragment.ArtistsFragment;
+import com.arcusapp.soundbox.fragment.PlayFragment;
 import com.arcusapp.soundbox.fragment.PlaylistsFragment;
 import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
@@ -63,6 +64,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
      */
     CustomViewPager mViewPager;
     SlidingUpPanelLayout mSlidingLayout;
+    PlayFragment mPlayFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,8 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         //start the MediaPlayerService
         Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
         startService(serviceIntent);
+
+        mPlayFragment = (PlayFragment) getSupportFragmentManager().findFragmentById(R.id.playFragmentContainer);
 
         //set up the sliding layout
         mSlidingLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -87,17 +91,18 @@ public class MainActivity extends ActionBarActivity implements android.support.v
 
             @Override
             public void onPanelCollapsed(View panel) {
-                //enable Fragments
+                //enable ViewPager Fragments
                 mViewPager.setContentEnabled(true);
-                mViewPager.setEnabled(true);
+                //inform the fragment that panel is collapsed
+                mPlayFragment.setPanelExpanded(false);
             }
 
             @Override
             public void onPanelExpanded(View panel) {
-                //disable Fragments
+                //disable ViewPager Fragments
                 mViewPager.setContentEnabled(false);
-                mViewPager.setEnabled(false);
-                //Change play panel button for Current Song List button
+                //inform the fragment that panel is expanded
+                mPlayFragment.setPanelExpanded(true);
             }
 
             @Override
@@ -160,7 +165,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         return true;
     }
 
-    ActionBar.Tab currentTab;
     @Override
     public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in

@@ -147,9 +147,6 @@ public class PlayActivity extends Activity implements OnClickListener {
 
         Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
         bindService(serviceIntent, myServiceConnection, Context.BIND_AUTO_CREATE);
-        /*Intent intent = new Intent();
-        intent.setAction(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE);
-        bindService(intent, myServiceConnection, Context.BIND_AUTO_CREATE);*/
     }
 
     private void initUI() {
