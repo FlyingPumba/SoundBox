@@ -202,7 +202,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
                 isCurrentSongNull = true;
                 txtTitle.setText("---");
                 btnPlayPause.setImageResource(R.drawable.icon_play);
-                btnPlayPause.setClickable(false);
+                btnPanel.setClickable(false);
             } else {
                 txtTitle.setText(currentSong.getTitle());
                 txtArtist.setText(currentSong.getArtist());
@@ -211,11 +211,17 @@ public class PlayFragment extends Fragment implements OnClickListener {
                 btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
                 btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
 
-                btnPlayPause.setClickable(true);
+                btnPanel.setClickable(true);
                 if (mediaService.isPlaying()) {
                     btnPlayPause.setImageResource(R.drawable.icon_pause);
+                    if(!mIsPanelExpanded) {
+                        btnPanel.setImageResource(R.drawable.icon_pause);
+                    }
                 } else {
                     btnPlayPause.setImageResource(R.drawable.icon_play);
+                    if(!mIsPanelExpanded) {
+                        btnPanel.setImageResource(R.drawable.icon_play);
+                    }
                 }
 
                 int duration = mediaService.getDuration();
@@ -243,6 +249,23 @@ public class PlayFragment extends Fragment implements OnClickListener {
         if (v.getId() == R.id.btnPlayPause) {
             mediaService.playAndPause();
         }
+        else if (v.getId() == R.id.btnPanel) {
+            if(mIsPanelExpanded) {
+                Intent intent = new Intent();
+                intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
+
+                Bundle mExtras = new Bundle();
+                List<String> songsID = mediaService.getSongsIDList();
+                mExtras.putStringArrayList(BundleExtra.SONGS_ID_LIST, (ArrayList<String>)songsID);
+                String currentSongID = mediaService.getCurrentSong().getID();
+                mExtras.putString(BundleExtra.CURRENT_ID, currentSongID);
+
+                intent.putExtras(mExtras);
+                startActivity(intent);
+            } else {
+                mediaService.playAndPause();
+            }
+        }
         else if (v.getId() == R.id.btnPrevSong) {
             mediaService.playPreviousSong();
 
@@ -257,19 +280,6 @@ public class PlayFragment extends Fragment implements OnClickListener {
         else if (v.getId() == R.id.btnSwitchRepeat) {
             mediaService.changeRepeatState();
             //Toast.makeText(this, repeatStateToText(mediaService.getRepeatState()), Toast.LENGTH_SHORT).show();
-        }
-        else if (v.getId() == R.id.btnCurrentPlayList) {
-            Intent intent = new Intent();
-            intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
-
-            Bundle mExtras = new Bundle();
-            List<String> songsID = mediaService.getSongsIDList();
-            mExtras.putStringArrayList(BundleExtra.SONGS_ID_LIST, (ArrayList<String>)songsID);
-            String currentSongID = mediaService.getCurrentSong().getID();
-            mExtras.putString(BundleExtra.CURRENT_ID, currentSongID);
-
-            intent.putExtras(mExtras);
-            startActivity(intent);
         }
     }
 
