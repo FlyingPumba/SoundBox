@@ -155,6 +155,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
     private void initUI(View rootView) {
         txtTitle = (TextView) rootView.findViewById(R.id.txtSongTitle);
         txtTitle.setTypeface(null, Typeface.BOLD);
+        txtTitle.setSelected(true);
         txtArtist = (TextView) rootView.findViewById(R.id.txtSongArtist);
         txtAlbum = (TextView) rootView.findViewById(R.id.txtSongAlbum);
         txtTimeCurrent = (TextView) rootView.findViewById(R.id.txtTimeCurrent);
