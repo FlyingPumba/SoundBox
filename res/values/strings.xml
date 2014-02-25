@@ -23,7 +23,6 @@
     <string name="app_name">SoundBox</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_folders">FoldersActivity</string>
-    <string name="title_activity_play">PlayActivity</string>
     <string name="title_activity_songs_list">Current playlist</string>
     <string name="LabelPlayFolder">Play folder</string>
 </resources>
