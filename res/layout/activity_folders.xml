@@ -39,7 +39,7 @@
 	       android:id="@+id/btnPlayFolder"
 	       android:layout_width="230dp"
 	       android:layout_height="40dp"
-	       android:text="Reproducir Carpeta" 
+	       android:text="@string/LabelPlayFolder"
 	       android:textSize="13sp"
 	       android:layout_toRightOf="@id/btnHomeFoldersActivity"
 	       android:onClick="onClick" />
@@ -49,7 +49,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnHomeFoldersActivity"
-            android:text="nada"
             android:textSize="14sp" />
 
         <ListView
