@@ -20,8 +20,6 @@
 
 package com.arcusapp.soundbox.adapter;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +32,6 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.activity.FoldersActivity;
 import com.arcusapp.soundbox.data.MediaProvider;
-import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.SongEntry;
 import com.arcusapp.soundbox.util.MediaEntryHelper;
 

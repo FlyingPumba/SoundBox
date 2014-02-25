@@ -24,9 +24,6 @@ import android.view.accessibility.AccessibilityEvent;
 
 import com.arcusapp.soundbox.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SlidingUpPanelLayout extends ViewGroup {
 
     private static final String TAG = SlidingUpPanelLayout.class.getSimpleName();

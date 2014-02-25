@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 
-import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 
 public class AudioBecomingNoisyHandler extends android.content.BroadcastReceiver {

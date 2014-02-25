@@ -22,7 +22,6 @@ package com.arcusapp.soundbox.data;
 
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
@@ -30,7 +29,6 @@ import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.PlaylistEntry;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.model.SongEntry;
-import com.arcusapp.soundbox.util.DirectoryHelper;
 
 import java.io.File;
 import java.io.FileFilter;
