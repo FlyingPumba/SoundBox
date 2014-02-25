@@ -295,9 +295,7 @@ public class MediaProvider {
 
         if (list != null) {
 
-            for (int i = 0; i < list.length; i++) {
-                dirs.add(list[i]);
-            }
+            Collections.addAll(dirs, list);
 
             // sort the directories alphabetically
             Collections.sort(dirs, new SortFileName());

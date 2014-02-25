@@ -94,7 +94,7 @@ public class SongsListActivityAdapter extends BaseAdapter {
         }
 
         Bundle b = new Bundle();
-        b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID().toString());
+        b.putString(BundleExtra.CURRENT_ID, songs.get(finalpos).getID());
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
 
         serviceIntent.putExtras(b);

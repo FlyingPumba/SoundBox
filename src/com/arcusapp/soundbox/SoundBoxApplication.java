@@ -52,7 +52,7 @@ public class SoundBoxApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        this.appContext = getApplicationContext();
+        appContext = getApplicationContext();
         searchForSDCards();
     }
 

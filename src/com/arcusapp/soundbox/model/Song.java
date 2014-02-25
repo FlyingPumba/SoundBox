@@ -32,7 +32,7 @@ public class Song {
     private File file;
 
     public Song(String id, String title, String artist, String album, String filePath) {
-        Log.d("MONKEY", "Song id: "+id.toString());
+        Log.d("MONKEY", "Song id: "+ id);
         this.setID(id);
         this.setName(title);
         this.setArtist(artist);

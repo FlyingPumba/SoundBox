@@ -58,7 +58,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         // get the Albums foreach Artist
         mAlbums = new ArrayList<List<String>>();
         for (int i = 0; i < mArtists.size(); i++) {
-            mAlbums.add(mediaProvider.getAlbumsFromArtist(mArtists.get(i).toString()));
+            mAlbums.add(mediaProvider.getAlbumsFromArtist(mArtists.get(i)));
         }
     }
 
@@ -171,13 +171,13 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getGroup(int groupPosition) {
         // gets the title of each parent/group
-        return mArtists.get(groupPosition).toString();
+        return mArtists.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         // gets the name of each item
-        return mAlbums.get(groupPosition).get(childPosition).toString();
+        return mAlbums.get(groupPosition).get(childPosition);
     }
 
     @Override

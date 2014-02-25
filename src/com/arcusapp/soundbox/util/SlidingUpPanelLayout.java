@@ -762,17 +762,11 @@ public class SlidingUpPanelLayout extends ViewGroup {
     }
 
     private boolean expandPane(View pane, int initialVelocity, float mSlideOffset) {
-        if (mFirstLayout || smoothSlideTo(mSlideOffset, initialVelocity)) {
-            return true;
-        }
-        return false;
+        return mFirstLayout || smoothSlideTo(mSlideOffset, initialVelocity);
     }
 
     private boolean collapsePane(View pane, int initialVelocity) {
-        if (mFirstLayout || smoothSlideTo(1.f, initialVelocity)) {
-            return true;
-        }
-        return false;
+        return mFirstLayout || smoothSlideTo(1.f, initialVelocity);
     }
 
     private int getSlidingTop() {

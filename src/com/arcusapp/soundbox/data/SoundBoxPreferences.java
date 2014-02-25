@@ -65,9 +65,7 @@ public class SoundBoxPreferences {
     public static class LastPlayedSong {
         public static String getLastPlayedSong() {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
-            String song = preferences.getString(LAST_PLAYED_SONG, BundleExtra.DefaultValues.DEFAULT_ID);
-    
-            return song;
+            return preferences.getString(LAST_PLAYED_SONG, BundleExtra.DefaultValues.DEFAULT_ID);
         }
     
         public static void setLastPlayedSong(String songID) {
