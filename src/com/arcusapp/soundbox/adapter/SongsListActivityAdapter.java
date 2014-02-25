@@ -81,7 +81,7 @@ public class SongsListActivityAdapter extends BaseAdapter {
     public void onSongClick(int position) {
         //start the playActivity
         Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
+        playActivityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
         playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         mActivity.startActivity(playActivityIntent);
 

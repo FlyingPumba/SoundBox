@@ -67,12 +67,6 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
     }
 
     public void onPlaylistLongClick(int position) {
-        //start the playActivity
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
-        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        mActivity.startActivity(playActivityIntent);
-
         //call the service to play new songs
         Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
 

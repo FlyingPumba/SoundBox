@@ -84,15 +84,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.PlayActivity"
-            android:label="@string/title_activity_play">
-            <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.PLAY_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.arcusapp.soundbox.activity.SongsListActivity"
             android:label="@string/title_activity_songs_list"
             android:noHistory="true">

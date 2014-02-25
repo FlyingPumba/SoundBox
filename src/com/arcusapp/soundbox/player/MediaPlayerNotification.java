@@ -32,7 +32,7 @@ import android.widget.RemoteViews;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.activity.PlayActivity;
+import com.arcusapp.soundbox.activity.MainActivity;
 
 public class MediaPlayerNotification {
     private NotificationCompat.Builder mNotificationBuilder;
@@ -112,7 +112,7 @@ public class MediaPlayerNotification {
 
     private void setUpMediaPlayerActions() {
         //open the PlayActivity when the user clicks the notification
-        Intent notificationIntent = new Intent(SoundBoxApplication.getContext(), PlayActivity.class);
+        Intent notificationIntent = new Intent(SoundBoxApplication.getContext(), MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent clickPendingIntent = PendingIntent.getActivity(SoundBoxApplication.getContext(), 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mNotificationBuilder.setContentIntent(clickPendingIntent);

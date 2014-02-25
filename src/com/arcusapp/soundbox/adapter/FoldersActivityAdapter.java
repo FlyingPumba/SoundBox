@@ -81,14 +81,14 @@ public class FoldersActivityAdapter extends BaseAdapter {
     }
 
     public void playCurrentDirectory() {
-        Intent playActivityIntent = new Intent();
+        /*Intent playActivityIntent = new Intent();
         playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
         Bundle b = new Bundle();
         b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
         playActivityIntent.putExtras(b);
 
-        mActivity.startActivity(playActivityIntent);
+        mActivity.startActivity(playActivityIntent);*/
     }
 
     public void onItemClick(int position) {
@@ -102,7 +102,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
             makeDisplayList();
         } else {
             // handle the click on a song
-            Intent playActivityIntent = new Intent();
+            /*Intent playActivityIntent = new Intent();
             playActivityIntent.setAction(SoundBoxApplication.ACTION_PLAY_ACTIVITY);
 
             Bundle b = new Bundle();
@@ -110,7 +110,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
             b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaEntryHelper.getIDs(songs)));
             playActivityIntent.putExtras(b);
 
-            mActivity.startActivity(playActivityIntent);
+            mActivity.startActivity(playActivityIntent);*/
         }
     }
 
