@@ -20,6 +20,7 @@
 
 package com.arcusapp.soundbox.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -49,6 +51,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements android.support.v7.app.ActionBar.TabListener {
 
+    private static final String PANEL_SAVED_STATE = "was_panel_expanded_last_time";
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
@@ -63,6 +67,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
     CustomViewPager mViewPager;
     SlidingUpPanelLayout mSlidingLayout;
     PlayFragment mPlayFragment;
+    private boolean mPanelExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
                 mViewPager.setContentEnabled(true);
                 //inform the fragment that panel is collapsed
                 mPlayFragment.setPanelExpanded(false);
+                mPanelExpanded = false;
             }
 
             @Override
@@ -102,6 +108,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
                 mViewPager.setContentEnabled(false);
                 //inform the fragment that panel is expanded
                 mPlayFragment.setPanelExpanded(true);
+                mPanelExpanded = true;
             }
 
             @Override
@@ -109,7 +116,6 @@ public class MainActivity extends ActionBarActivity implements android.support.v
 
             }
         });
-
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -165,10 +171,24 @@ public class MainActivity extends ActionBarActivity implements android.support.v
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        savedInstanceState.putBoolean(PANEL_SAVED_STATE, mSlidingLayout.isExpanded());
+    }
 
-        if(mSlidingLayout.isExpanded()) {
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        mPanelExpanded = savedInstanceState.getBoolean(PANEL_SAVED_STATE);
+
+        //If this onCraete is called after a configuration change,
+        // we need to reconfigure PlayFragment and ViewPagew
+        if(mPanelExpanded) {
             //disable ViewPager Fragments
             mViewPager.setContentEnabled(false);
             //inform the fragment that panel is expanded

@@ -72,7 +72,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
         super.onCreate(savedInstanceState);
         
         // Retain this fragment across configuration changes.
-        //setRetainInstance(true);
+        setRetainInstance(true);
 
         serviceListener = new MediaPlayerServiceListener() {
             @Override
