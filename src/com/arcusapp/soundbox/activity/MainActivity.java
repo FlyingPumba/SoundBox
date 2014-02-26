@@ -21,6 +21,7 @@
 package com.arcusapp.soundbox.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -77,6 +78,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         //set up the sliding layout
         mSlidingLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mSlidingLayout.setPanelHeight(66);
+        mSlidingLayout.setPlayFragment(mPlayFragment);
         TextView dragerView = (TextView) findViewById(R.id.txtSongTitle);
         mSlidingLayout.setDragView(dragerView);
 
@@ -160,6 +162,23 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if(mSlidingLayout.isExpanded()) {
+            //disable ViewPager Fragments
+            mViewPager.setContentEnabled(false);
+            //inform the fragment that panel is expanded
+            mPlayFragment.setPanelExpanded(true);
+        } else {
+            //enable ViewPager Fragments
+            mViewPager.setContentEnabled(true);
+            //inform the fragment that panel is collapsed
+            mPlayFragment.setPanelExpanded(false);
+        }
     }
 
     @Override

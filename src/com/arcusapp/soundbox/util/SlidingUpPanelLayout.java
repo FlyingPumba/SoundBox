@@ -23,10 +23,12 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.fragment.PlayFragment;
 
 public class SlidingUpPanelLayout extends ViewGroup {
 
     private static final String TAG = SlidingUpPanelLayout.class.getSimpleName();
+    private PlayFragment mFragment;
 
     /**
      * Default peeking out panel height
@@ -348,6 +350,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
             mAnchorPoint = anchorPoint;
     }
 
+    public void setPlayFragment(PlayFragment fragment) {
+        mFragment = fragment;
+    }
+
     /**
      * Set the shadow for the sliding panel
      *
@@ -625,8 +631,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 mIsUnableToDrag = false;
                 mInitialMotionX = x;
                 mInitialMotionY = y;
-                if (isDragViewUnder((int) x, (int) y) && !mIsUsingDragViewTouchEvents) {
-                    interceptTap = true;
+                if (isDragViewUnder((int) x, (int) y) && !mIsUsingDragViewTouchEvents &&
+                        mFragment != null && !mFragment.isCurrentSongNull()) {
+                        interceptTap = true;
                 }
                 break;
             }
@@ -696,10 +703,12 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 if (dx * dx + dy * dy < slop * slop &&
                         isDragViewUnder((int) x, (int) y)) {
                     dragView.playSoundEffect(SoundEffectConstants.CLICK);
-                    if (!isExpanded() && !isAnchored()) {
-                        expandPane(mAnchorPoint);
-                    } else {
-                        collapsePane();
+                    if(mFragment != null && !mFragment.isCurrentSongNull()) {
+                        if (!isExpanded() && !isAnchored()) {
+                            expandPane(mAnchorPoint);
+                        } else {
+                            collapsePane();
+                        }
                     }
                     break;
                 }

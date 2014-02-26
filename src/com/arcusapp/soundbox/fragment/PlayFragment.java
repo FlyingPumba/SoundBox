@@ -64,7 +64,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
     private MediaPlayerService mediaService;
     private ServiceConnection myServiceConnection;
     private MediaPlayerServiceListener serviceListener;
-    private boolean isCurrentSongNull = false;
+    private boolean isCurrentSongNull = true;
     private boolean mIsPanelExpanded = false;
     
     @Override
@@ -130,6 +130,10 @@ public class PlayFragment extends Fragment implements OnClickListener {
                 btnPanel.setImageResource(R.drawable.icon_play);
             }
         }
+    }
+
+    public boolean isCurrentSongNull() {
+        return isCurrentSongNull;
     }
 
     private void bindMediaPlayerService() {
@@ -203,6 +207,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
                 btnPlayPause.setImageResource(R.drawable.icon_play);
                 btnPanel.setClickable(false);
             } else {
+                isCurrentSongNull = false;
                 txtTitle.setText(currentSong.getTitle());
                 txtArtist.setText(currentSong.getArtist());
                 txtAlbum.setText(currentSong.getAlbum());
