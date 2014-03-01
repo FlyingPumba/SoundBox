@@ -20,7 +20,9 @@
 
 package com.arcusapp.soundbox.player;
 
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,7 +32,9 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.arcusapp.soundbox.data.SoundBoxPreferences;
@@ -59,6 +63,10 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     public static final String NEXT_ACTION = "com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.NEXT";
     public static final String STOP_ACTION = "com.arcusapp.soundbox.player.MEDIA_PLAYER_SERVICE.STOP";
 
+    /**
+     * Idle time before stopping the foreground notfication (1 minute)
+     */
+    private static final int IDLE_DELAY = 60000;
 
     private BroadcastReceiver headsetReceiver;
 
@@ -69,8 +77,6 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private RepeatState repeatState = RepeatState.Off;
     private RandomState randomState = RandomState.Off;
 
-    private boolean isPlaying = false;
-
     private MediaPlayer mediaPlayer;
     private List<MediaPlayerServiceListener> currentListeners;
     private final IBinder mBinder = new MyBinder();
@@ -78,12 +84,40 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private boolean isOnForeground = false;
     MediaPlayerNotification mNotification;
 
+    /**
+     * Alarm intent for removing the notification when nothing is playing
+     * for some time
+     */
+    private AlarmManager mAlarmManager;
+    private PendingIntent mShutdownIntent;
+    private boolean mShutdownScheduled;
+
+    /**
+     * Used to know when the service is active
+     */
+    private boolean mServiceInUse = false;
+
+    /**
+     * Used to know if something should be playing or not
+     */
+    private boolean mIsSupposedToBePlaying = false;
+
+    private int mServiceStartId = -1;
+
     // Called every time a client starts the service using startService
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mServiceStartId = startId;
 
         if(intent != null) {
             handleCommandIntent(intent);
+        }
+
+        // Make sure the service will shut down on its own if it was
+        // just started but not bound to and nothing is playing
+        if(!isPlaying()) {
+            Log.d(this.getClass().getName(), "scheduleDelayedShutdown from onStartCommand");
+            scheduleDelayedShutdown();
         }
 
         // We want this service to continue running until it is explicitly stopped, so return sticky.
@@ -98,7 +132,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             if (mediaPlayer != null) {
                 if(mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
-                    isPlaying = false;
+                    mIsSupposedToBePlaying = false;
+                    Log.d(this.getClass().getName(), "scheduleDelayedShutdown from INCOMMING_CALL");
+                    scheduleDelayedShutdown();
                     fireListenersOnMediaPlayerStateChanged();
                 }
             }
@@ -110,24 +146,26 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
             loadSongs(songsID, currentID);
             mediaPlayer.start();
-            isPlaying = true;
+            mIsSupposedToBePlaying = true;
+            Log.d(this.getClass().getName(), "cancelShutdown from PLAY_NEW_SONGS");
+            cancelShutdown();
         } // Check if the foreground state needs to be changed
         else if (CHANGE_FOREGROUND_STATE.equals(action)) {
             boolean nowInForeground = intent.getBooleanExtra(NOW_IN_FOREGROUND, false);
-            if(isOnForeground && !nowInForeground) {
-                stopForeground(true);
-                isOnForeground = false;
-            } else if (!isOnForeground && nowInForeground) {
+            if(nowInForeground) {
                 // check if we are playing. In case we are not, stop the service
-                if(isPlaying) {
+                if(isPlaying()) {
                     Song currentSong = getCurrentSong();
-                    Notification notification = mNotification.getNotification(currentSong.getArtist(), currentSong.getAlbum(), currentSong.getTitle(), isPlaying);
+                    Notification notification = mNotification.getNotification(currentSong.getArtist(), currentSong.getAlbum(), currentSong.getTitle(), mIsSupposedToBePlaying);
                     startForeground(MediaPlayerNotification.MEDIA_PLAYER_NOTIFICATION_ID, notification);
                     isOnForeground = true;
                 } else {
-                    stopSelf();
+                    Log.d(this.getClass().getName(), "scheduleDelayedShutdown from CHANGE_FOREGROUND_STATE");
+                    scheduleDelayedShutdown();
                 }
-
+            } else {
+                stopForeground(true);
+                isOnForeground = false;
             }
         }
 
@@ -141,7 +179,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 playPreviousSong();
             } else if(STOP_ACTION.equals(action)) {
                 stopForeground(true);
-                stopSelf();
+                if (!mServiceInUse) {
+                    stopSelf(mServiceStartId);
+                }
             }
         }
     }
@@ -162,6 +202,14 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             mNotification = new MediaPlayerNotification();
         }
 
+        // Start up the thread running the service. Note that we create a
+        // separate thread because the service normally runs in the process's
+        // main thread, which we don't want to block. We also make it
+        // background priority so CPU-intensive work will not disrupt the UI.
+        final HandlerThread thread = new HandlerThread("MusicPlayerHandler",
+                android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        thread.start();
+
         FetchLastPlayedSongs();
 
         if(headsetReceiver == null) {
@@ -174,7 +222,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                         if (mediaPlayer != null) {
                             if(mediaPlayer.isPlaying()) {
                                 mediaPlayer.pause();
-                                isPlaying = false;
+                                mIsSupposedToBePlaying = false;
                                 fireListenersOnMediaPlayerStateChanged();
                             }
                         }
@@ -183,17 +231,35 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             };
             registerReceiver(headsetReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         }
+
+        // Initialize the delayed shutdown intent
+        final Intent shutdownIntent = new Intent(this, MediaPlayerService.class);
+        shutdownIntent.setAction(STOP_ACTION);
+
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mShutdownIntent = PendingIntent.getService(this, 0, shutdownIntent, 0);
+
+        // Listen for the idle state
+        Log.d(this.getClass().getName(), "scheduleDelayedShutdown from onCreate");
+        scheduleDelayedShutdown();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        // remove any pending alarms
+        mAlarmManager.cancel(mShutdownIntent);
+
+        // Release the player
         if (mediaPlayer != null) {
             mediaPlayer.stop();
-            isPlaying = false;
+            mIsSupposedToBePlaying = false;
             mediaPlayer.release();
             mediaPlayer = null;
         }
+
+        //Unregister headset listener
         if(headsetReceiver != null) {
             unregisterReceiver(headsetReceiver);
         }
@@ -201,12 +267,38 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
     @Override
     public IBinder onBind(Intent arg0) {
+        Log.d(this.getClass().getName(), "cancelShutdown from onBind");
+        cancelShutdown();
+        mServiceInUse = true;
         return mBinder;
     }
 
     @Override
     public boolean onUnbind(Intent arg0) {
+        mServiceInUse = false;
+
+        if (mIsSupposedToBePlaying ) {
+            // Something is currently playing, or will be playing once
+            // an in-progress action requesting audio focus ends, so don't stop
+            // the service now.
+            return true;
+
+            // If there is a playlist but playback is paused, then wait a while
+            // before stopping the service.
+        } else if (currentSongStack.getCurrentSongsIDList().size() > 0) {
+            Log.d(this.getClass().getName(), "scheduleDelayedShutdown from onUnbid");
+            scheduleDelayedShutdown();
+            return true;
+        }
+        stopSelf(mServiceStartId);
         return true;
+    }
+
+    @Override
+    public void onRebind(final Intent intent) {
+        Log.d(this.getClass().getName(), "cancelShutdown from onRebind");
+        cancelShutdown();
+        mServiceInUse = true;
     }
 
     public class MyBinder extends Binder {
@@ -275,7 +367,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public boolean isPlaying() {
-        return isPlaying;
+        return mIsSupposedToBePlaying;
     }
 
     public RandomState getRandomState() {
@@ -330,11 +422,15 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     public void playAndPause() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            isPlaying = true;
+            mIsSupposedToBePlaying = true;
+            Log.d(this.getClass().getName(), "cancelShutdown from playAndPause");
+            cancelShutdown();
         }
         else {
             mediaPlayer.pause();
-            isPlaying = false;
+            mIsSupposedToBePlaying = false;
+            Log.d(this.getClass().getName(), "scheduleDelayedShutdown from playAndPause");
+            scheduleDelayedShutdown();
         }
         fireListenersOnMediaPlayerStateChanged();
     }
@@ -347,11 +443,13 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
                 if (repeatState == RepeatState.Off) {
                     // prepare the first song of the list, but do not play it.
                     mediaPlayer.stop();
-                    isPlaying = false;
                     Song currentSong = currentSongStack.getCurrentSong();
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(currentSong.getFile().getPath());
                     mediaPlayer.prepare();
+                    Log.d(this.getClass().getName(), "scheduleDelayedShutdown from playNextSong");
+                    scheduleDelayedShutdown();
+                    mIsSupposedToBePlaying = false;
                     fireListenersOnMediaPlayerStateChanged();
 
                 } else {
@@ -400,7 +498,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private void playCurrentSong() {
         prepareMediaPlayer();
         mediaPlayer.start();
-        isPlaying = true;
+        mIsSupposedToBePlaying = true;
+        Log.d(this.getClass().getName(), "cancelShutdown from playCurrentSong");
+        cancelShutdown();
         fireListenersOnMediaPlayerStateChanged();
     }
 
@@ -432,7 +532,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         // if we are playing on foreground, update the notification
         if(isOnForeground) {
             Song currentSong = getCurrentSong();
-            mNotification.updateNotification(currentSong.getArtist(), currentSong.getAlbum(), currentSong.getTitle(), isPlaying);
+            mNotification.updateNotification(currentSong.getArtist(), currentSong.getAlbum(), currentSong.getTitle(), mIsSupposedToBePlaying);
         }
     }
 
@@ -446,6 +546,19 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
         if(isOnForeground) {
             stopForeground(true);
+        }
+    }
+
+    private void scheduleDelayedShutdown() {
+        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + IDLE_DELAY, mShutdownIntent);
+        mShutdownScheduled = true;
+    }
+
+    private void cancelShutdown() {
+        if (mShutdownScheduled) {
+            mAlarmManager.cancel(mShutdownIntent);
+            mShutdownScheduled = false;
         }
     }
 }
