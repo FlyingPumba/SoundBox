@@ -42,6 +42,7 @@ public class SoundBoxApplication extends Application {
     public static final String ACTION_MAIN_ACTIVITY = "com.arcusapp.soundbox.action.MAIN_ACTIVITY";
     public static final String ACTION_FOLDERS_ACTIVITY = "com.arcusapp.soundbox.action.FOLDERS_ACTIVITY";
     public static final String ACTION_SONGSLIST_ACTIVITY = "com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY";
+    public static final String ACTION_SETTINGS_ACTIVITY = "com.arcusapp.soundbox.action.SETTINGS_ACTIVITY";
     public static final String ACTION_MEDIA_PLAYER_SERVICE = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE";
 
     private static List<File> sdCards;

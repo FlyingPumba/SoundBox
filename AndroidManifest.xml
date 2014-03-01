@@ -93,6 +93,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.arcusapp.soundbox.activity.SettingsActivity">
+            <intent-filter>
+                <action android:name="com.arcusapp.soundbox.action.SETTINGS_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

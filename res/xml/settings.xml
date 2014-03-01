@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SoundBox - Android Music Player
+  Copyright (C) 2013 Iván Arcuschin Moreno
+
+  This file is part of SoundBox.
+
+  SoundBox is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  SoundBox is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- About -->
+    <PreferenceCategory android:title="@string/settings_about_category" >
+        <PreferenceScreen android:title="@string/settings_about_apollo" >
+            <PreferenceCategory android:title="@string/settings_about_category" >
+                <Preference
+                    android:summary="@string/settings_self_title"
+                    android:title="@string/settings_author_title" />
+                <Preference
+                    android:key="version"
+                    android:title="@string/settings_version_title" />
+                <Preference
+                    android:key="open_source"
+                    android:title="@string/settings_license" />
+            </PreferenceCategory>
+            <!--<PreferenceCategory android:title="@string/settings_special_thanks" >
+                <Preference
+                    android:summary="@string/settings_lopez_summary"
+                    android:title="@string/settings_lopez_title" />
+                <Preference android:title="@string/settings_cyanogenmod_title" />
+            </PreferenceCategory>-->
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+</PreferenceScreen>
