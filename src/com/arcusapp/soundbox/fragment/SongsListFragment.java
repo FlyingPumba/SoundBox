@@ -102,7 +102,7 @@ public class SongsListFragment extends Fragment {
         // create the button
         Button myButton = new Button(getActivity());
         myButton.setId(19);
-        myButton.setText("Play all songs random");
+        myButton.setText(this.getString(R.string.LabelPlaySongsRandom));
         myButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.icon_random_shuffled), null);
         myButton.setOnClickListener(new OnClickListener() {
 

@@ -31,4 +31,5 @@
     <string name="label_about_author">Author</string>
     <string name="label_about_self">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">Error fetching SoundBox version</string>
+    <string name="LabelPlaySongsRandom">Play all songs random</string>
 </resources>
