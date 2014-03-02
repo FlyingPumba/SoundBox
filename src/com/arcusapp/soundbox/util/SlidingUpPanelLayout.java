@@ -679,7 +679,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
             return super.onTouchEvent(ev);
         }
 
-        mDragHelper.processTouchEvent(ev);
+        if(mFragment != null && !mFragment.isCurrentSongNull()) {
+            mDragHelper.processTouchEvent(ev);
+        }
 
         final int action = ev.getAction();
         boolean wantTouchEvents = true;
