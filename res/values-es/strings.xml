@@ -24,10 +24,10 @@
     <string name="title_activity_folders">FoldersActivity</string>
     <string name="title_activity_songs_list">Lista de reproducción actual</string>
     <string name="LabelPlayFolder">Reproducir carpeta</string>
-    <string name="settings_about_category">Acerca de</string>
-    <string name="settings_about_apollo">Acerca de SoundBox</string>
-    <string name="settings_license">Licencia</string>
-    <string name="settings_author_title">Autor</string>
-    <string name="settings_self_title">Iván Arcuschin</string>
+    <string name="label_about">Acerca de</string>
+    <string name="label_about_soundbox">Acerca de SoundBox</string>
+    <string name="label_about_license">Licencia</string>
+    <string name="label_about_author">Autor</string>
+    <string name="label_about_self">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">No se pudo obtener la versión de SoundBox</string>
 </resources>

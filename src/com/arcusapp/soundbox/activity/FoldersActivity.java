@@ -69,7 +69,7 @@ public class FoldersActivity extends Activity implements View.OnClickListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.folders, menu);
+        //getMenuInflater().inflate(R.menu.folders, menu);
         return true;
     }
 

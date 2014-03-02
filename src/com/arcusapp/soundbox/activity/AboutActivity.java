@@ -32,14 +32,14 @@ import android.widget.Toast;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 
-public class SettingsActivity extends PreferenceActivity {
+public class AboutActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Add the preferences
-        addPreferencesFromResource(R.xml.settings);
+        addPreferencesFromResource(R.xml.about);
 
         // About
         showOpenSourceLicenses();
@@ -87,10 +87,10 @@ public class SettingsActivity extends PreferenceActivity {
 
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                final WebView webView = new WebView(SettingsActivity.this);
+                final WebView webView = new WebView(AboutActivity.this);
                 webView.loadUrl("file:///android_asset/license.html");
-                AlertDialog licenseDialog = new AlertDialog.Builder(SettingsActivity.this)
-                        .setTitle(R.string.settings_license)
+                AlertDialog licenseDialog = new AlertDialog.Builder(AboutActivity.this)
+                        .setTitle(R.string.label_about_license)
                         .setView(webView)
                         .setPositiveButton(android.R.string.ok, null)
                         .create();

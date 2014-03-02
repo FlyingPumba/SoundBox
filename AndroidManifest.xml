@@ -94,9 +94,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.SettingsActivity">
+            android:name="com.arcusapp.soundbox.activity.AboutActivity">
             <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.SETTINGS_ACTIVITY" />
+                <action android:name="com.arcusapp.soundbox.action.ABOUT_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -19,12 +19,16 @@
   along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
-</menu>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/label_about_soundbox">
+        <Preference
+            android:summary="@string/label_about_self"
+            android:title="@string/label_about_author" />
+        <Preference
+            android:key="version"
+            android:title="@string/label_about_version" />
+        <Preference
+            android:key="open_source"
+            android:title="@string/label_about_license" />
+</PreferenceScreen>

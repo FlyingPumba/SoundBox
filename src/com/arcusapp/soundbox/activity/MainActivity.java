@@ -20,9 +20,7 @@
 
 package com.arcusapp.soundbox.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,7 +28,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -174,9 +171,9 @@ public class MainActivity extends ActionBarActivity implements android.support.v
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_about:
                 Intent intent = new Intent();
-                intent.setAction(SoundBoxApplication.ACTION_SETTINGS_ACTIVITY);
+                intent.setAction(SoundBoxApplication.ACTION_ABOUT_ACTIVITY);
                 startActivity(intent);
                 return true;
             default:

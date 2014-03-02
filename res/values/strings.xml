@@ -21,15 +21,14 @@
 
 <resources>
     <string name="app_name">SoundBox</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_folders">FoldersActivity</string>
     <string name="title_activity_songs_list">Current playlist</string>
     <string name="LabelPlayFolder">Play folder</string>
-    <string name="settings_about_category">About</string>
-    <string name="settings_about_apollo">About SoundBox</string>
-    <string name="settings_version_title">Version</string>
-    <string name="settings_license">License</string>
-    <string name="settings_author_title">Author</string>
-    <string name="settings_self_title">Iván Arcuschin</string>
+    <string name="label_about">About</string>
+    <string name="label_about_soundbox">About SoundBox</string>
+    <string name="label_about_version">Version</string>
+    <string name="label_about_license">License</string>
+    <string name="label_about_author">Author</string>
+    <string name="label_about_self">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">Error fetching SoundBox version</string>
 </resources>
