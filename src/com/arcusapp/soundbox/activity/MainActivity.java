@@ -21,6 +21,7 @@
 package com.arcusapp.soundbox.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
@@ -80,7 +83,23 @@ public class MainActivity extends ActionBarActivity implements android.support.v
 
         //set up the sliding layout
         mSlidingLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        mSlidingLayout.setPanelHeight(66);
+
+        // set the height of the sliding panel
+        final RelativeLayout slidingPanel = (RelativeLayout) findViewById(R.id.slidingPanel);
+        slidingPanel.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // gets called after layout has been done but before display
+                int height = slidingPanel.getHeight();
+                mSlidingLayout.setPanelHeight(height);
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    slidingPanel.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    slidingPanel.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
         mSlidingLayout.setPlayFragment(mPlayFragment);
         TextView dragerView = (TextView) findViewById(R.id.txtSongTitle);
         mSlidingLayout.setDragView(dragerView);
