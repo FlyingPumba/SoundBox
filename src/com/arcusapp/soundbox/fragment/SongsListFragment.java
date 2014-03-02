@@ -23,6 +23,7 @@ package com.arcusapp.soundbox.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +42,7 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class SongsListFragment extends Fragment {
 
@@ -103,6 +105,7 @@ public class SongsListFragment extends Fragment {
         Button myButton = new Button(getActivity());
         myButton.setId(19);
         myButton.setText(this.getString(R.string.LabelPlaySongsRandom));
+        myButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         myButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.icon_random_shuffled), null);
         myButton.setOnClickListener(new OnClickListener() {
 
