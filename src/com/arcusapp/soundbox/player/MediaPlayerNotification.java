@@ -66,7 +66,9 @@ public class MediaPlayerNotification {
         // http://stackoverflow.com/questions/12574386/custom-notification-layout-dont-work-on-android-2-3-or-lower
         Notification noti = mNotificationBuilder.build();
         noti.contentView = mBaseView;
-        noti.bigContentView = mExpandedView;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            noti.bigContentView = mExpandedView;
+        }
 
         mNotificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, noti);
     }
@@ -104,6 +106,8 @@ public class MediaPlayerNotification {
             mBaseView.setImageViewResource(R.id.notificationBasePlay,
                     isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
         } else {
+            mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
+            mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
             mBaseView.setViewVisibility(R.id.notificationBasePlay, View.GONE);
             mBaseView.setViewVisibility(R.id.notificationBaseNext, View.GONE);
             mBaseView.setViewVisibility(R.id.notificationBaseCollapse, View.GONE);
