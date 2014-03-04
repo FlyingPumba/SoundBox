@@ -27,11 +27,12 @@
     <string name="label_about">Acerca de</string>
     <string name="label_about_soundbox">Acerca de SoundBox</string>
     <string name="label_about_license">Licencia</string>
+    <string name="label_about_version">Versión</string>
     <string name="label_about_author">Autor</string>
     <string name="label_about_self">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">No se pudo obtener la versión de SoundBox</string>
     <string name="LabelPlaySongsRandom">Reproducir todo</string>
-    <string name="LabelGitHub">Codigo en GitHub</string>
+    <string name="LabelGitHub">Código en GitHub</string>
     <string name="TabArtists">ARTISTAS</string>
     <string name="TabSongs">CANCIONES</string>
     <string name="TabPlaylists">LISTAS DE REPRODUCCIÓN</string>
