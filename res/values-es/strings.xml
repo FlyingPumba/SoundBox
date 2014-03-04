@@ -32,4 +32,7 @@
     <string name="ErrorFetchingVersion">No se pudo obtener la versión de SoundBox</string>
     <string name="LabelPlaySongsRandom">Reproducir todo</string>
     <string name="LabelGitHub">Codigo en GitHub</string>
+    <string name="TabArtists">ARTISTAS</string>
+    <string name="TabSongs">CANCIONES</string>
+    <string name="TabPlaylists">LISTAS DE REPRODUCCIÓN</string>
 </resources>

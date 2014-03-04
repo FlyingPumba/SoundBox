@@ -33,4 +33,7 @@
     <string name="ErrorFetchingVersion">Error fetching SoundBox version</string>
     <string name="LabelPlaySongsRandom">Play all songs random</string>
     <string name="LabelGitHub">Code on GitHub</string>
+    <string name="TabArtists">ARTISTS</string>
+    <string name="TabSongs">SONGS</string>
+    <string name="TabPlaylists">PLAYLISTS</string>
 </resources>

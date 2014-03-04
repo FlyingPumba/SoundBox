@@ -305,11 +305,11 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case ARTIST_FRAGMENT_POSITION:
-                    return "ARTISTS";
+                    return getString(R.string.TabArtists);
                 case SONGSLIST_FRAGMENT_POSITION:
-                    return "SONGS";
+                    return getString(R.string.TabSongs);
                 case PLAYLISTS_FRAGMENT_POSITION:
-                    return "PLAYLISTS";
+                    return getString(R.string.TabPlaylists);
             }
             return null;
         }
