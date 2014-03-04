@@ -181,6 +181,15 @@ public class MainActivity extends ActionBarActivity implements android.support.v
     }
 
     @Override
+    public void onBackPressed() {
+        if(mSlidingLayout.isExpanded()) {
+            mSlidingLayout.collapsePane();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
