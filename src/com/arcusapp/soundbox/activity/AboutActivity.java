@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 

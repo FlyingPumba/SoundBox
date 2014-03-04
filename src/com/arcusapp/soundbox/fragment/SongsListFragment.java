@@ -42,7 +42,6 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class SongsListFragment extends Fragment {
 
