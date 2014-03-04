@@ -285,7 +285,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
 
             // If there is a playlist but playback is paused, then wait a while
             // before stopping the service.
-        } else if (currentSongStack.getCurrentSongsIDList().size() > 0) {
+        } else if (currentSongStack!= null && currentSongStack.getCurrentSongsIDList().size() > 0) {
             Log.d(this.getClass().getName(), "scheduleDelayedShutdown from onUnbid");
             scheduleDelayedShutdown();
             return true;
