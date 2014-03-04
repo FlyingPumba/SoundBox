@@ -21,7 +21,9 @@
 package com.arcusapp.soundbox.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -41,8 +43,8 @@ public class AboutActivity extends PreferenceActivity {
         // Add the preferences
         addPreferencesFromResource(R.xml.about);
 
-        // About
         showOpenSourceLicenses();
+        seeOnGitHub();
 
         try{
             final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -51,19 +53,6 @@ public class AboutActivity extends PreferenceActivity {
             Toast.makeText(this, getString(R.string.ErrorFetchingVersion), Toast.LENGTH_LONG);
             findPreference("version").setSummary("?");
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                finish();
-                return true;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -78,9 +67,6 @@ public class AboutActivity extends PreferenceActivity {
         SoundBoxApplication.notifyForegroundStateChanged(false);
     }
 
-    /**
-     * Show the open source licenses
-     */
     private void showOpenSourceLicenses() {
         final Preference mOpenSourceLicenses = findPreference("open_source");
         mOpenSourceLicenses.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -95,6 +81,20 @@ public class AboutActivity extends PreferenceActivity {
                         .setPositiveButton(android.R.string.ok, null)
                         .create();
                 licenseDialog.show();
+                return true;
+            }
+        });
+    }
+
+    private void seeOnGitHub() {
+        final Preference mGitHub = findPreference("github");
+        mGitHub.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                Uri uri = Uri.parse("http://github.com/FlyingPumba/SoundBox");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 return true;
             }
         });

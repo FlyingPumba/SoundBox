@@ -31,4 +31,5 @@
     <string name="label_about_self">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">No se pudo obtener la versión de SoundBox</string>
     <string name="LabelPlaySongsRandom">Reproducir todo</string>
+    <string name="LabelGitHub">Codigo en GitHub</string>
 </resources>

@@ -31,4 +31,8 @@
         <Preference
             android:key="open_source"
             android:title="@string/label_about_license" />
+        <Preference
+            android:key="github"
+            android:title="@string/LabelGitHub"
+            android:icon="@drawable/icon_github" />
 </PreferenceScreen>

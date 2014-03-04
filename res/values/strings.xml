@@ -32,4 +32,5 @@
     <string name="label_about_self">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">Error fetching SoundBox version</string>
     <string name="LabelPlaySongsRandom">Play all songs random</string>
+    <string name="LabelGitHub">Code on GitHub</string>
 </resources>
