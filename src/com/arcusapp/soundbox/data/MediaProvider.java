@@ -233,12 +233,16 @@ public class MediaProvider {
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, null);
         myCursor = cl.loadInBackground();
 
-        myCursor.moveToNext();
-        for (int i = 0; i < myCursor.getColumnCount(); i++)
-            values.add(myCursor.getString(i));
-        if (values.size() > 0) {
-            song = new Song(values.get(0), values.get(1), values.get(2), values.get(3), values.get(4));
-        } else {
+        try {
+            myCursor.moveToNext();
+            for (int i = 0; i < myCursor.getColumnCount(); i++)
+                values.add(myCursor.getString(i));
+            if (values.size() > 0) {
+                song = new Song(values.get(0), values.get(1), values.get(2), values.get(3), values.get(4));
+            } else {
+                song = new Song();
+            }
+        } catch (Exception ignored) {
             song = new Song();
         }
 
