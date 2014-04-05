@@ -5,6 +5,8 @@
 
 SoundBox is designed to have a minimalistic and functional philosophy. With a smooth and simple UI, while very easy to use. No images for the album covers, neither weird mosaic presentations and, of course, no adds.
 
+[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.arcusapp.soundbox)
+
 ## How to contribute:
 
 1) First, pull the source code from this git repository to your local machine:
