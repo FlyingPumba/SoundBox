@@ -21,7 +21,7 @@
 
 <resources>
     <color name="main_color">#ff99cc00</color>
-    <color name="tabs_background">@android:color/lighter_gray</color>
+    <color name="tabs_background">#ddd</color>
     <color name="play_controls_background">#ff0099cc</color>
     <color name="play_controls_text">@android:color/white</color>
     <color name="app_title_text">@android:color/white</color>
