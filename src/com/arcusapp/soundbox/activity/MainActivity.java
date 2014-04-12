@@ -135,6 +135,16 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         });
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        //set custom action bar layout
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.action_bar);
+        // workaround to show the actionbar above the tabs
+        // http://stackoverflow.com/questions/12973143/actionbarsherlock-tabs-appearing-above-actionbar-with-custom-view
+        actionBar.setDisplayShowHomeEnabled(true);
+        View homeIcon = findViewById(android.R.id.home);
+        ((View) homeIcon.getParent()).setVisibility(View.GONE);
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create the adapter that will return a fragment for each of the three
