@@ -50,10 +50,9 @@
     </style>
 
     <style name="CustomTabText" parent="@style/Widget.AppCompat.ActionBar.TabText" >
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/tabs_text</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:maxLines">2</item>
         <item name="android:gravity">center</item>
         <item name="android:ellipsize">marquee</item>
     </style>
