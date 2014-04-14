@@ -21,19 +21,20 @@
 
 <resources>
     <string name="app_name">SoundBox</string>
-    <string name="title_activity_folders">FoldersActivity</string>
-    <string name="title_activity_songs_list">Current playlist</string>
+    <string name="TitleActivityFolders">FoldersActivity</string>
+    <string name="TitleActivitySongsList">Current playlist</string>
     <string name="LabelPlayFolder">Play folder</string>
-    <string name="label_about">About</string>
-    <string name="label_about_soundbox">About SoundBox</string>
-    <string name="label_about_version">Version</string>
-    <string name="label_about_license">License</string>
-    <string name="label_about_author">Author</string>
-    <string name="label_about_self">Iván Arcuschin</string>
+    <string name="LabelAbout">About</string>
+    <string name="LabelAboutSoundbox">About SoundBox</string>
+    <string name="LabelAboutVersion">Version</string>
+    <string name="LabelAboutLicense">License</string>
+    <string name="LabelAboutAuthor">Author</string>
+    <string name="LabelAboutSelf">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">Error fetching SoundBox version</string>
     <string name="LabelPlaySongsRandom">Play all songs random</string>
     <string name="LabelGitHub">Code on GitHub</string>
     <string name="TabArtists">ARTISTS</string>
     <string name="TabSongs">SONGS</string>
     <string name="TabPlaylists">PLAYLISTS</string>
+    <string name="LabelArtistAlbum">%1$s - %2$s</string>
 </resources>

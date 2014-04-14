@@ -21,16 +21,16 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/label_about_soundbox">
+    android:title="@string/LabelAboutSoundbox">
         <Preference
-            android:summary="@string/label_about_self"
-            android:title="@string/label_about_author" />
+            android:summary="@string/LabelAboutSelf"
+            android:title="@string/LabelAboutAuthor" />
         <Preference
             android:key="version"
-            android:title="@string/label_about_version" />
+            android:title="@string/LabelAboutVersion" />
         <Preference
             android:key="open_source"
-            android:title="@string/label_about_license" />
+            android:title="@string/LabelAboutLicense" />
         <Preference
             android:key="github"
             android:title="@string/LabelGitHub"

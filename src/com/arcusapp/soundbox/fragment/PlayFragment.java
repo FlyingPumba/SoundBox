@@ -54,7 +54,7 @@ import java.util.Locale;
 
 public class PlayFragment extends Fragment implements OnClickListener {
 
-    private TextView txtTitle, txtArtist, txtAlbum, txtTimeCurrent, txtTimeTotal;
+    private TextView txtTitle, txtArtistAlbum, txtTimeCurrent, txtTimeTotal;
     private ImageButton btnSwitchRandom, btnSwitchRepeat, btnPlayPause, btnPanel, btnPrevious, btnNext;
     private SeekBar seekBar;
 
@@ -159,8 +159,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
         txtTitle = (TextView) rootView.findViewById(R.id.txtSongTitle);
         txtTitle.setTypeface(null, Typeface.BOLD);
         txtTitle.setSelected(true);
-        txtArtist = (TextView) rootView.findViewById(R.id.txtSongArtist);
-        txtAlbum = (TextView) rootView.findViewById(R.id.txtSongAlbum);
+        txtArtistAlbum = (TextView) rootView.findViewById(R.id.txtSongArtistAlbum);
         txtTimeCurrent = (TextView) rootView.findViewById(R.id.txtTimeCurrent);
         txtTimeTotal = (TextView) rootView.findViewById(R.id.txtTimeTotal);
 
@@ -209,8 +208,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
             } else {
                 isCurrentSongNull = false;
                 txtTitle.setText(currentSong.getTitle());
-                txtArtist.setText(currentSong.getArtist());
-                txtAlbum.setText(currentSong.getAlbum());
+                txtArtistAlbum.setText(getResources().getString(R.string.LabelArtistAlbum, currentSong.getAlbum(), currentSong.getArtist()));
 
                 btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
                 btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));

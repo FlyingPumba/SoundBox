@@ -21,15 +21,15 @@
 
 <resources>
     <string name="action_settings">Ajustes</string>
-    <string name="title_activity_folders">FoldersActivity</string>
-    <string name="title_activity_songs_list">Lista de reproducción actual</string>
+    <string name="TitleActivityFolders">FoldersActivity</string>
+    <string name="TitleActivitySongsList">Lista de reproducción actual</string>
     <string name="LabelPlayFolder">Reproducir carpeta</string>
-    <string name="label_about">Acerca de</string>
-    <string name="label_about_soundbox">Acerca de SoundBox</string>
-    <string name="label_about_license">Licencia</string>
-    <string name="label_about_version">Versión</string>
-    <string name="label_about_author">Autor</string>
-    <string name="label_about_self">Iván Arcuschin</string>
+    <string name="LabelAbout">Acerca de</string>
+    <string name="LabelAboutSoundbox">Acerca de SoundBox</string>
+    <string name="LabelAboutLicense">Licencia</string>
+    <string name="LabelAboutVersion">Versión</string>
+    <string name="LabelAboutAuthor">Autor</string>
+    <string name="LabelAboutSelf">Iván Arcuschin</string>
     <string name="ErrorFetchingVersion">No se pudo obtener la versión de SoundBox</string>
     <string name="LabelPlaySongsRandom">Reproducir todo</string>
     <string name="LabelGitHub">Código en GitHub</string>

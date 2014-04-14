@@ -75,7 +75,7 @@ public class AboutActivity extends PreferenceActivity {
                 final WebView webView = new WebView(AboutActivity.this);
                 webView.loadUrl("file:///android_asset/license.html");
                 AlertDialog licenseDialog = new AlertDialog.Builder(AboutActivity.this)
-                        .setTitle(R.string.label_about_license)
+                        .setTitle(R.string.LabelAboutLicense)
                         .setView(webView)
                         .setPositiveButton(android.R.string.ok, null)
                         .create();

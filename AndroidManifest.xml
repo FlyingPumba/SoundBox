@@ -76,7 +76,7 @@
         </activity>
         <activity
             android:name="com.arcusapp.soundbox.activity.FoldersActivity"
-            android:label="@string/title_activity_folders">
+            android:label="@string/TitleActivityFolders">
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.FOLDERS_ACTIVITY" />
 
@@ -85,7 +85,7 @@
         </activity>
         <activity
             android:name="com.arcusapp.soundbox.activity.SongsListActivity"
-            android:label="@string/title_activity_songs_list"
+            android:label="@string/TitleActivitySongsList"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY" />
