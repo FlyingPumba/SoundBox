@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SoundBox - Android Music Player
+  Copyright (C) 2013 Iván Arcuschin Moreno
+
+  This file is part of SoundBox.
+
+  SoundBox is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  SoundBox is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- STATES WHEN BUTTON IS NOT PRESSED -->
+
+    <!-- Non focused states -->
+    <item android:state_focused="false" android:state_selected="false"
+        android:state_pressed="false"
+        android:drawable="@drawable/tab_unselected" />
+    <item android:state_focused="false" android:state_selected="true"
+        android:state_pressed="false"
+        android:drawable="@drawable/tab_selected" />
+
+    <!-- Focused states (such as when focused with a d-pad or mouse hover) -->
+    <item android:state_focused="true" android:state_selected="false"
+        android:state_pressed="false"
+        android:drawable="@drawable/tab_unselected_focused" />
+    <item android:state_focused="true" android:state_selected="true"
+        android:state_pressed="false"
+        android:drawable="@drawable/tab_selected_focused" />
+
+
+
+    <!-- STATES WHEN BUTTON IS PRESSED -->
+
+    <!-- Non focused states -->
+    <item android:state_focused="false" android:state_selected="false"
+        android:state_pressed="true"
+        android:drawable="@color/tabs_background" />
+    <item android:state_focused="false" android:state_selected="true"
+        android:state_pressed="true"
+        android:drawable="@drawable/tab_selected_pressed" />
+
+    <!-- Focused states (such as when focused with a d-pad or mouse hover) -->
+    <item android:state_focused="true" android:state_selected="false"
+        android:state_pressed="true"
+        android:drawable="@color/tabs_background" />
+    <item android:state_focused="true" android:state_selected="true"
+    android:state_pressed="true"
+    android:drawable="@drawable/tab_selected_pressed" />
+    </selector>

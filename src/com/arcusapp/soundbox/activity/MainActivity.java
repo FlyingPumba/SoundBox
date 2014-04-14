@@ -122,9 +122,11 @@ public class MainActivity extends ActionBarActivity implements android.support.v
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
-            actionBar.addTab(actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+            ActionBar.Tab tab = actionBar.newTab();
+            tab.setText(mSectionsPagerAdapter.getPageTitle(i));
+            tab.setTabListener(this);
+
+            actionBar.addTab(tab);
         }
     }
 

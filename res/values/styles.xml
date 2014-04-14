@@ -21,27 +21,48 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:actionBarTabBarStyle">@style/CustomTabBar</item>
+        <item name="actionBarTabBarStyle">@style/CustomTabBar</item>
 
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+        <item name="android:actionBarTabStyle">@style/CustomTabView</item>
+        <item name="actionBarTabStyle">@style/CustomTabView</item>
 
+        <item name="android:actionBarTabTextStyle">@style/CustomTabText</item>
+        <item name="actionBarTabTextStyle">@style/CustomTabText</item>
     </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme"></style>
 
     <style name="icon">
         <item name="android:minHeight">32dp</item>
         <item name="android:minWidth">32dp</item>
         <item name="android:background">@drawable/icon_imagebutton</item>
+    </style>
+
+    <style name="CustomTabView"  parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:background">@drawable/action_bar_tab_indicator</item>
+        <item name="android:showDividers">none</item>
+        <item name="android:measureWithLargestChild">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CustomTabText" parent="@style/Widget.AppCompat.ActionBar.TabText" >
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tabs_text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
+
+    <style name="CustomTabBar" parent="@style/Widget.AppCompat.ActionBar.TabBar">
+        <item name="android:showDividers">middle</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerPadding">0dp</item>
+        <item name="android:background">@drawable/tab_unselected</item>
     </style>
 
 </resources>

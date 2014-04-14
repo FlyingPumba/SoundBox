@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   SoundBox - Android Music Player
   Copyright (C) 2013 Iván Arcuschin Moreno
-  
+
   This file is part of SoundBox.
-  
+
   SoundBox is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 2 of the License, or
   (at your option) any later version.
-  
+
   SoundBox is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="main_color">#ff99cc00</color>
-    <color name="tabs_background">#cc222222</color>
-    <color name="tab_highlight">#ff9ecfbf</color>
-    <color name="holo_blue_light">#ff33b5e5</color>
-    <color name="tabs_text">#ddd</color>
-    <color name="play_controls_background">#ff0099cc</color>
-    <color name="play_controls_text">@android:color/white</color>
-    <color name="app_title_text">@android:color/white</color>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="-5dp" android:left="-5dp" android:right="-5dp">
+        <shape android:shape="rectangle">
+            <stroke android:color="@color/holo_blue_light" android:width="5dp"/>
+            <solid android:color="@color/tabs_background"/>
+        </shape>
+    </item>
+</layer-list>
