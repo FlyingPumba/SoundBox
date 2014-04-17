@@ -143,7 +143,7 @@ public class SongsListActivityAdapter extends BaseAdapter {
             holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
             holder.text = (TextView) item.findViewById(R.id.itemText);
 
-            holder.icon.setBackgroundResource(R.drawable.icon_song);
+            holder.icon.setBackgroundResource(R.drawable.ic_song);
 
             item.setTag(holder);
         }

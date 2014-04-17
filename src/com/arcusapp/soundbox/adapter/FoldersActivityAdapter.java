@@ -209,7 +209,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 
         // check if its a directory or a song
         if (isDirItem(position)) {
-            holder.icon.setBackgroundResource(R.drawable.icon_folder);
+            holder.icon.setBackgroundResource(R.drawable.ic_folder);
             holder.text.setText(subDirs.get(position).getName());
         } else {
             holder.icon.setBackgroundResource(R.drawable.ic_audiofile);

@@ -94,17 +94,17 @@ public class MediaPlayerNotification {
             mExpandedView.setTextViewText(R.id.notificationExpandedArtistName, artistName);
             mExpandedView.setTextViewText(R.id.notificationExpandedAlbumName, albumName);
             mExpandedView.setImageViewResource(R.id.notificationExpandedPlay,
-                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
+                    isPlaying ? R.drawable.ic_notification_pause : R.drawable.ic_notification_play);
             mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
             mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
             mBaseView.setImageViewResource(R.id.notificationBasePlay,
-                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
+                    isPlaying ? R.drawable.ic_notification_pause : R.drawable.ic_notification_play);
 
         } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
             mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);
             mBaseView.setImageViewResource(R.id.notificationBasePlay,
-                    isPlaying ? R.drawable.icon_notification_pause : R.drawable.icon_notification_play);
+                    isPlaying ? R.drawable.ic_notification_pause : R.drawable.ic_notification_play);
         } else {
             mBaseView.setTextViewText(R.id.notificationBaseSongName, songName);
             mBaseView.setTextViewText(R.id.notificationBaseArtistName, artistName);

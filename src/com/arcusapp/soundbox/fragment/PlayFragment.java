@@ -125,12 +125,12 @@ public class PlayFragment extends Fragment implements OnClickListener {
     public void setPanelExpanded(boolean expanded) {
         mIsPanelExpanded = expanded;
         if(mIsPanelExpanded) {
-            btnPanel.setImageResource(R.drawable.icon_list);
+            btnPanel.setImageResource(R.drawable.ic_list);
         } else {
             if (mediaService != null && mediaService.isPlaying()) {
-                btnPanel.setImageResource(R.drawable.icon_pause);
+                btnPanel.setImageResource(R.drawable.ic_pause);
             } else {
-                btnPanel.setImageResource(R.drawable.icon_play);
+                btnPanel.setImageResource(R.drawable.ic_play);
             }
         }
     }
@@ -206,7 +206,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
             if(currentSong == null) {
                 isCurrentSongNull = true;
                 txtTitle.setText("---");
-                btnPlayPause.setImageResource(R.drawable.icon_play);
+                btnPlayPause.setImageResource(R.drawable.ic_play);
                 btnPanel.setClickable(false);
             } else {
                 isCurrentSongNull = false;
@@ -218,14 +218,14 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
                 btnPanel.setClickable(true);
                 if (mediaService.isPlaying()) {
-                    btnPlayPause.setImageResource(R.drawable.icon_pause);
+                    btnPlayPause.setImageResource(R.drawable.ic_pause);
                     if(!mIsPanelExpanded) {
-                        btnPanel.setImageResource(R.drawable.icon_pause);
+                        btnPanel.setImageResource(R.drawable.ic_pause);
                     }
                 } else {
-                    btnPlayPause.setImageResource(R.drawable.icon_play);
+                    btnPlayPause.setImageResource(R.drawable.ic_play);
                     if(!mIsPanelExpanded) {
-                        btnPanel.setImageResource(R.drawable.icon_play);
+                        btnPanel.setImageResource(R.drawable.ic_play);
                     }
                 }
 
@@ -296,21 +296,21 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
     private int repeatStateIcon(RepeatState state) {
         if (state == RepeatState.Off) {
-            return R.drawable.icon_repeat_off;
+            return R.drawable.ic_repeat_off;
         } else if (state == RepeatState.All) {
-            return R.drawable.icon_repeat_all;
+            return R.drawable.ic_repeat_all;
         } else {
-            return R.drawable.icon_repeat_one;
+            return R.drawable.ic_repeat_one;
         }
     }
 
     private int randomStateIcon(RandomState state) {
         if (state == RandomState.Off) {
-            return R.drawable.icon_random_off;
+            return R.drawable.ic_random_off;
         } else if (state == RandomState.Shuffled) {
-            return R.drawable.icon_random_shuffled;
+            return R.drawable.ic_random_shuffled;
         } else {
-            return R.drawable.icon_random_random;
+            return R.drawable.ic_random_random;
         }
     }
 

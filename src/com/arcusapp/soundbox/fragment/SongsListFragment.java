@@ -105,7 +105,7 @@ public class SongsListFragment extends Fragment {
         myButton.setId(19);
         myButton.setText(this.getString(R.string.LabelPlaySongsRandom));
         myButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        myButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.icon_random_shuffled), null);
+        myButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_random_shuffled), null);
         myButton.setOnClickListener(new OnClickListener() {
 
             @Override
