@@ -31,7 +31,7 @@
         android:textColor="@color/app_title_text"
         android:background="@color/main_color"
         android:id="@+id/action_bar_title"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:gravity="center" />
 
 </LinearLayout>
