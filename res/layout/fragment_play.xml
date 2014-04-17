@@ -101,7 +101,7 @@
             style="@style/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:src="@drawable/ic_random_off"/>
 
         <ImageButton
@@ -117,7 +117,7 @@
             style="@style/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/ic_repeat_off"/>
 
         <ImageButton
@@ -126,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/btnPlayPause"
-            android:layout_toLeftOf="@id/btnSwitchRepeat"
+            android:layout_toLeftOf="@id/btnSwitchRandom"
             android:src="@drawable/ic_next" />
 
         <ImageButton
@@ -134,7 +134,7 @@
             style="@style/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/btnSwitchRandom"
+            android:layout_toRightOf="@id/btnSwitchRepeat"
             android:layout_toLeftOf="@id/btnPlayPause"
             android:src="@drawable/ic_previous" />
 
