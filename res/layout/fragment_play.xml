@@ -57,6 +57,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
                 android:scrollHorizontally="true"
+                android:textColor="@color/play_controls_title"
                 style="@android:style/TextAppearance.Large">
             </TextView>
 
@@ -68,6 +69,7 @@
         android:id="@+id/txtSongArtistAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/play_controls_artist_album"
         android:textSize="16sp" />
 
     <RelativeLayout
