@@ -20,12 +20,18 @@
   -->
 
 <resources>
-    <color name="main_color">#ff99cc00</color>
-    <color name="tabs_background">#cc222222</color>
+    <color name="main_color">#27ae60</color>
+    <color name="app_title_text">#ecf0f1</color>
+    <color name="main_color_fade">#5027ae60</color>
+    <color name="tabs_background">#323f55</color>
     <color name="tab_highlight">#ff9ecfbf</color>
     <color name="holo_blue_light">#ff33b5e5</color>
-    <color name="tabs_text">#ddd</color>
-    <color name="play_controls_background">#ff0099cc</color>
-    <color name="play_controls_text">@android:color/white</color>
-    <color name="app_title_text">@android:color/white</color>
+    <color name="tabs_text">#d4d4d4</color>
+    <color name="play_controls_background">#323f55</color>
+    <color name="play_controls_title">#ecf0f1</color>
+    <color name="play_controls_artist_album">#8593a4</color>
+    <color name="seek_bar_text">#ebf0f1</color>
+    <color name="list_item_title">#3c3c3c</color>
+    <color name="list_item_details">#7c8d8e</color>
+    <color name="list_item_background_selected">#737e91</color>
 </resources>
