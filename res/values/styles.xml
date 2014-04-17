@@ -64,4 +64,25 @@
         <item name="android:background">@drawable/tab_unselected</item>
     </style>
 
+    <style name="PlayFragmentSongTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textColor">@color/play_controls_title</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="PlayFragmentSongDetails">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/play_controls_artist_album</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

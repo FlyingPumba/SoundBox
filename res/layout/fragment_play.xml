@@ -49,16 +49,7 @@
 
             <TextView
                 android:id="@+id/txtSongTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:scrollHorizontally="true"
-                android:textColor="@color/play_controls_title"
-                style="@android:style/TextAppearance.Large">
+                style="@style/PlayFragmentSongTitle">
             </TextView>
 
         </LinearLayout>
@@ -67,10 +58,7 @@
 
     <TextView
         android:id="@+id/txtSongArtistAlbum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/play_controls_artist_album"
-        android:textSize="16sp" />
+        style="@style/PlayFragmentSongDetails" />
 
     <RelativeLayout
         android:layout_width="match_parent"

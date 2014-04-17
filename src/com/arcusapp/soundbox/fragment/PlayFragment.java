@@ -47,6 +47,7 @@ import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
 import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
+import com.arcusapp.soundbox.util.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,8 @@ public class PlayFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
+
+        FontUtils.setRobotoFont(getActivity().getApplicationContext(), rootView);
 
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1) {
             rootView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
