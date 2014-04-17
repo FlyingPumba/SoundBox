@@ -125,10 +125,10 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
 
         holder.text.setText(mArtists.get(groupPosition));
         if (isExpanded) {
-            holder.icon.setBackgroundResource(R.drawable.icon_artist_selected);
+            holder.icon.setBackgroundResource(R.drawable.ic_artist_selected);
             holder.text.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.icon.setBackgroundResource(R.drawable.icon_artist);
+            holder.icon.setBackgroundResource(R.drawable.ic_artist);
             holder.text.setTypeface(null, Typeface.NORMAL);
         }
 
@@ -150,7 +150,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
             holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
             holder.text = (TextView) item.findViewById(R.id.itemText);
 
-            holder.icon.setBackgroundResource(R.drawable.icon_album);
+            holder.icon.setBackgroundResource(R.drawable.ic_album);
             // set left margin
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(20, 0, 0, 0);

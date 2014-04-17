@@ -212,7 +212,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
             holder.icon.setBackgroundResource(R.drawable.icon_folder);
             holder.text.setText(subDirs.get(position).getName());
         } else {
-            holder.icon.setBackgroundResource(R.drawable.icon_audiofile);
+            holder.icon.setBackgroundResource(R.drawable.ic_audiofile);
             holder.text.setText(songs.get(position - currentDirCount).getValue());
         }
 

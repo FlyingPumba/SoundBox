@@ -82,7 +82,7 @@
             android:scaleType="fitCenter"
             android:gravity="center"
             style="@style/icon"
-            android:src="@drawable/icon_notification_play"/>
+            android:src="@drawable/ic_notification_play"/>
 
         <ImageButton
             android:id="@+id/notificationBaseNext"
@@ -91,7 +91,7 @@
             android:scaleType="fitCenter"
             android:gravity="center"
             style="@style/icon"
-            android:src="@drawable/icon_notification_next" />
+            android:src="@drawable/ic_notification_next" />
 
         <ImageButton
             android:id="@+id/notificationBaseCollapse"
@@ -100,7 +100,7 @@
             android:scaleType="fitCenter"
             android:gravity="center"
             style="@style/icon"
-            android:src="@drawable/icon_notification_collapse" />
+            android:src="@drawable/ic_notification_collapse" />
 
     </LinearLayout>
 

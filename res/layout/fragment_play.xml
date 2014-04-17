@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_play" />
+            android:src="@drawable/ic_play" />
 
         <LinearLayout
             android:id="@+id/draggerView"
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/icon_random_off"/>
+            android:src="@drawable/ic_random_off"/>
 
         <ImageButton
             android:id="@+id/btnPlayPause"
@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/icon_play" />
+            android:src="@drawable/ic_play" />
 
         <ImageButton
             android:id="@+id/btnSwitchRepeat"
@@ -118,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/icon_repeat_off"/>
+            android:src="@drawable/ic_repeat_off"/>
 
         <ImageButton
             android:id="@+id/btnNextSong"
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/btnPlayPause"
             android:layout_toLeftOf="@id/btnSwitchRepeat"
-            android:src="@drawable/icon_next" />
+            android:src="@drawable/ic_next" />
 
         <ImageButton
             android:id="@+id/btnPrevSong"
@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/btnSwitchRandom"
             android:layout_toLeftOf="@id/btnPlayPause"
-            android:src="@drawable/icon_previous" />
+            android:src="@drawable/ic_previous" />
 
     </RelativeLayout>
 

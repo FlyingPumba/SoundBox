@@ -34,5 +34,5 @@
         <Preference
             android:key="github"
             android:title="@string/LabelGitHub"
-            android:icon="@drawable/icon_github" />
+            android:icon="@drawable/ic_github" />
 </PreferenceScreen>

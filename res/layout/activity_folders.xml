@@ -32,7 +32,7 @@
 	       android:id="@+id/btnHomeFoldersActivity"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-       		android:background="@drawable/icon_home"
+       		android:background="@drawable/ic_home"
         	android:onClick="onClick"/>
         
         <Button
