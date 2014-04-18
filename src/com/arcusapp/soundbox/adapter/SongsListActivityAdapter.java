@@ -140,6 +140,7 @@ public class SongsListActivityAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             holder.text = (TextView) item.findViewById(R.id.itemText);
+            holder.details = (TextView) item.findViewById(R.id.itemDetail);
             item.setTag(holder);
         }
         else
@@ -148,12 +149,13 @@ public class SongsListActivityAdapter extends BaseAdapter {
         }
 
         holder.text.setText(songs.get(position).getValue());
-
         if (songs.get(position).getID().equals(focusedID)) {
             holder.text.setTypeface(null, Typeface.BOLD);
         } else {
             holder.text.setTypeface(null, Typeface.NORMAL);
         }
+
+        holder.details.setVisibility(View.GONE);
 
         return (item);
     }
