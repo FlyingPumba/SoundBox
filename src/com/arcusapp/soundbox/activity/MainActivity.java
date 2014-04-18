@@ -128,6 +128,8 @@ public class MainActivity extends ActionBarActivity implements android.support.v
 
             actionBar.addTab(tab);
         }
+
+        actionBar.selectTab(actionBar.getTabAt(1));
     }
 
     private void configureSlidingPanel() {
@@ -280,8 +282,8 @@ public class MainActivity extends ActionBarActivity implements android.support.v
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private final int ARTIST_FRAGMENT_POSITION = 0;
-        private final int SONGSLIST_FRAGMENT_POSITION = 1;
+        private final int SONGSLIST_FRAGMENT_POSITION = 0;
+        private final int ARTIST_FRAGMENT_POSITION = 1;
         private final int PLAYLISTS_FRAGMENT_POSITION = 2;
 
         ArtistsFragment mArtistsFragment;
