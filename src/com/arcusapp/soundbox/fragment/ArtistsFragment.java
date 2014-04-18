@@ -27,11 +27,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ListView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.ArtistsActivityAdapter;
+import com.arcusapp.soundbox.util.FontUtils;
 
 public class ArtistsFragment extends Fragment {
 
@@ -48,35 +48,24 @@ public class ArtistsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
 
-        ExpandableListView myExpandableList = (ExpandableListView) rootView.findViewById(R.id.expandableListArtists);
-        myExpandableList.setGroupIndicator(null);
+        ListView artistListView = (ListView) rootView.findViewById(R.id.artistsList);
 
-        myExpandableList.setOnItemLongClickListener(new OnItemLongClickListener() {
+        artistListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                    myAdapter.onArtistLongClick(groupPosition);
-                    return true;
-                } else if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                    int childPosition = ExpandableListView.getPackedPositionChild(id);
-                    myAdapter.onAlbumLongClick(groupPosition, childPosition);
-                    return true;
-                }
                 return false;
             }
         });
 
-        myExpandableList.setOnChildClickListener(new OnChildClickListener() {
+        artistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                myAdapter.onAlbumClick(groupPosition, childPosition);
-                return false;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myAdapter.onArtistClick(position);
             }
         });
 
-        myExpandableList.setAdapter(myAdapter);
+        artistListView.setAdapter(myAdapter);
+        FontUtils.setRobotoFont(getActivity().getApplicationContext(), artistListView);
         return rootView;
     }
 }

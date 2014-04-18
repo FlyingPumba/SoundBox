@@ -107,12 +107,7 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
             item = inflater.inflate(R.layout.default_listitem, null);
 
             holder = new ViewHolder();
-
-            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
             holder.text = (TextView) item.findViewById(R.id.itemText);
-
-            holder.icon.setBackgroundResource(R.drawable.ic_song);
-
             item.setTag(holder);
         }
         else

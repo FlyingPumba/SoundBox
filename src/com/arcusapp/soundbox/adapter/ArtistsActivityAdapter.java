@@ -27,8 +27,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,7 +43,7 @@ import com.arcusapp.soundbox.player.MediaPlayerService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
+public class ArtistsActivityAdapter extends BaseAdapter {
     private Activity mActivity;
 
     private List<String> mArtists;
@@ -62,7 +64,7 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    public void onArtistLongClick(int position) {
+    public void onArtistClick(int position) {
         //call the service to play new songs
         Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
 
@@ -102,115 +104,45 @@ public class ArtistsActivityAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        View item = convertView;
-        ViewHolder holder;
-
-        if (item == null)
-        {
-            LayoutInflater inflater = mActivity.getLayoutInflater();
-            item = inflater.inflate(R.layout.default_listitem, null);
-
-            holder = new ViewHolder();
-
-            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
-            holder.text = (TextView) item.findViewById(R.id.itemText);
-
-            item.setTag(holder);
-        }
-        else
-        {
-            holder = (ViewHolder) item.getTag();
-        }
-
-        holder.text.setText(mArtists.get(groupPosition));
-        if (isExpanded) {
-            holder.icon.setBackgroundResource(R.drawable.ic_artist_selected);
-            holder.text.setTypeface(null, Typeface.BOLD);
-        } else {
-            holder.icon.setBackgroundResource(R.drawable.ic_artist);
-            holder.text.setTypeface(null, Typeface.NORMAL);
-        }
-
-        return (item);
-    }
-
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        View item = convertView;
-        ViewHolder holder;
-
-        if (item == null)
-        {
-            LayoutInflater inflater = mActivity.getLayoutInflater();
-            item = inflater.inflate(R.layout.default_listitem, null);
-
-            holder = new ViewHolder();
-
-            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
-            holder.text = (TextView) item.findViewById(R.id.itemText);
-
-            holder.icon.setBackgroundResource(R.drawable.ic_album);
-            // set left margin
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(20, 0, 0, 0);
-            holder.icon.setLayoutParams(lp);
-
-            item.setTag(holder);
-        }
-        else
-        {
-            holder = (ViewHolder) item.getTag();
-        }
-
-        holder.text.setText(mAlbums.get(groupPosition).get(childPosition));
-
-        return (item);
-    }
-
-    @Override
-    public Object getGroup(int groupPosition) {
-        // gets the title of each parent/group
-        return mArtists.get(groupPosition);
-    }
-
-    @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        // gets the name of each item
-        return mAlbums.get(groupPosition).get(childPosition);
-    }
-
-    @Override
-    public int getGroupCount() {
-        // counts the number of group/parent items so the list knows how many
-        // times calls getGroupView() method
+    public int getCount() {
         return mArtists.size();
     }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
-        // counts the number of children items so the list knows how many times
-        // calls getChildView() method
-        return mAlbums.get(groupPosition).size();
+    public Object getItem(int position) {
+        return position;
     }
 
     @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View item = convertView;
+        ViewHolder holder;
 
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
+        if (item == null)
+        {
+            LayoutInflater inflater = mActivity.getLayoutInflater();
+            item = inflater.inflate(R.layout.default_listitem, null);
 
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+            holder = new ViewHolder();
+
+            holder.text = (TextView) item.findViewById(R.id.itemText);
+            holder.details = (TextView) item.findViewById(R.id.itemDetail);
+
+            item.setTag(holder);
+        }
+        else
+        {
+            holder = (ViewHolder) item.getTag();
+        }
+
+        holder.text.setText(mArtists.get(position));
+        holder.details.setText(mAlbums.get(position).size() + " albums");
+
+        return (item);
     }
 }

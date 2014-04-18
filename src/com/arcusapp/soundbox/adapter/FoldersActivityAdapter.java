@@ -197,7 +197,7 @@ public class FoldersActivityAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
+            //holder.icon = (ImageView) item.findViewById(R.id.itemIcon);
             holder.text = (TextView) item.findViewById(R.id.itemText);
 
             item.setTag(holder);
@@ -209,10 +209,10 @@ public class FoldersActivityAdapter extends BaseAdapter {
 
         // check if its a directory or a song
         if (isDirItem(position)) {
-            holder.icon.setBackgroundResource(R.drawable.ic_folder);
+            //holder.icon.setBackgroundResource(R.drawable.ic_folder);
             holder.text.setText(subDirs.get(position).getName());
         } else {
-            holder.icon.setBackgroundResource(R.drawable.ic_audiofile);
+            //holder.icon.setBackgroundResource(R.drawable.ic_audiofile);
             holder.text.setText(songs.get(position - currentDirCount).getValue());
         }
 
