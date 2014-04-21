@@ -25,36 +25,53 @@
     android:orientation="vertical"
     android:background="@color/play_controls_background">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/slidingPanel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/btnPanel"
-            style="@style/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_play" />
-
-        <LinearLayout
-            android:id="@+id/draggerView"
+        <SeekBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/btnPanel"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/progress_bar_height_collapsed"
+            android:progressDrawable="@drawable/progress_bar_states"
+            android:indeterminateOnly="false"
+            android:thumbOffset="0px"
+            android:paddingLeft="-5dp"
+            android:paddingRight="-5dp"
+            android:max="100" />
 
-            <TextView
-                android:id="@+id/txtSongTitle"
-                style="@style/PlayFragmentSongTitle">
-            </TextView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-        </LinearLayout>
+            <ImageButton
+                android:id="@+id/btnPanel"
+                style="@style/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_play" />
 
-    </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/draggerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/btnPanel"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtSongTitle"
+                    style="@style/PlayFragmentSongTitle">
+                </TextView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtSongArtistAlbum"
@@ -82,14 +99,6 @@
             android:textSize="16sp" />
 
     </RelativeLayout>
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:progressDrawable="@color/main_color"
-        android:max="50" />
 
     <RelativeLayout
         android:layout_width="match_parent"

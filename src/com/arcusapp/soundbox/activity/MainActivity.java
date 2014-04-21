@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -138,7 +139,7 @@ public class MainActivity extends ActionBarActivity implements android.support.v
         mSlidingLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
         // set the height of the sliding panel
-        final RelativeLayout slidingPanel = (RelativeLayout) findViewById(R.id.slidingPanel);
+        final LinearLayout slidingPanel = (LinearLayout) findViewById(R.id.slidingPanel);
         slidingPanel.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {

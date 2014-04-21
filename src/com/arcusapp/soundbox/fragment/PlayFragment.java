@@ -24,18 +24,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -57,7 +61,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
     private TextView txtTitle, txtArtistAlbum, txtTimeCurrent, txtTimeTotal;
     private ImageButton btnSwitchRandom, btnSwitchRepeat, btnPlayPause, btnPanel, btnPrevious, btnNext;
-    private SeekBar seekBar;
+    private SeekBar progressBar;
 
     private Song currentSong;
     private Handler myHandler;
@@ -124,15 +128,20 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
     public void setPanelExpanded(boolean expanded) {
         mIsPanelExpanded = expanded;
+        ViewGroup.LayoutParams progressBarParams = progressBar.getLayoutParams();
+
         if(mIsPanelExpanded) {
             btnPanel.setImageResource(R.drawable.ic_list);
+            progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_expanded);
         } else {
             if (mediaService != null && mediaService.isPlaying()) {
                 btnPanel.setImageResource(R.drawable.ic_pause);
             } else {
                 btnPanel.setImageResource(R.drawable.ic_play);
             }
+            progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_collapsed);
         }
+        progressBar.setLayoutParams(progressBarParams);
     }
 
     public boolean isCurrentSongNull() {
@@ -180,22 +189,43 @@ public class PlayFragment extends Fragment implements OnClickListener {
         btnPanel.setOnClickListener(this);
 
         // init the seekbar
-        seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        progressBar = (SeekBar) rootView.findViewById(R.id.progressBar);
+        progressBar.setThumb(null);
+        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //progressBar.setThumb(null);
+            }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                /*Drawable drawable = getResources().getDrawable(android.R.drawable.gallery_thumb);
+                final int quarterHeight = drawable.getIntrinsicHeight()/4;
+                final int halfWidht = drawable.getIntrinsicWidth()/2;
+
+                drawable.setBounds(new Rect(-halfWidht,
+                        -quarterHeight,
+                        halfWidht,
+                        3*quarterHeight));
+                progressBar.setThumb(drawable);*/
+            }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    if(mediaService != null) {
+                    if(mediaService != null && mIsPanelExpanded) {
                         mediaService.seekTo(progress);
                         seekBar.setProgress(progress);
                     }
                 }
+            }
+        });
+
+        progressBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // only handle user touch when the panel is Expanded
+                return !mIsPanelExpanded;
             }
         });
     }
@@ -231,12 +261,12 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
                 int duration = mediaService.getDuration();
                 txtTimeTotal.setText(formatDuration(duration));
-                seekBar.setMax(duration);
+                progressBar.setMax(duration);
 
                 // Update the seek bar position
                 int position = mediaService.getCurrentPosition();
                 txtTimeCurrent.setText(formatDuration(position));
-                seekBar.setProgress(position);
+                progressBar.setProgress(position);
             }
         }
         catch (Exception ex) {
@@ -339,7 +369,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
             try {
                 int position = mediaService.getCurrentPosition();
                 txtTimeCurrent.setText(formatDuration(position));
-                seekBar.setProgress(position);
+                progressBar.setProgress(position);
                 myHandler.postDelayed(this, 100);
             } catch (Exception ex) { }
         }

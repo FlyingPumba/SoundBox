@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   SoundBox - Android Music Player
   Copyright (C) 2013 Iván Arcuschin Moreno
@@ -19,17 +20,28 @@
   along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity$PlaylistsFragment" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListView
-        android:id="@+id/playlistsActivityList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
-    </ListView>
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="@color/main_color_light" />
+        </shape>
+    </item>
 
-</RelativeLayout>
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <solid android:color="@color/main_color_light" />
+            </shape>
+        </clip>
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="@color/main_color" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

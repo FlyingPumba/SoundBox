@@ -22,7 +22,7 @@
 <resources>
     <color name="main_color">#27ae60</color>
     <color name="app_title_text">#ecf0f1</color>
-    <color name="main_color_fade">#5027ae60</color>
+    <color name="main_color_light">#9fcaa8</color>
     <color name="tabs_background">#323f55</color>
     <color name="tab_highlight">#ff9ecfbf</color>
     <color name="holo_blue_light">#ff33b5e5</color>
