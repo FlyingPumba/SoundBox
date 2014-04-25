@@ -53,7 +53,7 @@ android {
         }
     }
 
-    if(project.hasProperty("SoundBox.properties")
+    if (project.hasProperty("SoundBox.properties")
             && new File(project.property("SoundBox.properties")).exists()) {
         Properties props = new Properties()
         props.load(new FileInputStream(file(project.property("SoundBox.properties"))))
@@ -72,8 +72,8 @@ android {
                 signingConfig signingConfigs.release
             }
             android.applicationVariants.all { variant ->
-                if(variant.buildType.name == "release") {
-                    variant.outputFile = new File(props['outputDir'],"soundbox-release.apk")
+                if (variant.buildType.name == "release") {
+                    variant.outputFile = new File(props['outputDir'], "soundbox-release.apk")
                 }
             }
         }
@@ -81,6 +81,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:appcompat-v7:19.+'
+    compile 'com.android.support:support-v4:19.+'
 }

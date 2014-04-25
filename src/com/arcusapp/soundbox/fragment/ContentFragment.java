@@ -18,11 +18,11 @@
  * along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.arcusapp.soundbox.adapter;
+package com.arcusapp.soundbox.fragment;
 
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
 
-public class ViewHolder {
-    TextView text;
-    TextView details;
+public abstract class ContentFragment extends Fragment {
+
+    public abstract void onPanelStateChanged(boolean expanded);
 }
