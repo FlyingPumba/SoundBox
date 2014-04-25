@@ -20,29 +20,66 @@
 
 package com.arcusapp.soundbox.model;
 
-public class MediaEntry implements Entry<MediaEntry> {
-    private String id;
-    private String value;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    public MediaEntry(String id, String value) {
-        this.id = id;
-        this.value = value;
+public class MediaEntry implements Entry<MediaEntry>, Parcelable {
+    private String mId;
+    private MediaType mType;
+    private String mValue;
+
+    public MediaEntry(String id, MediaType type, String value) {
+        this.mId = id;
+        this.mType = type;
+        this.mValue = value;
+    }
+
+    public MediaEntry(Parcel parcel) {
+        String[] strings = new String[2];
+        parcel.readStringArray(strings);
+        mId = strings[0];
+        mValue = strings[1];
+
+        mType = (MediaType) parcel.readSerializable();
     }
 
     public String getID() {
-        return id;
+        return mId;
     }
 
     public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+        return mValue;
     }
 
     @Override
+    public MediaType getMediaType() { return mType; }
+
+    @Override
     public int compareTo(MediaEntry another) {
-        return this.value.compareToIgnoreCase(another.getValue());
+        return this.mValue.compareToIgnoreCase(another.getValue());
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{mId, mValue});
+        dest.writeSerializable(mType);
+    }
+
+    public static final Parcelable.Creator<MediaEntry> CREATOR = new Parcelable.Creator<MediaEntry>() {
+        @Override
+        public MediaEntry createFromParcel(Parcel parcel) {
+            return new MediaEntry(parcel);
+        }
+
+        @Override
+        public MediaEntry[] newArray(int size) {
+            return new MediaEntry[size];
+        }
+    };
+
 }

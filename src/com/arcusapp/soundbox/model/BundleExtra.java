@@ -24,7 +24,7 @@ import android.os.Bundle;
 
 public class BundleExtra {
     public final static String CURRENT_ID = "currentid";
-    public final static String SONGS_ID_LIST = "songsidlist";
+    public final static String MEDIA_ENTRY_LIST = "mediaentrylist";
 
     public class DefaultValues {
         public final static String DEFAULT_ID = "-1";
