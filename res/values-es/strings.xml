@@ -21,9 +21,7 @@
 
 <resources>
     <string name="action_settings">Ajustes</string>
-    <string name="TitleActivityFolders">FoldersActivity</string>
     <string name="TitleActivitySongsList">Lista de reproducción actual</string>
-    <string name="LabelPlayFolder">Reproducir carpeta</string>
     <string name="LabelAbout">Acerca de</string>
     <string name="LabelAboutSoundbox">Acerca de SoundBox</string>
     <string name="LabelAboutLicense">Licencia</string>

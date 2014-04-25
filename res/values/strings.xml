@@ -20,10 +20,7 @@
   -->
 
 <resources>
-    <string name="app_name">SoundBox</string>
-    <string name="TitleActivityFolders">FoldersActivity</string>
     <string name="TitleActivitySongsList">Current playlist</string>
-    <string name="LabelPlayFolder">Play folder</string>
     <string name="LabelAbout">About</string>
     <string name="LabelAboutSoundbox">About SoundBox</string>
     <string name="LabelAboutVersion">Version</string>

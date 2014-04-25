@@ -75,15 +75,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.FoldersActivity"
-            android:label="@string/TitleActivityFolders">
-            <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.FOLDERS_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.arcusapp.soundbox.activity.SongsListActivity"
             android:label="@string/TitleActivitySongsList"
             android:noHistory="true">
