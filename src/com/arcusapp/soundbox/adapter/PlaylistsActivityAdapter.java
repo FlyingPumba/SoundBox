@@ -54,7 +54,7 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
 
     public void onPlaylistClick(int position) {
         // show the songs from that specific playlists
-        Intent intent = new Intent();
+        /*Intent intent = new Intent();
         intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
 
         Bundle b = new Bundle();
@@ -62,7 +62,7 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
         //b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
         intent.putExtras(b);
 
-        mActivity.startActivity(intent);
+        mActivity.startActivity(intent);*/
     }
 
     public void onPlaylistLongClick(int position) {

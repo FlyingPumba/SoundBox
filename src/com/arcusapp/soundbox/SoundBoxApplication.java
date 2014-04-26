@@ -40,8 +40,7 @@ public class SoundBoxApplication extends Application {
     private static Context appContext;
 
     public static final String ACTION_MAIN_ACTIVITY = "com.arcusapp.soundbox.action.MAIN_ACTIVITY";
-    public static final String ACTION_FOLDERS_ACTIVITY = "com.arcusapp.soundbox.action.FOLDERS_ACTIVITY";
-    public static final String ACTION_SONGSLIST_ACTIVITY = "com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY";
+    public static final String ACTION_MEDIALIST_ACTIVITY = "com.arcusapp.soundbox.action.MEDIALIST_ACTIVITY";
     public static final String ACTION_ABOUT_ACTIVITY = "com.arcusapp.soundbox.action.ABOUT_ACTIVITY";
     public static final String ACTION_MEDIA_PLAYER_SERVICE = "com.arcusapp.soundbox.action.MEDIA_PLAYER_SERVICE";
 

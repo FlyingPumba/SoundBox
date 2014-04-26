@@ -35,6 +35,7 @@ import android.widget.TextView;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
+import com.arcusapp.soundbox.fragment.MediaListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.player.MediaPlayerService;
@@ -64,26 +65,112 @@ public class MediaListAdapter extends BaseAdapter {
     }
 
     public void onItemClick(int position) {
-        // show the main activity
-        Intent playActivityIntent = new Intent();
-        playActivityIntent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
-        playActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        mActivity.startActivity(playActivityIntent);
-
-        //call the service to play new media content
-        Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
-
         if (mHasHeader) {
             position = position - 1;
         }
 
-        Bundle b = new Bundle();
-        b.putString(BundleExtra.CURRENT_ID, mMediaContent.get(position).getID());
-        ArrayList<Parcelable> list = new ArrayList<Parcelable>();
-        list.add(mMediaContent.get(position));
-        b.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, list);
+        MediaEntry media = mMediaContent.get(position);
 
-        serviceIntent.putExtras(b);
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+
+        switch (media.getMediaType()) {
+            case Song:
+                // show the main activity
+                intent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                mActivity.startActivity(intent);
+
+                //call the service to play new media content
+                Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
+
+                bundle.putString(BundleExtra.CURRENT_ID, mMediaContent.get(position).getID());
+                ArrayList<Parcelable> list = new ArrayList<Parcelable>();
+                list.add(media);
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, list);
+
+                serviceIntent.putExtras(bundle);
+                mActivity.startService(serviceIntent);
+
+                break;
+            case Artist:
+                // show the media list activity
+                intent.setAction(SoundBoxApplication.ACTION_MEDIALIST_ACTIVITY);
+
+                bundle.putBoolean(MediaListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
+                List<MediaEntry> albums = mMediaProvider.getAlbumsFromArtist(media.getValue());
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(albums));
+
+                intent.putExtras(bundle);
+                mActivity.startActivity(intent);
+                break;
+            case Album:
+                // show the media list activity
+                intent.setAction(SoundBoxApplication.ACTION_MEDIALIST_ACTIVITY);
+
+                bundle.putBoolean(MediaListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
+                List<MediaEntry> songsAlbum = mMediaProvider.getSongsFromAlbum(media.getValue());
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(songsAlbum));
+
+                intent.putExtras(bundle);
+                mActivity.startActivity(intent);
+                break;
+            case Playlist:
+                // show the media list activity
+                intent.setAction(SoundBoxApplication.ACTION_MEDIALIST_ACTIVITY);
+
+                bundle.putBoolean(MediaListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
+                List<MediaEntry> songsPlaylist = mMediaProvider.getSongsFromPlaylist(media.getID());
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(songsPlaylist));
+
+                intent.putExtras(bundle);
+                mActivity.startActivity(intent);
+                break;
+        }
+
+    }
+
+
+    public void onItemLongClick(int position) {
+        if (mHasHeader) {
+            position = position - 1;
+        }
+
+        MediaEntry media = mMediaContent.get(position);
+
+        // show the main activity
+        Intent intent = new Intent();
+        intent.setAction(SoundBoxApplication.ACTION_MAIN_ACTIVITY);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        mActivity.startActivity(intent);
+
+        //call the service to play new media content
+        Intent serviceIntent = new Intent(MediaPlayerService.PLAY_NEW_SONGS, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
+        Bundle bundle = new Bundle();
+
+        switch (media.getMediaType()) {
+            case Song:
+                bundle.putString(BundleExtra.CURRENT_ID, mMediaContent.get(position).getID());
+                ArrayList<Parcelable> list = new ArrayList<Parcelable>();
+                list.add(media);
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, list);
+                break;
+            case Artist:
+                List<MediaEntry> songsArtist = mMediaProvider.getSongsFromArtist(media.getValue());
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(songsArtist));
+                break;
+            case Album:
+                List<MediaEntry> songsAlbum = mMediaProvider.getSongsFromAlbum(media.getValue());
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(songsAlbum));
+                break;
+            case Playlist:
+                List<MediaEntry> songsPlaylist = mMediaProvider.getSongsFromPlaylist(media.getID());
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(songsPlaylist));
+                break;
+        }
+
+
+        serviceIntent.putExtras(bundle);
         mActivity.startService(serviceIntent);
     }
 

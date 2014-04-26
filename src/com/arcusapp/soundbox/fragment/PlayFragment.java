@@ -283,8 +283,8 @@ public class PlayFragment extends Fragment implements OnClickListener {
         }
         else if (v.getId() == R.id.btnPanel) {
             if(mIsPanelExpanded) {
-                Intent intent = new Intent();
-                intent.setAction(SoundBoxApplication.ACTION_SONGSLIST_ACTIVITY);
+                /*Intent intent = new Intent();
+                intent.setAction(SoundBoxApplication.ACTION_MEDIALIST_ACTIVITY);
 
                 Bundle mExtras = new Bundle();
                 List<String> songsID = mediaService.getSongsIDList();
@@ -293,7 +293,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
                 mExtras.putString(BundleExtra.CURRENT_ID, currentSongID);
 
                 intent.putExtras(mExtras);
-                startActivity(intent);
+                startActivity(intent);*/
             } else {
                 mediaService.playAndPause();
             }

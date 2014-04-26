@@ -75,11 +75,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arcusapp.soundbox.activity.SongsListActivity"
+            android:name="com.arcusapp.soundbox.activity.MediaListActivity"
             android:label="@string/TitleActivitySongsList"
             android:noHistory="true">
             <intent-filter>
-                <action android:name="com.arcusapp.soundbox.action.SONGSLIST_ACTIVITY" />
+                <action android:name="com.arcusapp.soundbox.action.MEDIALIST_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -95,7 +95,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             @Override
             public void onPanelCollapsed(View panel) {
-                mContentFragment.onPanelStateChanged(true);
+                mContentFragment.onPanelStateChanged(false);
                 //inform the fragment that panel is collapsed
                 mPlayFragment.setPanelExpanded(false);
                 mPanelExpanded = false;
@@ -103,7 +103,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             @Override
             public void onPanelExpanded(View panel) {
-                mContentFragment.onPanelStateChanged(false);
+                mContentFragment.onPanelStateChanged(true);
                 //inform the fragment that panel is expanded
                 mPlayFragment.setPanelExpanded(true);
                 mPanelExpanded = true;

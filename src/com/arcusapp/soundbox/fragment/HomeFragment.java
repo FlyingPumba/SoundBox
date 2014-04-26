@@ -105,6 +105,6 @@ public class HomeFragment extends ContentFragment implements android.support.v7.
 
     @Override
     public void onPanelStateChanged(boolean expanded) {
-        mViewPager.setContentEnabled(expanded);
+        mViewPager.setContentEnabled(!expanded);
     }
 }

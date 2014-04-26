@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MediaListFragment extends Fragment {
+public class MediaListFragment extends ContentFragment {
 
     public static final String ADD_PLAYALLRANDOM_BUTTON = "addRandomButton";
 
@@ -101,6 +101,14 @@ public class MediaListFragment extends Fragment {
             }
         });
 
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mAdapter.onItemLongClick(position);
+                return true;
+            }
+        });
+
         mListView.setSelection(mAdapter.getFocusedPosition());
 
         return rootView;
@@ -122,5 +130,10 @@ public class MediaListFragment extends Fragment {
 
         // add the button to the header of the list
         mListView.addHeaderView(myButton);
+    }
+
+    @Override
+    public void onPanelStateChanged(boolean expanded) {
+        mListView.setEnabled(!expanded);
     }
 }
