@@ -33,7 +33,7 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.model.BundleExtra;
-import com.arcusapp.soundbox.model.PlaylistEntry;
+import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import java.util.List;
 public class PlaylistsActivityAdapter extends BaseAdapter {
     private Activity mActivity;
 
-    private List<PlaylistEntry> playlists;
+    private List<MediaEntry> playlists;
     private MediaProvider mediaProvider;
 
     public PlaylistsActivityAdapter(Activity activity) {
@@ -59,7 +59,7 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
 
         Bundle b = new Bundle();
         String playlistID = playlists.get(position).getID();
-        b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
+        //b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
         intent.putExtras(b);
 
         mActivity.startActivity(intent);
@@ -74,7 +74,7 @@ public class PlaylistsActivityAdapter extends BaseAdapter {
         b.putString(BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
 
         String playlistID = playlists.get(position).getID();
-        b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
+        //b.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(mediaProvider.getSongsFromPlaylist(playlistID)));
 
         serviceIntent.putExtras(b);
         mActivity.startService(serviceIntent);

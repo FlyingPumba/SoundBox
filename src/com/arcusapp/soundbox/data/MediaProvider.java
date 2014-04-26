@@ -26,9 +26,9 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.model.PlaylistEntry;
+import com.arcusapp.soundbox.model.MediaType;
 import com.arcusapp.soundbox.model.Song;
-import com.arcusapp.soundbox.model.SongEntry;
+import com.arcusapp.soundbox.model.MediaEntry;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 public class MediaProvider {
 
@@ -54,13 +55,13 @@ public class MediaProvider {
 
     /**
      * Returns the id of all the Songs in the MediaStore.
-     * 
-     * @return list with the ids
+     *
+     * @return a list of MediaEntries. The value associated is the name of the Song.
      */
-    public List<String> getAllSongs() {
-        List<String> songs = new ArrayList<String>();
+    public List<MediaEntry> getAllSongs() {
+        List<MediaEntry> songs = new ArrayList<MediaEntry>();
 
-        String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID };
+        String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE };
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
         String sortOrder = MediaStore.Audio.Media.TITLE;
 
@@ -68,7 +69,7 @@ public class MediaProvider {
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            songs.add(myCursor.getString(0));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         myCursor.close();
@@ -76,46 +77,51 @@ public class MediaProvider {
     }
 
     /**
-     * Returns the name ({@linkplain MediaStore.Audio.Artists.ARTIST}) of all the Artists in the MediaStore.
-     * 
-     * @return list with the names
+     * Returns the name of all the Artists in the MediaStore.
+     *
+     * @return a list of MediaEntries. The value associated is the name of the Artist.
      */
-    public List<String> getAllArtists() {
-        List<String> artists = new ArrayList<String>();
+    public List<MediaEntry> getAllArtists() {
+        List<MediaEntry> artists = new ArrayList<MediaEntry>();
 
         String[] projection = { "DISTINCT " + MediaStore.Audio.Artists.ARTIST };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " not null ";
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " not null";
         String sortOrder = MediaStore.Audio.Artists.ARTIST;
 
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            artists.add(myCursor.getString(0));
+            // the same artist can have different ids, so in order to use DISTINCT in the query above,
+            // we are sacrificing the id of the artist
+            artists.add(new MediaEntry(UUID.randomUUID().toString(), MediaType.Artist, myCursor.getString(0)));
         }
+
         myCursor.close();
         return artists;
     }
 
     /**
-     * Returns the name ({@linkplain MediaStore.Audio.Albums.ALBUM}) of all the Albums of the specified Artist in the MediaStore.
+     * Returns the name of all the Albums of the specified Artist in the MediaStore.
      * 
-     * @param artist the name of the Artist ({@linkplain MediaStore.Audio.Artists.ARTIST})
-     * @return list with the names
+     * @param artistName the name of the Artist
+     * @return a list of MediaEntries. The value associated is the name of the Album.
      */
-    public List<String> getAlbumsFromArtist(String artist) {
-        List<String> albums = new ArrayList<String>();
+    public List<MediaEntry> getAlbumsFromArtist(String artistName) {
+        List<MediaEntry> albums = new ArrayList<MediaEntry>();
 
         String[] projection = { "DISTINCT " + MediaStore.Audio.Artists.Albums.ALBUM };
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = ?";
         String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM;
-        String[] selectionArgs = new String[] { artist };
+        String[] selectionArgs = new String[] { artistName };
 
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            albums.add(myCursor.getString(0));
+            // the same album can have different ids, so in order to use DISTINCT in the query above,
+            // we are sacrificing the id of the album
+            albums.add(new MediaEntry(UUID.randomUUID().toString(), MediaType.Album, myCursor.getString(0)));
         }
 
         myCursor.close();
@@ -123,62 +129,62 @@ public class MediaProvider {
     }
 
     /**
-     * Returns the id ({@linkplain MediaStore.Audio.Media._ID}) of all the Songs of the specified Artist in the MediaStore.
+     * Returns the id of all the Songs of the specified Artist in the MediaStore.
      * 
-     * @param artist the name of the Artist ({@linkplain MediaStore.Audio.Artists.ARTIST})
-     * @return list with the ids
+     * @param artistName the name of the Artist
+     * @return a list of MediaEntries. The value associated is the name of the Song.
      */
-    public List<String> getSongsFromArtist(String artist) {
-        List<String> ids = new ArrayList<String>();
+    public List<MediaEntry> getSongsFromArtist(String artistName) {
+        List<MediaEntry> songs = new ArrayList<MediaEntry>();
 
-        String[] projection = { MediaStore.Audio.Media._ID };
+        String[] projection = { MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE };
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = ?";
         String sortOrder = MediaStore.Audio.Media.TITLE;
-        String[] selectionArgs = new String[] { artist };
+        String[] selectionArgs = new String[] { artistName };
 
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            ids.add(myCursor.getString(0));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         myCursor.close();
-        return ids;
+        return songs;
     }
 
     /**
-     * Returns the id ({@linkplain MediaStore.Audio.Media._ID}) of all the Songs of the specified Album in the MediaStore.
+     * Returns the id of all the Songs of the specified Album in the MediaStore.
      * 
-     * @param album the name of the Album ({@linkplain MediaStore.Audio.Albums.ALBUM})
-     * @return list with the ids
+     * @param albumName the ID of the Album
+     * @return a list of MediaEntries. The value associated is the name of the Song.
      */
-    public List<String> getSongsFromAlbum(String album) {
-        List<String> ids = new ArrayList<String>();
+    public List<MediaEntry> getSongsFromAlbum(String albumName) {
+        List<MediaEntry> songs = new ArrayList<MediaEntry>();
 
-        String[] projection = { MediaStore.Audio.Media._ID };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.Albums.ALBUM + " = ?";
+        String[] projection = { MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE };
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Albums.ALBUM + " = ?";
         String sortOrder = MediaStore.Audio.Media.TITLE;
-        String[] selectionArgs = new String[] { album };
+        String[] selectionArgs = new String[] { albumName };
 
         CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            ids.add(myCursor.getString(0));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         myCursor.close();
-        return ids;
+        return songs;
     }
 
     /**
      * Returns a list of PlaylistEntries for all the Playlists in the MediaStore.
      * 
-     * @return a list of PlaylistEntries. The value associated is the name of the Playlist ({@linkplain MediaStore.Audio.Playlists.NAME})
+     * @return a list of MediaEntries. The value associated is the name of the Playlist.
      */
-    public List<PlaylistEntry> getAllPlayLists() {
-        List<PlaylistEntry> playLists = new ArrayList<PlaylistEntry>();
+    public List<MediaEntry> getAllPlayLists() {
+        List<MediaEntry> playLists = new ArrayList<MediaEntry>();
 
         String[] projection = new String[] { MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME };
 
@@ -186,8 +192,7 @@ public class MediaProvider {
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            playLists.add(new PlaylistEntry(myCursor.getString(0),
-                    myCursor.getString(1)));
+            playLists.add(new MediaEntry(myCursor.getString(0), MediaType.Playlist, myCursor.getString(1)));
         }
 
         Collections.sort(playLists);
@@ -197,13 +202,13 @@ public class MediaProvider {
     }
 
     /**
-     * Returns the id ({@linkplain MediaStore.Audio.Playlists.Members.AUDIO_ID}) of all the Songs of the specified Playlist in the MediaStore.
+     * Returns the id  of all the Songs of the specified Playlist in the MediaStore.
      * 
-     * @param playListID ({@linkplain MediaStore.Audio.Playlists._ID})
-     * @return list with the ids
+     * @param playListID the ID of the Playlist
+     * @return a list of MediaEntries. The value associated is the name of the Song.
      */
-    public List<String> getSongsFromPlaylist(String playListID) {
-        List<String> ids = new ArrayList<String>();
+    public List<MediaEntry> getSongsFromPlaylist(String playListID) {
+        List<MediaEntry> songs = new ArrayList<MediaEntry>();
 
         Uri specialUri = MediaStore.Audio.Playlists.Members.getContentUri("external", Integer.parseInt(playListID));
         String[] projection = { MediaStore.Audio.Playlists.Members.AUDIO_ID, MediaStore.Audio.Playlists.Members.TITLE };
@@ -213,11 +218,11 @@ public class MediaProvider {
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            ids.add(myCursor.getString(0));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         myCursor.close();
-        return ids;
+        return songs;
     }
 
     public Song getSongFromID(String songID) {
@@ -253,12 +258,12 @@ public class MediaProvider {
     /**
      * Returns a list of SongEntries for the specified Songs.
      * 
-     * @param songsID list of ids ({@linkplain MediaStore.Audio.Media._ID})
+     * @param songsID list of ids
      * @param projection one key from {@linkplain MediaStore.Audio.Media} to associate on the SongEntry's value
      * @return a list of SongEntries
      */
-    public List<SongEntry> getValueFromSongs(List<String> songsID, String projection) {
-        List<SongEntry> songs = new ArrayList<SongEntry>();
+    public List<MediaEntry> getValueFromSongs(List<String> songsID, String projection) {
+        List<MediaEntry> songs = new ArrayList<MediaEntry>();
 
         String[] ids = new String[songsID.size()];
         ids = songsID.toArray(ids);
@@ -276,7 +281,7 @@ public class MediaProvider {
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         Collections.sort(songs);
@@ -314,8 +319,8 @@ public class MediaProvider {
      * @param projection one key from {@linkplain MediaStore.Audio.Media} to associate on the SongEntry's value
      * @return a list of SongEntries
      */
-    public List<SongEntry> getSongsInAFolder(File directory, String projection) {
-        List<SongEntry> songs = new ArrayList<SongEntry>();
+    public List<MediaEntry> getSongsInAFolder(File directory, String projection) {
+        List<MediaEntry> songs = new ArrayList<MediaEntry>();
         String folder = directory.getPath();
 
         String[] cursorProjection = new String[] { MediaStore.Audio.Media._ID, projection };
@@ -330,14 +335,14 @@ public class MediaProvider {
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         CursorLoader cl2 = new CursorLoader(SoundBoxApplication.getContext(), MediaStore.Audio.Media.INTERNAL_CONTENT_URI, cursorProjection, selection, null, sortOrder);
         myCursor = cl2.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            songs.add(new SongEntry(myCursor.getString(0), myCursor.getString(1)));
+            songs.add(new MediaEntry(myCursor.getString(0), MediaType.Song, myCursor.getString(1)));
         }
 
         myCursor.close();

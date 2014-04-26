@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.data.MediaProvider;
-import com.arcusapp.soundbox.fragment.ArtistsFragment;
+import com.arcusapp.soundbox.fragment.MediaListFragment;
 import com.arcusapp.soundbox.fragment.PlaylistsFragment;
-import com.arcusapp.soundbox.fragment.SongsListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaEntry;
 
 import java.util.ArrayList;
 
@@ -21,15 +21,17 @@ public class MainSectionsAdapter extends FragmentPagerAdapter {
     private final int ARTIST_FRAGMENT_POSITION = 1;
     private final int PLAYLISTS_FRAGMENT_POSITION = 2;
 
-    ArtistsFragment mArtistsFragment;
-    SongsListFragment mSongsListFragment;
+    MediaListFragment mArtistsFragment;
+    MediaListFragment mSongsListFragment;
     PlaylistsFragment mPlaylistsFragment;
 
     Context mContext;
+    MediaProvider mMediaProvider;
 
     public MainSectionsAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
+        mMediaProvider = new MediaProvider();
     }
 
     @Override
@@ -38,17 +40,22 @@ public class MainSectionsAdapter extends FragmentPagerAdapter {
         switch (position) {
             case ARTIST_FRAGMENT_POSITION:
                 if(mArtistsFragment == null) {
-                    mArtistsFragment = new ArtistsFragment();
+                    // New MediaListFragment with all the artists
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(mMediaProvider.getAllArtists()));
+
+                    mArtistsFragment = new MediaListFragment();
+                    mArtistsFragment.setArguments(bundle);
                 }
                 return mArtistsFragment;
             case SONGSLIST_FRAGMENT_POSITION:
                 if(mSongsListFragment == null) {
-                    MediaProvider media = new MediaProvider();
+                    // New MediaListFragment with all the songs
                     Bundle bundle = new Bundle();
-                    bundle.putStringArrayList(BundleExtra.SONGS_ID_LIST, new ArrayList<String>(media.getAllSongs()));
-                    bundle.putBoolean(SongsListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
+                    bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(mMediaProvider.getAllSongs()));
+                    bundle.putBoolean(MediaListFragment.ADD_PLAYALLRANDOM_BUTTON, true);
 
-                    mSongsListFragment = new SongsListFragment();
+                    mSongsListFragment = new MediaListFragment();
                     mSongsListFragment.setArguments(bundle);
                 }
 

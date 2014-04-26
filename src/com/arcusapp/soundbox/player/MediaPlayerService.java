@@ -37,12 +37,15 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
 import com.arcusapp.soundbox.model.Song;
+import com.arcusapp.soundbox.util.MediaEntryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +74,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     private BroadcastReceiver headsetReceiver;
 
     // private int currentSongPosition;
+    private MediaProvider mMediaProvider;
     private SongStack currentSongStack;
     private List<String> songsIDList;
 
@@ -142,9 +146,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         else if(PLAY_NEW_SONGS.equals(action)) {
             Bundle bundle = intent.getExtras();
             String currentID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-            List<String> songsID = bundle.getStringArrayList(BundleExtra.SONGS_ID_LIST);
+            List<MediaEntry> mediaContent = bundle.getParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST);
 
-            loadSongs(songsID, currentID);
+            loadMedia(mediaContent, currentID);
             mediaPlayer.start();
             mIsSupposedToBePlaying = true;
             Log.d(this.getClass().getName(), "cancelShutdown from PLAY_NEW_SONGS");
@@ -200,6 +204,9 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
         if(mNotification == null){
             mNotification = new MediaPlayerNotification();
+        }
+        if(mMediaProvider == null) {
+            mMediaProvider = new MediaProvider();
         }
 
         // Start up the thread running the service. Note that we create a
@@ -331,6 +338,48 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
 
         loadSongs(songsID, lastSong);
+    }
+
+    public void loadMedia(List<MediaEntry> media, String currentSongID) {
+        if (media.isEmpty()) {
+            Log.d(TAG, "No songs to play");
+            return;
+        }
+        songsIDList = new ArrayList<String>();
+
+        for(MediaEntry m : media) {
+            // retrieve the songs for the different media objects
+            switch (m.getMediaType()) {
+                case Song:
+                    songsIDList.add(m.getID());
+                    break;
+                case Artist:
+                    songsIDList.addAll(MediaEntryHelper.getIDs(mMediaProvider.getSongsFromArtist(m.getID())));
+                    break;
+                case Album:
+                    songsIDList.addAll(MediaEntryHelper.getIDs(mMediaProvider.getSongsFromAlbum(m.getID())));
+                    break;
+                case Playlist:
+                    songsIDList.addAll(MediaEntryHelper.getIDs(mMediaProvider.getSongsFromPlaylist(m.getID())));
+                    break;
+            }
+        }
+
+        int currentSongPosition;
+        if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
+            currentSongPosition = 0;
+        } else {
+            currentSongPosition = this.songsIDList.indexOf(currentSongID);
+            if(currentSongPosition == -1) {
+                Log.d(TAG, "The first song to play is not in the loaded songs");
+                return;
+            }
+        }
+
+        // create the song stack
+        currentSongStack = new SongStack(currentSongPosition, songsIDList, randomState);
+
+        prepareMediaPlayer();
     }
 
     public void loadSongs(List<String> songsID, String currentSongID) {

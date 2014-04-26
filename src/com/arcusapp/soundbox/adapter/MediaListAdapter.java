@@ -49,7 +49,6 @@ public class MediaListAdapter extends BaseAdapter {
 
     private List<MediaEntry> mMediaContent;
     private MediaProvider mMediaProvider;
-    private MediaEntryHelper<MediaEntry> mMediaEntryHelper;
 
     private String mDetailsProjection = MediaStore.Audio.Media.TITLE;
 
@@ -59,7 +58,6 @@ public class MediaListAdapter extends BaseAdapter {
     public MediaListAdapter(Activity activity, String focusedID, List<MediaEntry> mediaList, boolean hasHeader) {
         mActivity = activity;
         mMediaProvider = new MediaProvider();
-        mMediaEntryHelper = new MediaEntryHelper<MediaEntry>();
         mHasHeader = hasHeader;
         mMediaContent = mediaList;
         mFocusedID = focusedID;
@@ -155,14 +153,37 @@ public class MediaListAdapter extends BaseAdapter {
             holder = (ViewHolder) item.getTag();
         }
 
-        holder.text.setText(mMediaContent.get(position).getValue());
+        MediaEntry media = mMediaContent.get(position);
+
+        // set item main text
+        holder.text.setText(media.getValue());
         if (mMediaContent.get(position).getID().equals(mFocusedID)) {
             holder.text.setTypeface(null, Typeface.BOLD);
         } else {
             holder.text.setTypeface(null, Typeface.NORMAL);
         }
 
-        holder.details.setVisibility(View.GONE);
+        // set item details
+        switch (mMediaContent.get(position).getMediaType()) {
+            case Song:
+                holder.details.setVisibility(View.GONE);
+                break;
+            case Artist:
+                // XXX: do this asynchronously
+                int cantAlbums = mMediaProvider.getAlbumsFromArtist(media.getValue()).size();
+                holder.details.setText(cantAlbums + " albums");
+                break;
+            case Album:
+                // XXX: do this asynchronously
+                int cantSongsInAlbum = mMediaProvider.getSongsFromAlbum(media.getValue()).size();
+                holder.details.setText(cantSongsInAlbum + " songs");
+                break;
+            case Playlist:
+                // XXX: do this asynchronously
+                int cantSongsInPlayList = mMediaProvider.getSongsFromPlaylist(media.getID()).size();
+                holder.details.setText(cantSongsInPlayList + " songs");
+                break;
+        }
 
         return (item);
     }

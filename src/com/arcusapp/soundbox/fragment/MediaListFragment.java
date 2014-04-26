@@ -69,9 +69,9 @@ public class MediaListFragment extends Fragment {
             focusedElementID = BundleExtra.getBundleString(bundleInt, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
             mMediaContent = bundleInt.getParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST);
             addRandomButton = bundleInt.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
-        } else if(savedInstanceState != null) {
+        } else if(bundleArg != null) {
             focusedElementID = BundleExtra.getBundleString(bundleArg, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
-            mMediaContent = bundleInt.getParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST);
+            mMediaContent = bundleArg.getParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST);
             addRandomButton = bundleArg.getBoolean(ADD_PLAYALLRANDOM_BUTTON, false);
         } else {
             Log.d(MediaListFragment.class.getName(), "MediaListFragment created without media content");

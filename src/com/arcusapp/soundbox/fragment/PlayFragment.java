@@ -288,7 +288,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
                 Bundle mExtras = new Bundle();
                 List<String> songsID = mediaService.getSongsIDList();
-                mExtras.putStringArrayList(BundleExtra.SONGS_ID_LIST, (ArrayList<String>)songsID);
+                //mExtras.putStringArrayList(BundleExtra.SONGS_ID_LIST, (ArrayList<String>)songsID);
                 String currentSongID = mediaService.getCurrentSong().getID();
                 mExtras.putString(BundleExtra.CURRENT_ID, currentSongID);
 

@@ -25,8 +25,8 @@ import com.arcusapp.soundbox.model.MediaEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaEntryHelper<T extends MediaEntry> {
-    public List<String> getValues(List<T> list) {
+public class MediaEntryHelper {
+    public static List<String> getValues(List<MediaEntry> list) {
         List<String> values = new ArrayList<String>();
         for (MediaEntry me : list) {
             values.add(me.getValue());
@@ -35,7 +35,7 @@ public class MediaEntryHelper<T extends MediaEntry> {
         return values;
     }
 
-    public List<String> getIDs(List<T> list) {
+    public static List<String> getIDs(List<MediaEntry> list) {
         List<String> ids = new ArrayList<String>();
         for (MediaEntry me : list) {
             ids.add(me.getID());
