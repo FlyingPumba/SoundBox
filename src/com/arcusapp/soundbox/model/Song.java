@@ -20,8 +20,6 @@
 
 package com.arcusapp.soundbox.model;
 
-import android.util.Log;
-
 import java.io.File;
 
 public class Song {

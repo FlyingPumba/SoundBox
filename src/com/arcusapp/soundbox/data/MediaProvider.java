@@ -26,9 +26,9 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaType;
 import com.arcusapp.soundbox.model.Song;
-import com.arcusapp.soundbox.model.MediaEntry;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 public class MediaProvider {
 
@@ -84,17 +83,17 @@ public class MediaProvider {
     public List<MediaEntry> getAllArtists() {
         List<MediaEntry> artists = new ArrayList<MediaEntry>();
 
-        String[] projection = { "DISTINCT " + MediaStore.Audio.Artists.ARTIST };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " not null";
+        Uri uri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
+        String[] projection = { MediaStore.Audio.Artists._ID, MediaStore.Audio.Artists.ARTIST, MediaStore.Audio.Artists.NUMBER_OF_ALBUMS };
+        String selection = MediaStore.Audio.Artists.ARTIST + " not null";
         String sortOrder = MediaStore.Audio.Artists.ARTIST;
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, null, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), uri, projection, selection, null, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            // the same artist can have different ids, so in order to use DISTINCT in the query above,
-            // we are sacrificing the id of the artist
-            artists.add(new MediaEntry(UUID.randomUUID().toString(), MediaType.Artist, myCursor.getString(0)));
+            String detail = myCursor.getString(2) + " albums";
+            artists.add(new MediaEntry(myCursor.getString(0), MediaType.Artist, myCursor.getString(1), detail));
         }
 
         myCursor.close();
@@ -104,24 +103,24 @@ public class MediaProvider {
     /**
      * Returns the name of all the Albums of the specified Artist in the MediaStore.
      * 
-     * @param artistName the name of the Artist
+     * @param artistName the ID of the Artist
      * @return a list of MediaEntries. The value associated is the name of the Album.
      */
     public List<MediaEntry> getAlbumsFromArtist(String artistName) {
         List<MediaEntry> albums = new ArrayList<MediaEntry>();
 
-        String[] projection = { "DISTINCT " + MediaStore.Audio.Artists.Albums.ALBUM };
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " + MediaStore.Audio.Artists.ARTIST + " = ?";
+        Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        String[] projection = { MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM, MediaStore.Audio.Albums.NUMBER_OF_SONGS };
+        String selection = MediaStore.Audio.Albums.ARTIST + " = ?";
         String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM;
         String[] selectionArgs = new String[] { artistName };
 
-        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), defaultDirectoryUri, projection, selection, selectionArgs, sortOrder);
+        CursorLoader cl = new CursorLoader(SoundBoxApplication.getContext(), uri, projection, selection, selectionArgs, sortOrder);
         myCursor = cl.loadInBackground();
 
         while (myCursor.moveToNext()) {
-            // the same album can have different ids, so in order to use DISTINCT in the query above,
-            // we are sacrificing the id of the album
-            albums.add(new MediaEntry(UUID.randomUUID().toString(), MediaType.Album, myCursor.getString(0)));
+            String detail = myCursor.getString(2) + " songs";
+            albums.add(new MediaEntry(myCursor.getString(0), MediaType.Album, myCursor.getString(1), detail));
         }
 
         myCursor.close();

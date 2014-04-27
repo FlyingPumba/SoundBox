@@ -20,10 +20,7 @@
 
 package com.arcusapp.soundbox.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -36,14 +33,11 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.arcusapp.soundbox.R;
-import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.adapter.MediaListAdapter;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
-import com.arcusapp.soundbox.player.MediaPlayerService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MediaListFragment extends ContentFragment {

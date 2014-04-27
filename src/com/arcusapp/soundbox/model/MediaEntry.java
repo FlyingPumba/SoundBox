@@ -27,18 +27,25 @@ public class MediaEntry implements Entry<MediaEntry>, Parcelable {
     private String mId;
     private MediaType mType;
     private String mValue;
+    private String mDetail;
 
-    public MediaEntry(String id, MediaType type, String value) {
+    public MediaEntry(String id, MediaType type, String value, String detail) {
         this.mId = id;
         this.mType = type;
         this.mValue = value;
+        this.mDetail = detail;
+    }
+
+    public MediaEntry(String id, MediaType type, String value) {
+        this(id, type, value, "");
     }
 
     public MediaEntry(Parcel parcel) {
-        String[] strings = new String[2];
+        String[] strings = new String[3];
         parcel.readStringArray(strings);
         mId = strings[0];
         mValue = strings[1];
+        mDetail = strings[2];
 
         mType = (MediaType) parcel.readSerializable();
     }
@@ -50,6 +57,9 @@ public class MediaEntry implements Entry<MediaEntry>, Parcelable {
     public String getValue() {
         return mValue;
     }
+
+    @Override
+    public String getDetail() { return mDetail; }
 
     @Override
     public MediaType getMediaType() { return mType; }
@@ -66,7 +76,7 @@ public class MediaEntry implements Entry<MediaEntry>, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{mId, mValue});
+        dest.writeStringArray(new String[]{mId, mValue, mDetail});
         dest.writeSerializable(mType);
     }
 

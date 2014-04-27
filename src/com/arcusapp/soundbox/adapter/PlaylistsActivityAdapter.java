@@ -36,7 +36,6 @@ import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistsActivityAdapter extends BaseAdapter {

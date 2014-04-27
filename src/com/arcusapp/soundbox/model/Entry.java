@@ -26,6 +26,8 @@ public interface Entry<T> extends Comparable<T> {
 
     public String getValue();
 
+    public String getDetail();
+
     public MediaType getMediaType();
 
     public int compareTo(T another);

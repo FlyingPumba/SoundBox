@@ -25,7 +25,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.arcusapp.soundbox.R;
-import com.arcusapp.soundbox.fragment.HomeFragment;
 import com.arcusapp.soundbox.fragment.MediaListFragment;
 
 public class MediaListActivity extends BaseActivity {

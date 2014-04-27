@@ -42,7 +42,6 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
@@ -50,8 +49,6 @@ import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.FontUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class PlayFragment extends Fragment implements OnClickListener {

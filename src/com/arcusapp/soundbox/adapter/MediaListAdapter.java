@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +37,8 @@ import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.fragment.MediaListFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
+import com.arcusapp.soundbox.model.MediaType;
 import com.arcusapp.soundbox.player.MediaPlayerService;
-import com.arcusapp.soundbox.util.MediaEntryHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,8 +49,6 @@ public class MediaListAdapter extends BaseAdapter {
 
     private List<MediaEntry> mMediaContent;
     private MediaProvider mMediaProvider;
-
-    private String mDetailsProjection = MediaStore.Audio.Media.TITLE;
 
     private String mFocusedID;
     private boolean mHasHeader;
@@ -251,25 +248,10 @@ public class MediaListAdapter extends BaseAdapter {
         }
 
         // set item details
-        switch (mMediaContent.get(position).getMediaType()) {
-            case Song:
-                holder.details.setVisibility(View.GONE);
-                break;
-            case Artist:
-                // XXX: do this asynchronously
-                int cantAlbums = mMediaProvider.getAlbumsFromArtist(media.getValue()).size();
-                holder.details.setText(cantAlbums + " albums");
-                break;
-            case Album:
-                // XXX: do this asynchronously
-                int cantSongsInAlbum = mMediaProvider.getSongsFromAlbum(media.getValue()).size();
-                holder.details.setText(cantSongsInAlbum + " songs");
-                break;
-            case Playlist:
-                // XXX: do this asynchronously
-                int cantSongsInPlayList = mMediaProvider.getSongsFromPlaylist(media.getID()).size();
-                holder.details.setText(cantSongsInPlayList + " songs");
-                break;
+        if(media.getMediaType() == MediaType.Song) {
+            holder.details.setVisibility(View.GONE);
+        } else {
+            holder.details.setText(media.getDetail());
         }
 
         return (item);
