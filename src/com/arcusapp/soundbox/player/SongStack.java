@@ -22,6 +22,8 @@ package com.arcusapp.soundbox.player;
 
 import com.arcusapp.soundbox.data.MediaProvider;
 import com.arcusapp.soundbox.data.SoundBoxPreferences;
+import com.arcusapp.soundbox.model.MediaEntry;
+import com.arcusapp.soundbox.model.MediaType;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.Song;
 
@@ -153,7 +155,12 @@ public class SongStack {
         }
         
         // store the songs on preferences
-        SoundBoxPreferences.LastSongs.setLastSongs(currentSongsIDList);
+        // XXX: FIX THIS
+        List<MediaEntry> media = new ArrayList<MediaEntry>();
+        for(String id : currentSongsIDList) {
+            media.add(new MediaEntry(id, MediaType.Song, "Song "+ id));
+        }
+        SoundBoxPreferences.LastMedia.setLastMedia(media);
     }
 
     public RandomState getCurrentRandomState() {

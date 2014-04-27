@@ -124,7 +124,6 @@ public class MediaListAdapter extends BaseAdapter {
                 mActivity.startActivity(intent);
                 break;
         }
-
     }
 
 

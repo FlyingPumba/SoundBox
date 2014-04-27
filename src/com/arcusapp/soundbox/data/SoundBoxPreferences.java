@@ -22,58 +22,82 @@ package com.arcusapp.soundbox.data;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaEntry;
+import com.arcusapp.soundbox.model.MediaType;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SoundBoxPreferences {
 
-    private final static String LAST_SONGS = "lastsongs";
+    private final static String LAST_MEDIA = "lastmedia";
     private final static String LAST_PLAYED_SONG = "lastplayedsong";
 
-    public static class LastSongs {
-        public static List<String> getLastSongs() {    
+    public static class LastMedia {
+        public static List<MediaEntry> getLastMedia() {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
-            
-            List<String> songs = new ArrayList<String>();
+
+            List<MediaEntry> media = new ArrayList<MediaEntry>();
             try {
-                JSONArray jsonArray = new JSONArray(preferences.getString(LAST_SONGS, null));
+                JSONArray jsonArray = new JSONArray(preferences.getString(LAST_MEDIA, null));
                 for (int i = 0; i <= jsonArray.length(); i++) {
-                    songs.add(jsonArray.getString(i));
+                    String serializedJson = jsonArray.getString(i);
+                    JSONObject jsonObject = new JSONObject(serializedJson);
+                    media.add(new MediaEntry(jsonObject));
                 }
 
-            } catch (Exception e) { }
-            
-            return songs;
+            } catch (Exception e) {
+                Log.d(SoundBoxPreferences.class.getName(), e.getMessage());
+            }
+
+            return media;
         }
-    
-        public static void setLastSongs(List<String> songsID) {
+
+        public static void setLastMedia(List<MediaEntry> media) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
             SharedPreferences.Editor editor = preferences.edit();
-    
-            String serializedString = new JSONArray(songsID).toString();
-            editor.putString(LAST_SONGS, serializedString);
+
+            ArrayList<String> serializedList = new ArrayList<String>();
+            for(MediaEntry entry : media){
+                serializedList.add(entry.toJSON());
+            }
+
+            JSONArray jsonArray = new JSONArray(serializedList);
+            editor.putString(LAST_MEDIA, jsonArray.toString());
             editor.commit();
         }
     }
     
     public static class LastPlayedSong {
-        public static String getLastPlayedSong() {
+        public static MediaEntry getLastPlayedSong() {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
-            return preferences.getString(LAST_PLAYED_SONG, BundleExtra.DefaultValues.DEFAULT_ID);
+
+            MediaEntry media = new MediaEntry(BundleExtra.DefaultValues.DEFAULT_ID, MediaType.Song, "");
+            try {
+                JSONArray jsonArray = new JSONArray(preferences.getString(LAST_PLAYED_SONG, null));
+                media = (MediaEntry) jsonArray.get(0);
+            } catch (Exception ignored) { }
+
+            return media;
         }
     
-        public static void setLastPlayedSong(String songID) {
+        public static void setLastPlayedSong(MediaEntry song) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SoundBoxApplication.getContext());
             SharedPreferences.Editor editor = preferences.edit();
-            
-            editor.putString(LAST_PLAYED_SONG, songID);
-            editor.commit();    
+
+            ArrayList<MediaEntry> aux = new ArrayList<MediaEntry>();
+            aux.add(song);
+
+            String serializedString = new JSONArray(aux).toString();
+            editor.putString(LAST_PLAYED_SONG, serializedString);
+            editor.commit();
         }
     }
 }

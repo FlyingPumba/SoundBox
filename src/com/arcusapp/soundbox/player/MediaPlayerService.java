@@ -42,6 +42,7 @@ import com.arcusapp.soundbox.data.SoundBoxPreferences;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
+import com.arcusapp.soundbox.model.MediaType;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
 import com.arcusapp.soundbox.model.Song;
@@ -76,7 +77,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     // private int currentSongPosition;
     private MediaProvider mMediaProvider;
     private SongStack currentSongStack;
-    private List<String> songsIDList;
+    private List<MediaEntry> mLoadedMedia;
 
     private RepeatState repeatState = RepeatState.Off;
     private RandomState randomState = RandomState.Off;
@@ -334,10 +335,10 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     private void FetchLastPlayedSongs() {
-        List<String> songsID = SoundBoxPreferences.LastSongs.getLastSongs();
-        String lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
+        List<MediaEntry> lastMedia = SoundBoxPreferences.LastMedia.getLastMedia();
+        MediaEntry lastSong = SoundBoxPreferences.LastPlayedSong.getLastPlayedSong();
 
-        loadSongs(songsID, lastSong);
+        loadMedia(lastMedia, lastSong.getID());
     }
 
     public void loadMedia(List<MediaEntry> media, String currentSongID) {
@@ -345,7 +346,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             Log.d(TAG, "No songs to play");
             return;
         }
-        songsIDList = new ArrayList<String>();
+        List<String> songsIDList = new ArrayList<String>();
 
         for(MediaEntry m : media) {
             // retrieve the songs for the different media objects
@@ -369,7 +370,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
             currentSongPosition = 0;
         } else {
-            currentSongPosition = this.songsIDList.indexOf(currentSongID);
+            currentSongPosition = songsIDList.indexOf(currentSongID);
             if(currentSongPosition == -1) {
                 Log.d(TAG, "The first song to play is not in the loaded songs");
                 return;
@@ -379,30 +380,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         // create the song stack
         currentSongStack = new SongStack(currentSongPosition, songsIDList, randomState);
 
-        prepareMediaPlayer();
-    }
-
-    public void loadSongs(List<String> songsID, String currentSongID) {
-        if (songsID.isEmpty()) {
-            Log.d(TAG, "No songs to play");
-            return;
-        }
-        this.songsIDList = new ArrayList<String>();
-        this.songsIDList.addAll(songsID);
-
-        int currentSongPosition;
-        if (currentSongID.equals(BundleExtra.DefaultValues.DEFAULT_ID)) {
-            currentSongPosition = 0;
-        } else {
-            currentSongPosition = this.songsIDList.indexOf(currentSongID);
-            if(currentSongPosition == -1) {
-                Log.d(TAG, "The first song to play is not in the loaded songs");
-                return;
-            }
-        }
-
-        // create the song stack
-        currentSongStack = new SongStack(currentSongPosition, this.songsIDList, randomState);
+        mLoadedMedia = media;
+        SoundBoxPreferences.LastMedia.setLastMedia(media);
 
         prepareMediaPlayer();
     }
@@ -521,11 +500,13 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         }
     }
 
-    public List<String> getSongsIDList() {
+    public List<MediaEntry> getLoadedMedia() {
         if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
-            return songsIDList;
+            return mLoadedMedia;
         } else {
-            return currentSongStack.getCurrentSongsIDList();
+            return mLoadedMedia;
+            // XXX: fix this
+            //return currentSongStack.getCurrentSongsIDList();
         }
     }
 
@@ -560,7 +541,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
             }
             // play the song
             Song currentSong = currentSongStack.getCurrentSong();
-            SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(currentSong.getID());
+            MediaEntry song = new MediaEntry(currentSong.getID(), MediaType.Song, currentSong.getTitle());
+            SoundBoxPreferences.LastPlayedSong.setLastPlayedSong(song);
 
             mediaPlayer.reset();
             mediaPlayer.setDataSource(currentSong.getFile().getPath());

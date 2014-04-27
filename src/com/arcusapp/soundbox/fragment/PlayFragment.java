@@ -42,6 +42,8 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
@@ -49,6 +51,8 @@ import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.FontUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class PlayFragment extends Fragment implements OnClickListener {
@@ -280,17 +284,19 @@ public class PlayFragment extends Fragment implements OnClickListener {
         }
         else if (v.getId() == R.id.btnPanel) {
             if(mIsPanelExpanded) {
-                /*Intent intent = new Intent();
+                Intent intent = new Intent();
                 intent.setAction(SoundBoxApplication.ACTION_MEDIALIST_ACTIVITY);
 
-                Bundle mExtras = new Bundle();
-                List<String> songsID = mediaService.getSongsIDList();
-                //mExtras.putStringArrayList(BundleExtra.SONGS_ID_LIST, (ArrayList<String>)songsID);
-                String currentSongID = mediaService.getCurrentSong().getID();
-                mExtras.putString(BundleExtra.CURRENT_ID, currentSongID);
+                Bundle extras = new Bundle();
 
-                intent.putExtras(mExtras);
-                startActivity(intent);*/
+                List<MediaEntry> media = mediaService.getLoadedMedia();
+                extras.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(media));
+
+                String currentSongID = mediaService.getCurrentSong().getID();
+                extras.putString(BundleExtra.CURRENT_ID, currentSongID);
+
+                intent.putExtras(extras);
+                startActivity(intent);
             } else {
                 mediaService.playAndPause();
             }

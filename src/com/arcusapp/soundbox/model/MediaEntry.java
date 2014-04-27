@@ -22,8 +22,20 @@ package com.arcusapp.soundbox.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Objects;
 
 public class MediaEntry implements Entry<MediaEntry>, Parcelable {
+
+    private final String ID_JSON = "id";
+    private final String VALUE_JSON = "value";
+    private final String DETAIL_JSON = "detail";
+    private final String TYPE_JSON = "type";
+
     private String mId;
     private MediaType mType;
     private String mValue;
@@ -48,6 +60,17 @@ public class MediaEntry implements Entry<MediaEntry>, Parcelable {
         mDetail = strings[2];
 
         mType = (MediaType) parcel.readSerializable();
+    }
+
+    public MediaEntry(JSONObject jsonObject) {
+        try {
+            mId = jsonObject.getString(ID_JSON);
+            mValue = jsonObject.getString(VALUE_JSON);
+            mDetail = jsonObject.getString(DETAIL_JSON);
+            mType = MediaType.valueOf(jsonObject.getString(TYPE_JSON));
+        } catch (JSONException e) {
+            Log.d(MediaEntry.class.getName(), e.getMessage());
+        }
     }
 
     public String getID() {
@@ -92,4 +115,19 @@ public class MediaEntry implements Entry<MediaEntry>, Parcelable {
         }
     };
 
+    public String toJSON(){
+        JSONObject jsonObject= new JSONObject();
+
+        try {
+            jsonObject.put(ID_JSON, mId);
+            jsonObject.put(VALUE_JSON, mValue);
+            jsonObject.put(DETAIL_JSON, mDetail);
+            jsonObject.put(TYPE_JSON, mType);
+
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            Log.d(MediaEntry.class.getName(), e.getMessage());
+            return "";
+        }
+    }
 }
