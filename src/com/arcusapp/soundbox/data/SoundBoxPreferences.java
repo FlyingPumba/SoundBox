@@ -54,7 +54,9 @@ public class SoundBoxPreferences {
                 }
 
             } catch (Exception e) {
-                Log.d(SoundBoxPreferences.class.getName(), e.getMessage());
+                if(e.getMessage() != null && !e.getMessage().equals("")){
+                    Log.d(SoundBoxPreferences.class.getName(), e.getMessage());
+                }
             }
 
             return media;
