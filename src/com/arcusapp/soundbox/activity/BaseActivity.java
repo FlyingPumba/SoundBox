@@ -15,9 +15,16 @@ import android.widget.TextView;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.fragment.ContentFragment;
+import com.arcusapp.soundbox.fragment.MediaListFragment;
 import com.arcusapp.soundbox.fragment.PlayFragment;
+import com.arcusapp.soundbox.model.BundleExtra;
+import com.arcusapp.soundbox.model.MediaEntry;
+import com.arcusapp.soundbox.model.MediaType;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.SlidingUpPanelLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
 
@@ -26,6 +33,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     SlidingUpPanelLayout mSlidingLayout;
     PlayFragment mPlayFragment;
     ContentFragment mContentFragment;
+    MediaListFragment mCurrentPlaylistFragment;
     private boolean mPanelExpanded = false;
 
     @Override
@@ -37,10 +45,29 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         mPlayFragment = (PlayFragment) getSupportFragmentManager().findFragmentById(R.id.playFragmentContainer);
         mContentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentContainer);
+        mCurrentPlaylistFragment = (MediaListFragment) getSupportFragmentManager().findFragmentById(R.id.currentPlaylistFragment);
 
         configureSlidingPanel();
 
+        configureNavigationDrawer();
+
         configureActionBar();
+    }
+
+    private void configureNavigationDrawer() {
+        // pass the current media to the navigation drawer
+        Bundle bundle = new Bundle();
+        List<MediaEntry> currentMedia = new ArrayList<MediaEntry>();
+
+        // populate some false values
+        currentMedia.add(new MediaEntry("0", MediaType.Song, "Sonata Nº 9", ""));
+        currentMedia.add(new MediaEntry("1", MediaType.Artist, "Iron Maiden", "4 albums"));
+        currentMedia.add(new MediaEntry("2", MediaType.Artist, "La Renga", "7 albums"));
+        currentMedia.add(new MediaEntry("3", MediaType.Album, "Insoportablemente Vivo", "20 songs"));
+
+        bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(currentMedia));
+
+        mCurrentPlaylistFragment.setMedia(bundle);
     }
 
     private void configureActionBar() {
