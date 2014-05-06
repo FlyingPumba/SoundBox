@@ -61,6 +61,11 @@ public class MediaListAdapter extends BaseAdapter {
         mFocusedID = focusedID;
     }
 
+    public void setMedia(String focusedID, List<MediaEntry> mediaList){
+        mMediaContent = mediaList;
+        mFocusedID = focusedID;
+    }
+
     public void onItemClick(int position) {
         if (mHasHeader) {
             position = position - 1;
@@ -125,7 +130,6 @@ public class MediaListAdapter extends BaseAdapter {
                 break;
         }
     }
-
 
     public void onItemLongClick(int position) {
         if (mHasHeader) {

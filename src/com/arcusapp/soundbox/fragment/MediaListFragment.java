@@ -77,9 +77,9 @@ public class MediaListFragment extends ContentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_songs_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_media_list, container, false);
 
-        mListView = (ListView) rootView.findViewById(R.id.songslistActivityList);
+        mListView = (ListView) rootView.findViewById(R.id.mediaList);
 
         // NOTE: Call this before calling setAdapter. This is so ListView can wrap the supplied cursor with one that will also account for header and footer views.
         if (addRandomButton) {
@@ -124,6 +124,19 @@ public class MediaListFragment extends ContentFragment {
 
         // add the button to the header of the list
         mListView.addHeaderView(myButton);
+    }
+
+    public void setMedia(Bundle bundle){
+        if(bundle != null) {
+            focusedElementID = BundleExtra.getBundleString(bundle, BundleExtra.CURRENT_ID, BundleExtra.DefaultValues.DEFAULT_ID);
+            List<MediaEntry> mMediaContent = bundle.getParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST);
+
+            mAdapter.setMedia(focusedElementID, mMediaContent);
+            mAdapter.notifyDataSetChanged();
+            mListView.setSelection(mAdapter.getFocusedPosition());
+        }  else {
+            Log.d(MediaListFragment.class.getName(), "setMedia called with null bundle");
+        }
     }
 
     @Override

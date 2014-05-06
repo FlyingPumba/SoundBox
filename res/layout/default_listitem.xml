@@ -24,7 +24,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:background="@drawable/list_background"
+    android:background="@drawable/default_listitem_background"
     android:orientation="vertical" >
 
     <TextView
