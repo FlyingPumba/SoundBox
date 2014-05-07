@@ -139,12 +139,12 @@ public class MediaListFragment extends ContentFragment {
         mListView.setRemoveListener(onRemove);
 
         DragSortController controller = new DragSortController(mListView);
-        controller.setDragHandleId(R.id.itemText);
-        //controller.setClickRemoveId(R.id.);
+        controller.setDragHandleId(R.id.mediaListItem);
+        //controller.setClickRemoveId(R.id.mediaListItem);
         controller.setRemoveEnabled(false);
         controller.setSortEnabled(true);
         controller.setDragInitMode(1);
-        //controller.setRemoveMode(removeMode);
+        //controller.setRemoveMode(1);
 
         mListView.setFloatViewManager(controller);
         mListView.setOnTouchListener(controller);
