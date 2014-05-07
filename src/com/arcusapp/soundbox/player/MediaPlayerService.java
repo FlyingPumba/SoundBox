@@ -503,7 +503,7 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
     }
 
     public List<MediaEntry> getLoadedMedia() {
-        if (currentSongStack.getCurrentRandomState() == RandomState.Random) {
+        if (currentSongStack != null && currentSongStack.getCurrentRandomState() == RandomState.Random) {
             return mLoadedMedia;
         } else {
             return mLoadedMedia;

@@ -176,17 +176,18 @@ public abstract class BaseActivity extends ActionBarActivity {
                 // configure the navigation drawer for the first time
                 Bundle bundle = new Bundle();
                 List<MediaEntry> currentMedia = mMediaService.getLoadedMedia();
-                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(currentMedia));
-                Song currentSong = mMediaService.getCurrentSong();
-                bundle.putString(BundleExtra.CURRENT_ID, currentSong.getID());
+                if(currentMedia != null){
+                    bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(currentMedia));
+                    Song currentSong = mMediaService.getCurrentSong();
+                    bundle.putString(BundleExtra.CURRENT_ID, currentSong.getID());
 
-                mCurrentPlaylistFragment.setMedia(bundle);
+                    mCurrentPlaylistFragment.setMedia(bundle);
+                }
             }
 
             public void onServiceDisconnected(ComponentName className) {
             }
         };
-
 
         Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
         bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);

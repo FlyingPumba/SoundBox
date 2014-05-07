@@ -31,9 +31,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.MediaListAdapter;
+import com.arcusapp.soundbox.drag.DragSortController;
+import com.arcusapp.soundbox.drag.DragSortListView;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 
@@ -44,7 +47,7 @@ public class MediaListFragment extends ContentFragment {
 
     public static final String ADD_PLAYALLRANDOM_BUTTON = "addRandomButton";
 
-    ListView mListView;
+    DragSortListView mListView;
     private MediaListAdapter mAdapter;
     private String focusedElementID = BundleExtra.DefaultValues.DEFAULT_ID;
     private boolean addRandomButton = false;
@@ -79,7 +82,7 @@ public class MediaListFragment extends ContentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_media_list, container, false);
 
-        mListView = (ListView) rootView.findViewById(R.id.mediaList);
+        mListView = (DragSortListView) rootView.findViewById(R.id.mediaList);
 
         // NOTE: Call this before calling setAdapter. This is so ListView can wrap the supplied cursor with one that will also account for header and footer views.
         if (addRandomButton) {
@@ -105,7 +108,47 @@ public class MediaListFragment extends ContentFragment {
 
         mListView.setSelection(mAdapter.getFocusedPosition());
 
+        configureDragSort();
+
         return rootView;
+    }
+
+    private void configureDragSort() {
+        DragSortListView.DropListener onDrop = new DragSortListView.DropListener()
+        {
+            @Override
+            public void drop(int from, int to)
+            {
+                if (from != to)
+                {
+                    Toast.makeText(MediaListFragment.this.getActivity(), from +" to "+ to, Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+        DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener()
+        {
+            @Override
+            public void remove(int which)
+            {
+                Toast.makeText(MediaListFragment.this.getActivity(), "remove " + which, Toast.LENGTH_LONG).show();
+            }
+        };
+
+        mListView.setDropListener(onDrop);
+        mListView.setRemoveListener(onRemove);
+
+        DragSortController controller = new DragSortController(mListView);
+        controller.setDragHandleId(R.id.itemText);
+        //controller.setClickRemoveId(R.id.);
+        controller.setRemoveEnabled(false);
+        controller.setSortEnabled(true);
+        controller.setDragInitMode(1);
+        //controller.setRemoveMode(removeMode);
+
+        mListView.setFloatViewManager(controller);
+        mListView.setOnTouchListener(controller);
+        mListView.setDragEnabled(true);
     }
 
     private void addRandomButton() {
