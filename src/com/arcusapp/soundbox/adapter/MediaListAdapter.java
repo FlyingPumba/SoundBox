@@ -254,6 +254,7 @@ public class MediaListAdapter extends BaseAdapter {
         if(media.getMediaType() == MediaType.Song) {
             holder.details.setVisibility(View.GONE);
         } else {
+            holder.details.setVisibility(View.VISIBLE);
             holder.details.setText(media.getDetail());
         }
 
