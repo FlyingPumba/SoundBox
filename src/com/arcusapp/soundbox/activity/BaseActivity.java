@@ -1,10 +1,16 @@
 package com.arcusapp.soundbox.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +25,9 @@ import com.arcusapp.soundbox.fragment.MediaListFragment;
 import com.arcusapp.soundbox.fragment.PlayFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
+import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.MediaType;
+import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.SlidingUpPanelLayout;
 
@@ -36,6 +44,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     MediaListFragment mCurrentPlaylistFragment;
     private boolean mPanelExpanded = false;
 
+    MediaPlayerService mMediaService;
+    ServiceConnection mServiceConnection;
+    MediaPlayerServiceListener mServiceListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,27 +59,35 @@ public abstract class BaseActivity extends ActionBarActivity {
         mContentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentContainer);
         mCurrentPlaylistFragment = (MediaListFragment) getSupportFragmentManager().findFragmentById(R.id.currentPlaylistFragment);
 
+        mServiceListener = new MediaPlayerServiceListener() {
+            @Override
+            public void onMediaPlayerStateChanged() {
+                // pass the current media to the navigation drawer
+                if(mMediaService != null){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bundle bundle = new Bundle();
+                            List<MediaEntry> currentMedia = mMediaService.getLoadedMedia();
+                            bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(currentMedia));
+                            Song currentSong = mMediaService.getCurrentSong();
+                            bundle.putString(BundleExtra.CURRENT_ID, currentSong.getID());
+
+                            mCurrentPlaylistFragment.setMedia(bundle);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onExceptionRaised(Exception ex) {
+
+            }
+        };
+
         configureSlidingPanel();
 
-        configureNavigationDrawer();
-
         configureActionBar();
-    }
-
-    private void configureNavigationDrawer() {
-        // pass the current media to the navigation drawer
-        Bundle bundle = new Bundle();
-        List<MediaEntry> currentMedia = new ArrayList<MediaEntry>();
-
-        // populate some false values
-        currentMedia.add(new MediaEntry("0", MediaType.Song, "Sonata Nº 9", ""));
-        currentMedia.add(new MediaEntry("1", MediaType.Artist, "Iron Maiden", "4 albums"));
-        currentMedia.add(new MediaEntry("2", MediaType.Artist, "La Renga", "7 albums"));
-        currentMedia.add(new MediaEntry("3", MediaType.Album, "Insoportablemente Vivo", "20 songs"));
-
-        bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(currentMedia));
-
-        mCurrentPlaylistFragment.setMedia(bundle);
     }
 
     private void configureActionBar() {
@@ -147,6 +167,36 @@ public abstract class BaseActivity extends ActionBarActivity {
         mContentFragment = contentFragment;
     }
 
+    private void bindMediaPlayerService() {
+        mServiceConnection = new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder binder) {
+                mMediaService = ((MediaPlayerService.MyBinder) binder).getService();
+                mMediaService.registerListener(mServiceListener);
+
+                // configure the navigation drawer for the first time
+                Bundle bundle = new Bundle();
+                List<MediaEntry> currentMedia = mMediaService.getLoadedMedia();
+                bundle.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(currentMedia));
+                Song currentSong = mMediaService.getCurrentSong();
+                bundle.putString(BundleExtra.CURRENT_ID, currentSong.getID());
+
+                mCurrentPlaylistFragment.setMedia(bundle);
+            }
+
+            public void onServiceDisconnected(ComponentName className) {
+            }
+        };
+
+
+        Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
+        bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void showCurrentPlaylist(){
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.openDrawer(Gravity.END);
+    }
+
     @Override
     public void onBackPressed() {
         if(mSlidingLayout.isExpanded()) {
@@ -187,6 +237,24 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
         SoundBoxApplication.notifyForegroundStateChanged(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMediaService == null) {
+            bindMediaPlayerService();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mMediaService != null) {
+            mMediaService.unRegisterListener(mServiceListener);
+            unbindService(mServiceConnection);
+            mMediaService = null;
+        }
     }
 
     @Override

@@ -42,6 +42,7 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
+import com.arcusapp.soundbox.activity.BaseActivity;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
@@ -284,19 +285,8 @@ public class PlayFragment extends Fragment implements OnClickListener {
         }
         else if (v.getId() == R.id.btnPanel) {
             if(mIsPanelExpanded) {
-                Intent intent = new Intent();
-                intent.setAction(SoundBoxApplication.ACTION_MEDIALIST_ACTIVITY);
-
-                Bundle extras = new Bundle();
-
-                List<MediaEntry> media = mediaService.getLoadedMedia();
-                extras.putParcelableArrayList(BundleExtra.MEDIA_ENTRY_LIST, new ArrayList<MediaEntry>(media));
-
-                String currentSongID = mediaService.getCurrentSong().getID();
-                extras.putString(BundleExtra.CURRENT_ID, currentSongID);
-
-                intent.putExtras(extras);
-                startActivity(intent);
+                BaseActivity parent = (BaseActivity) getActivity();
+                parent.showCurrentPlaylist();
             } else {
                 mediaService.playAndPause();
             }

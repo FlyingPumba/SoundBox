@@ -383,6 +383,8 @@ public class MediaPlayerService extends Service implements OnCompletionListener 
         mLoadedMedia = media;
         SoundBoxPreferences.LastMedia.setLastMedia(media);
 
+        fireListenersOnMediaPlayerStateChanged();
+
         prepareMediaPlayer();
     }
 
