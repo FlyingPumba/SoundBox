@@ -146,6 +146,8 @@ public abstract class BaseActivity extends ActionBarActivity {
                 //inform the fragment that panel is collapsed
                 mPlayFragment.setPanelExpanded(false);
                 mPanelExpanded = false;
+               // show action bar tabs
+                BaseActivity.this.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             }
 
             @Override
@@ -154,6 +156,8 @@ public abstract class BaseActivity extends ActionBarActivity {
                 //inform the fragment that panel is expanded
                 mPlayFragment.setPanelExpanded(true);
                 mPanelExpanded = true;
+                // hide action bar tabs
+                BaseActivity.this.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             }
 
             @Override
@@ -191,11 +195,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         Intent serviceIntent = new Intent(SoundBoxApplication.ACTION_MEDIA_PLAYER_SERVICE, null, SoundBoxApplication.getContext(), MediaPlayerService.class);
         bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    public void showCurrentPlaylist(){
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerLayout.openDrawer(Gravity.END);
     }
 
     @Override

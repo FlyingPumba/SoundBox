@@ -130,9 +130,10 @@ public class PlayFragment extends Fragment implements OnClickListener {
         ViewGroup.LayoutParams progressBarParams = progressBar.getLayoutParams();
 
         if(mIsPanelExpanded) {
-            btnPanel.setImageResource(R.drawable.ic_list);
+            btnPanel.setVisibility(View.GONE);
             progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_expanded);
         } else {
+            btnPanel.setVisibility(View.VISIBLE);
             if (mediaService != null && mediaService.isPlaying()) {
                 btnPanel.setImageResource(R.drawable.ic_pause);
             } else {
@@ -284,10 +285,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
             mediaService.playAndPause();
         }
         else if (v.getId() == R.id.btnPanel) {
-            if(mIsPanelExpanded) {
-                BaseActivity parent = (BaseActivity) getActivity();
-                parent.showCurrentPlaylist();
-            } else {
+            if(!mIsPanelExpanded) {
                 mediaService.playAndPause();
             }
         }

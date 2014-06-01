@@ -19,11 +19,11 @@
   along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<android.support.v4.widget.DrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <!-- The main content view -->
     <com.arcusapp.soundbox.util.SlidingUpPanelLayout
@@ -37,20 +37,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <fragment
-            android:id="@+id/playFragmentContainer"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            class="com.arcusapp.soundbox.fragment.PlayFragment" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Play controls -->
+
+            <fragment
+                android:id="@+id/playFragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="com.arcusapp.soundbox.fragment.PlayFragment" />
+
+            <!-- Current playlist -->
+            <fragment
+                android:id="@+id/currentPlaylistFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.arcusapp.soundbox.fragment.MediaListFragment" />
+
+        </LinearLayout>
 
     </com.arcusapp.soundbox.util.SlidingUpPanelLayout>
 
-    <!-- The navigation drawer -->
-    <fragment
-        android:id="@+id/currentPlaylistFragment"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        class="com.arcusapp.soundbox.fragment.MediaListFragment" />
-
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>
