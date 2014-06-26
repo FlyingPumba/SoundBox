@@ -143,7 +143,7 @@ public class MediaListFragment extends ContentFragment {
         //controller.setClickRemoveId(R.id.mediaListItem);
         controller.setRemoveEnabled(false);
         controller.setSortEnabled(true);
-        controller.setDragInitMode(1);
+        controller.setDragInitMode(2);
         //controller.setRemoveMode(1);
 
         mListView.setFloatViewManager(controller);
