@@ -38,7 +38,7 @@ import java.util.List;
 
 public abstract class BaseActivity extends ActionBarActivity {
     public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
-    
+
     private SlidingUpPanelLayout mSlidingLayout;
     private PlayFragment mPlayFragment;
     private ContentFragment mContentFragment;
@@ -264,7 +264,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         for (int i = 0; i < children; i++) {
             View child = content.getChildAt(i);
             if (child.getId() != android.R.id.content) {
-                if (y <= -actionBarHeight) {
+                // TODO: FIX, "*2" only if the content fragment has tabs, like the Home Fragment
+                if (y <= -actionBarHeight*2) {
                     child.setVisibility(View.GONE);
                 } else {
                     child.setVisibility(View.VISIBLE);

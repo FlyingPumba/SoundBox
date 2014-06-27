@@ -50,13 +50,13 @@ public class HomeFragment extends ContentFragment implements android.support.v7.
     }
 
     private void configureViewPager(View view) {
-        //FragmentActivity parent = (FragmentActivity) getActivity();
-        //final android.support.v7.app.ActionBar actionBar = parent.getSupportActionBar();
-        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBarActivity parent = (ActionBarActivity) getActivity();
+        final android.support.v7.app.ActionBar actionBar = parent.getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
-        /*mSectionsPagerAdapter = new MainSectionsAdapter(parent.getApplicationContext(), parent.getSupportFragmentManager());
+        mSectionsPagerAdapter = new MainSectionsAdapter(parent.getApplicationContext(), parent.getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (CustomViewPager) view.findViewById(R.id.pager);
@@ -83,17 +83,17 @@ public class HomeFragment extends ContentFragment implements android.support.v7.
             tab.setText(mSectionsPagerAdapter.getPageTitle(i));
             tab.setTabListener(this);
 
-            //actionBar.addTab(tab);
-        }*/
+            actionBar.addTab(tab);
+        }
 
-        //actionBar.selectTab(actionBar.getTabAt(1));
+        actionBar.selectTab(actionBar.getTabAt(1));
     }
 
     @Override
     public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
-        //mViewPager.setCurrentItem(tab.getPosition());
+        mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
