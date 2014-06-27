@@ -24,7 +24,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -194,12 +196,12 @@ public class PlayFragment extends Fragment implements OnClickListener {
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //progressBar.setThumb(null);
+                progressBar.setThumb(null);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                /*Drawable drawable = getResources().getDrawable(android.R.drawable.gallery_thumb);
+                Drawable drawable = getResources().getDrawable(android.R.drawable.gallery_thumb);
                 final int quarterHeight = drawable.getIntrinsicHeight()/4;
                 final int halfWidht = drawable.getIntrinsicWidth()/2;
 
@@ -207,7 +209,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
                         -quarterHeight,
                         halfWidht,
                         3*quarterHeight));
-                progressBar.setThumb(drawable);*/
+                progressBar.setThumb(drawable);
             }
 
             @Override
