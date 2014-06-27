@@ -33,11 +33,8 @@
 
         <item name="android:actionBarStyle">@style/CustomActionBar</item>
         <item name="actionBarStyle">@style/CustomActionBar</item>"-->
-    </style>
 
-    <style name="CustomActionBar" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="icon">
