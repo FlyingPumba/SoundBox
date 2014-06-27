@@ -13,13 +13,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*HomeFragment contentFragment = new HomeFragment();
+        HomeFragment contentFragment = new HomeFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.contentFragmentContainer, contentFragment);
         transaction.commit();
 
-        super.setContentFragmentInstance(contentFragment);*/
+        super.setContentFragmentInstance(contentFragment);
     }
 }
