@@ -84,7 +84,7 @@ public class MediaListFragment extends ContentFragment {
 
         mListView = (DragSortListView) rootView.findViewById(R.id.mediaList);
 
-        // NOTE: Call this before calling setAdapter. This is so ListView can wrap the supplied cursor with one that will also account for header and footer views.
+        // NOTE: Call this before calling setAdapter.
         if (addRandomButton) {
             addRandomButton();
         }
