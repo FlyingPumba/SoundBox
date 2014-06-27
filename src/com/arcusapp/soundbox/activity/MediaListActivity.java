@@ -33,13 +33,13 @@ public class MediaListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MediaListFragment contentFragment = new MediaListFragment();
+        /*MediaListFragment contentFragment = new MediaListFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.contentFragmentContainer, contentFragment);
         transaction.commit();
 
-        super.setContentFragmentInstance(contentFragment);
+        super.setContentFragmentInstance(contentFragment);*/
     }
 }

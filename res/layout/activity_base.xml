@@ -25,24 +25,79 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- The main content view -->
     <com.arcusapp.soundbox.util.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        sothree:panelHeight="68dp"
+        sothree:shadowHeight="4dp"
+        sothree:paralaxOffset="100dp"
+        sothree:dragView="@+id/dragView">
+        <!--xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sothree:paralaxOffset="100dp"
+        android:gravity="bottom">-->
 
+        <!-- MAIN CONTENT -->
         <FrameLayout
             android:id="@+id/contentFragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingTop="?android:attr/actionBarSize" />
 
+        <!-- SLIDING LAYOUT -->
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eeeeee"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="false"
+            android:id="@+id/dragView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"/>
+
+                <Button
+                    android:id="@+id/follow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_play" >
+            </ImageView>
+        </LinearLayout>
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!-- Play controls -->
+            &lt;!&ndash; Play controls &ndash;&gt;
 
             <fragment
                 android:id="@+id/playFragmentContainer"
@@ -50,14 +105,14 @@
                 android:layout_height="wrap_content"
                 class="com.arcusapp.soundbox.fragment.PlayFragment" />
 
-            <!-- Current playlist -->
+            &lt;!&ndash; Current playlist &ndash;&gt;
             <fragment
                 android:id="@+id/currentPlaylistFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 class="com.arcusapp.soundbox.fragment.MediaListFragment" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     </com.arcusapp.soundbox.util.SlidingUpPanelLayout>
 
