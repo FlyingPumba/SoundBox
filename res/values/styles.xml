@@ -31,13 +31,24 @@
         <item name="android:actionBarTabTextStyle">@style/CustomTabText</item>
         <item name="actionBarTabTextStyle">@style/CustomTabText</item>
 
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+        <item name="actionBarStyle">@style/CustomActionBar</item>
+
+        <!-- to remove the default shadow beneath the action bar -->
         <item name="android:windowContentOverlay">@null</item>
+
+        <!-- for the preview window -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="icon">
         <item name="android:minHeight">32dp</item>
         <item name="android:minWidth">32dp</item>
         <item name="android:background">@drawable/icon_imagebutton</item>
+    </style>
+
+    <style name="CustomActionBar"  parent="@style/Widget.AppCompat.ActionBar">
+
     </style>
 
     <style name="CustomTabView"  parent="@style/Widget.AppCompat.ActionBar.TabView">
@@ -61,7 +72,6 @@
         <item name="android:showDividers">middle</item>
         <item name="android:divider">@android:color/transparent</item>
         <item name="android:dividerPadding">0dp</item>
-        <item name="android:background">@drawable/tab_unselected</item>
     </style>
 
     <style name="PlayFragmentSongTitle">
