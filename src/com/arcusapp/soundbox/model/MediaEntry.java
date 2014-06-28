@@ -27,8 +27,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 public class MediaEntry implements Entry<MediaEntry>, Parcelable {
 
     private final String ID_JSON = "id";

@@ -20,11 +20,8 @@
 
 package com.arcusapp.soundbox.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
@@ -41,7 +37,6 @@ import com.arcusapp.soundbox.drag.DragSortController;
 import com.arcusapp.soundbox.drag.DragSortListView;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
-import com.arcusapp.soundbox.util.SlidingPanelHost;
 
 import java.util.ArrayList;
 import java.util.List;
