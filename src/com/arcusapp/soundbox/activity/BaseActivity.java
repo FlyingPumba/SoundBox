@@ -68,8 +68,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private void configureActionBar(Bundle savedInstanceState) {
         final ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setCustomView(R.layout.action_bar);
+        //actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        //actionBar.setCustomView(R.layout.action_bar);
 
         boolean actionBarHidden = savedInstanceState != null && savedInstanceState.getBoolean(SAVED_STATE_ACTION_BAR_HIDDEN, false);
         if (actionBarHidden) {
@@ -224,7 +224,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_base, menu);
+        getMenuInflater().inflate(R.menu.menu_base, menu);
         return true;
     }
 

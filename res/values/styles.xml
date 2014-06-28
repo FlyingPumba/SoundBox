@@ -48,7 +48,15 @@
     </style>
 
     <style name="CustomActionBar"  parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/main_color</item>
+        <item name="background">@color/main_color</item>
 
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+        <item name="titleTextStyle">@style/ActionBarTitle</item>
+
+        <item name="android:displayOptions">showTitle</item>
+        <item name="displayOptions">showTitle</item>
+        <item name="android:icon">@android:color/transparent</item>
     </style>
 
     <style name="CustomTabView"  parent="@style/Widget.AppCompat.ActionBar.TabView">
@@ -93,6 +101,14 @@
         <item name="android:textColor">@color/play_controls_artist_album</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="ActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_title_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>
