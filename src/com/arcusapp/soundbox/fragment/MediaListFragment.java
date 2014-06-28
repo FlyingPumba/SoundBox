@@ -152,21 +152,17 @@ public class MediaListFragment extends ContentFragment {
     }
 
     private void addRandomButton() {
-        // create the button
-        Button myButton = new Button(getActivity());
-        myButton.setId(19);
-        myButton.setText(this.getString(R.string.LabelPlaySongsRandom));
-        myButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        myButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_random_shuffled), null);
-        myButton.setOnClickListener(new OnClickListener() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.media_list_header, mListView, false);
+        Button button = (Button) header.findViewById(R.id.playAllButton);
+        button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAdapter.onPlayAllClick();
             }
         });
 
-        // add the button to the header of the list
-        mListView.addHeaderView(myButton);
+        mListView.addHeaderView(header);
     }
 
     public void setMedia(Bundle bundle){
