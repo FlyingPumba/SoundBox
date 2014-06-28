@@ -21,10 +21,9 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="72dp"
     android:id="@+id/mediaListItem"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:padding="16dp"
     android:background="@drawable/default_listitem_background"
     android:orientation="vertical" >
 
@@ -33,19 +32,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:textSize="20sp"
-        android:textColor="@color/list_item_title"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="3dp"/>
+        android:textSize="16sp"
+        android:textColor="@color/list_item_title"/>
 
     <TextView
         android:id="@+id/itemDetail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:textSize="16sp"
-        android:textStyle="italic"
-        android:textColor="@color/list_item_details"
-        android:layout_marginBottom="7dp"/>
+        android:textSize="14sp"
+        android:textColor="@color/list_item_details"/>
 
 </LinearLayout>

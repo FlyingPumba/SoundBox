@@ -56,24 +56,12 @@
                 android:layout_height="wrap_content"
                 class="com.arcusapp.soundbox.fragment.PlayFragment" />
 
-            <FrameLayout
+            <!-- Current playlist -->
+            <fragment
+                android:id="@+id/currentPlaylistFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!-- Current playlist -->
-                <fragment
-                    android:id="@+id/currentPlaylistFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    class="com.arcusapp.soundbox.fragment.MediaListFragment" />
-
-                <!--small shadow above the list -->
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:src="@drawable/below_shadow"/>
-
-            </FrameLayout>
+                android:layout_height="match_parent"
+                class="com.arcusapp.soundbox.fragment.MediaListFragment" />
 
         </LinearLayout>
 

@@ -19,7 +19,8 @@
   along with SoundBox.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,6 +28,14 @@
         android:id="@+id/mediaList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:background="@android:color/white"/>
 
-</LinearLayout>
+    <!--small shadow above the list -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:src="@drawable/below_shadow"/>
+
+</FrameLayout>
