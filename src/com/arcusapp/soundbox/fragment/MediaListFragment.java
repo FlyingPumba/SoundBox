@@ -33,8 +33,8 @@ import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.MediaListAdapter;
-import com.arcusapp.soundbox.drag.DragSortController;
-import com.arcusapp.soundbox.drag.DragSortListView;
+import com.arcusapp.soundbox.dragnsort.DragSortController;
+import com.arcusapp.soundbox.dragnsort.views.DragSortListView;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 
@@ -143,8 +143,8 @@ public class MediaListFragment extends ContentFragment {
         controller.setDragInitMode(2);
         //controller.setRemoveMode(1);
 
-        mListView.setFloatViewManager(controller);
-        mListView.setOnTouchListener(controller);
+        //mListView.setFloatViewManager(controller);
+        //mListView.setOnTouchListener(controller);
         mListView.setDragEnabled(true);
     }
 

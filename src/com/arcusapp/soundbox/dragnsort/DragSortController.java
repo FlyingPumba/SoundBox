@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox.drag;
+package com.arcusapp.soundbox.dragnsort;
 
 import android.graphics.Point;
 import android.view.GestureDetector;
@@ -8,16 +8,19 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 
+import com.arcusapp.soundbox.dragnsort.views.DragSortListView;
+import com.arcusapp.soundbox.dragnsort.views.SimpleFloatViewManager;
+
 /**
- * Class that starts and stops item drags on a {@link DragSortListView}
+ * Class that starts and stops item drags on a {@link com.arcusapp.soundbox.dragnsort.views.DragSortListView}
  * based on touch gestures. This class also inherits from
- * {@link SimpleFloatViewManager}, which provides basic float View
+ * {@link com.arcusapp.soundbox.dragnsort.views.SimpleFloatViewManager}, which provides basic float View
  * creation.
  *
  * An instance of this class is meant to be passed to the methods
- * {@link DragSortListView#setTouchListener()} and
- * {@link DragSortListView#setFloatViewManager()} of your
- * {@link DragSortListView} instance.
+ * {@link com.arcusapp.soundbox.dragnsort.views.DragSortListView#setTouchListener()} and
+ * {@link com.arcusapp.soundbox.dragnsort.views.DragSortListView#setFloatViewManager()} of your
+ * {@link com.arcusapp.soundbox.dragnsort.views.DragSortListView} instance.
  */
 public class DragSortController extends SimpleFloatViewManager implements View.OnTouchListener, GestureDetector.OnGestureListener {
 

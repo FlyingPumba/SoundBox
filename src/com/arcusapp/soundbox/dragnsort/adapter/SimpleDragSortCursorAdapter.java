@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.arcusapp.soundbox.drag;
+package com.arcusapp.soundbox.dragnsort.adapter;
 
 import android.content.Context;
 import android.database.Cursor;

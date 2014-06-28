@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox.drag;
+package com.arcusapp.soundbox.dragnsort.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,6 +6,8 @@ import android.support.v4.widget.CursorAdapter;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.arcusapp.soundbox.dragnsort.views.DragSortListView;
 
 import java.util.ArrayList;
 
@@ -20,8 +22,8 @@ import java.util.ArrayList;
  * returns the reordered list of Cursor positions.
  *
  * An instance of this class is passed
- * to {@link DragSortListView#setAdapter(ListAdapter)} and, since
- * this class implements the {@link DragSortListView.DragSortListener}
+ * to {@link com.arcusapp.soundbox.dragnsort.views.DragSortListView#setAdapter(ListAdapter)} and, since
+ * this class implements the {@link com.arcusapp.soundbox.dragnsort.views.DragSortListView.DragSortListener}
  * interface, it is automatically set as the DragSortListener for
  * the DragSortListView instance.
  */

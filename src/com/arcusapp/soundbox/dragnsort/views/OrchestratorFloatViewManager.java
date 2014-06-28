@@ -1,4 +1,4 @@
-package com.arcusapp.soundbox.drag;
+package com.arcusapp.soundbox.dragnsort.views;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,23 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-/**
- * Simple implementation of the FloatViewManager class. Uses list
- * items as they appear in the ListView to create the floating View.
- */
-public class SimpleFloatViewManager implements DragSortListView.FloatViewManager {
+public class OrchestratorFloatViewManager implements FloatViewManager {
 
     private Bitmap mFloatBitmap;
 
     private ImageView mImageView;
 
     private int mFloatBGColor = Color.BLACK;
-
-    private ListView mListView;
-
-    public SimpleFloatViewManager(ListView lv) {
-        mListView = lv;
-    }
 
     public void setBackgroundColor(int color) {
         mFloatBGColor = color;
@@ -35,10 +25,10 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
      * list item currently shown at ListView <code>position</code>.
      */
     @Override
-    public View onCreateFloatView(int position) {
+    public View onCreateFloatView(ListView list, int position) {
         // Guaranteed that this will not be null? I think so. Nope, got
         // a NullPointerException once...
-        View v = mListView.getChildAt(position + mListView.getHeaderViewsCount() - mListView.getFirstVisiblePosition());
+        View v = list.getChildAt(position + list.getHeaderViewsCount() - list.getFirstVisiblePosition());
 
         if (v == null) {
             return null;
@@ -54,7 +44,7 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
         v.setDrawingCacheEnabled(false);
 
         if (mImageView == null) {
-            mImageView = new ImageView(mListView.getContext());
+            mImageView = new ImageView(list.getContext());
         }
         mImageView.setBackgroundColor(mFloatBGColor);
         mImageView.setPadding(0, 0, 0, 0);
@@ -85,4 +75,3 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
     }
 
 }
-
