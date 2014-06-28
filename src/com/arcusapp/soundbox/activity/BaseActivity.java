@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -24,7 +23,8 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
 import com.arcusapp.soundbox.fragment.ContentFragment;
 import com.arcusapp.soundbox.fragment.MediaListFragment;
-import com.arcusapp.soundbox.fragment.PlayFragment;
+import com.arcusapp.soundbox.fragment.PlayControlsFragment;
+import com.arcusapp.soundbox.fragment.SongTitleFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
@@ -40,8 +40,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
 
     private SlidingUpPanelLayout mSlidingLayout;
-    private PlayFragment mPlayFragment;
-    private ContentFragment mContentFragment;
+    private SongTitleFragment mSongTitleFragment;
     private MediaListFragment mCurrentPlaylistFragment;
     private boolean mPanelExpanded = false;
 
@@ -55,8 +54,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_base);
 
-        mPlayFragment = (PlayFragment) getSupportFragmentManager().findFragmentById(R.id.playFragmentContainer);
-        mContentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentContainer);
+        mSongTitleFragment = (SongTitleFragment) getSupportFragmentManager().findFragmentById(R.id.songTitleFragmentContainer);
         mCurrentPlaylistFragment = (MediaListFragment) getSupportFragmentManager().findFragmentById(R.id.currentPlaylistFragment);
 
         startMediaPlayerService();
@@ -67,10 +65,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     private void configureActionBar(Bundle savedInstanceState) {
-        final ActionBar actionBar = getSupportActionBar();
-        //actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        //actionBar.setCustomView(R.layout.action_bar);
-
         boolean actionBarHidden = savedInstanceState != null && savedInstanceState.getBoolean(SAVED_STATE_ACTION_BAR_HIDDEN, false);
         if (actionBarHidden) {
             int actionBarHeight = getActionBarHeight();
@@ -97,7 +91,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             }
         });
 
-        //mSlidingLayout.setPlayFragment(mPlayFragment);
+        //mSlidingLayout.setPlayFragment(mSongTitleFragment);
         TextView dragerView = (TextView) findViewById(R.id.txtSongTitle);
         mSlidingLayout.setDragView(dragerView);
 
@@ -109,12 +103,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             @Override
             public void onPanelExpanded(View panel) {
-                mPlayFragment.setPanelExpanded(true);
+                mSongTitleFragment.setPanelExpanded(true);
             }
 
             @Override
             public void onPanelCollapsed(View panel) {
-                mPlayFragment.setPanelExpanded(false);
+                mSongTitleFragment.setPanelExpanded(false);
             }
 
             @Override
@@ -240,10 +234,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setContentFragmentInstance(ContentFragment contentFragment) {
-        mContentFragment = contentFragment;
     }
 
     private int getActionBarHeight(){

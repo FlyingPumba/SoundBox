@@ -19,7 +19,5 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.contentFragmentContainer, contentFragment);
         transaction.commit();
-
-        super.setContentFragmentInstance(contentFragment);
     }
 }

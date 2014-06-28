@@ -100,7 +100,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/play_controls_artist_album</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="ActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -109,6 +108,11 @@
         <item name="android:textColor">@color/app_title_text</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SeekBarTimeText" parent="android:TextAppearance.Medium">
+        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

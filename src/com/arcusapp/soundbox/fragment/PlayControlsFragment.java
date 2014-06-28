@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -44,9 +42,6 @@ import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.SoundBoxApplication;
-import com.arcusapp.soundbox.activity.BaseActivity;
-import com.arcusapp.soundbox.model.BundleExtra;
-import com.arcusapp.soundbox.model.MediaEntry;
 import com.arcusapp.soundbox.model.MediaPlayerServiceListener;
 import com.arcusapp.soundbox.model.RandomState;
 import com.arcusapp.soundbox.model.RepeatState;
@@ -54,14 +49,12 @@ import com.arcusapp.soundbox.model.Song;
 import com.arcusapp.soundbox.player.MediaPlayerService;
 import com.arcusapp.soundbox.util.FontUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-public class PlayFragment extends Fragment implements OnClickListener {
+public class PlayControlsFragment extends Fragment implements OnClickListener {
 
-    private TextView txtTitle, txtArtistAlbum, txtTimeCurrent, txtTimeTotal;
-    private ImageButton btnSwitchRandom, btnSwitchRepeat, btnPlayPause, btnPanel, btnPrevious, btnNext;
+    private TextView txtTimeCurrent, txtTimeTotal;
+    private ImageButton btnSwitchRandom, btnSwitchRepeat, btnPlayPause, btnPrevious, btnNext;
     private SeekBar progressBar;
 
     private Song currentSong;
@@ -95,7 +88,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_play, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_play_controls, container, false);
 
         FontUtils.setRobotoFont(getActivity().getApplicationContext(), rootView);
 
@@ -127,25 +120,6 @@ public class PlayFragment extends Fragment implements OnClickListener {
         }
     }
 
-    public void setPanelExpanded(boolean expanded) {
-        mIsPanelExpanded = expanded;
-        ViewGroup.LayoutParams progressBarParams = progressBar.getLayoutParams();
-
-        if(mIsPanelExpanded) {
-            btnPanel.setVisibility(View.INVISIBLE);
-            //progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_expanded);
-        } else {
-            btnPanel.setVisibility(View.VISIBLE);
-            if (mediaService != null && mediaService.isPlaying()) {
-                btnPanel.setImageResource(R.drawable.ic_pause);
-            } else {
-                btnPanel.setImageResource(R.drawable.ic_play);
-            }
-            //progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_collapsed);
-        }
-        progressBar.setLayoutParams(progressBarParams);
-    }
-
     public boolean isCurrentSongNull() {
         return isCurrentSongNull;
     }
@@ -170,10 +144,6 @@ public class PlayFragment extends Fragment implements OnClickListener {
     }
 
     private void initUI(View rootView) {
-        txtTitle = (TextView) rootView.findViewById(R.id.txtSongTitle);
-        txtTitle.setTypeface(null, Typeface.BOLD);
-        txtTitle.setSelected(true);
-        txtArtistAlbum = (TextView) rootView.findViewById(R.id.txtSongArtistAlbum);
         txtTimeCurrent = (TextView) rootView.findViewById(R.id.txtTimeCurrent);
         txtTimeTotal = (TextView) rootView.findViewById(R.id.txtTimeTotal);
 
@@ -187,8 +157,6 @@ public class PlayFragment extends Fragment implements OnClickListener {
         btnSwitchRandom.setOnClickListener(this);
         btnSwitchRepeat = (ImageButton) rootView.findViewById(R.id.btnSwitchRepeat);
         btnSwitchRepeat.setOnClickListener(this);
-        btnPanel = (ImageButton) rootView.findViewById(R.id.btnPanel);
-        btnPanel.setOnClickListener(this);
 
         // init the seekbar
         progressBar = (SeekBar) rootView.findViewById(R.id.progressBar);
@@ -229,28 +197,17 @@ public class PlayFragment extends Fragment implements OnClickListener {
             currentSong = mediaService.getCurrentSong();
             if(currentSong == null) {
                 isCurrentSongNull = true;
-                txtTitle.setText("---");
                 btnPlayPause.setImageResource(R.drawable.ic_play);
-                btnPanel.setClickable(false);
             } else {
                 isCurrentSongNull = false;
-                txtTitle.setText(currentSong.getTitle());
-                txtArtistAlbum.setText(getResources().getString(R.string.LabelArtistAlbum, currentSong.getAlbum(), currentSong.getArtist()));
 
                 btnSwitchRandom.setImageResource(randomStateIcon(mediaService.getRandomState()));
                 btnSwitchRepeat.setImageResource(repeatStateIcon(mediaService.getRepeatState()));
 
-                btnPanel.setClickable(true);
                 if (mediaService.isPlaying()) {
                     btnPlayPause.setImageResource(R.drawable.ic_pause);
-                    if(!mIsPanelExpanded) {
-                        btnPanel.setImageResource(R.drawable.ic_pause);
-                    }
                 } else {
                     btnPlayPause.setImageResource(R.drawable.ic_play);
-                    if(!mIsPanelExpanded) {
-                        btnPanel.setImageResource(R.drawable.ic_play);
-                    }
                 }
 
                 int duration = mediaService.getDuration();
@@ -277,11 +234,6 @@ public class PlayFragment extends Fragment implements OnClickListener {
 
         if (v.getId() == R.id.btnPlayPause) {
             mediaService.playAndPause();
-        }
-        else if (v.getId() == R.id.btnPanel) {
-            if(!mIsPanelExpanded) {
-                mediaService.playAndPause();
-            }
         }
         else if (v.getId() == R.id.btnPrevSong) {
             mediaService.playPreviousSong();

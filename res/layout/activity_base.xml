@@ -48,20 +48,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!-- Play controls -->
+            <!-- Current song title and artist -->
 
             <fragment
-                android:id="@+id/playFragmentContainer"
+                android:id="@+id/songTitleFragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                class="com.arcusapp.soundbox.fragment.PlayFragment" />
+                class="com.arcusapp.soundbox.fragment.SongTitleFragment" />
 
-            <!-- Current playlist -->
-            <fragment
-                android:id="@+id/currentPlaylistFragment"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.arcusapp.soundbox.fragment.MediaListFragment" />
+                android:layout_gravity="bottom">
+
+                <!-- Current playlist -->
+                <fragment
+                    android:id="@+id/currentPlaylistFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    class="com.arcusapp.soundbox.fragment.MediaListFragment" />
+
+                <!-- Play controls -->
+                <fragment
+                    android:id="@+id/playFragmentContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    class="com.arcusapp.soundbox.fragment.PlayControlsFragment" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
