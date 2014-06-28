@@ -109,12 +109,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             @Override
             public void onPanelExpanded(View panel) {
-
+                mPlayFragment.setPanelExpanded(true);
             }
 
             @Override
             public void onPanelCollapsed(View panel) {
-
+                mPlayFragment.setPanelExpanded(false);
             }
 
             @Override

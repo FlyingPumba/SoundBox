@@ -132,8 +132,8 @@ public class PlayFragment extends Fragment implements OnClickListener {
         ViewGroup.LayoutParams progressBarParams = progressBar.getLayoutParams();
 
         if(mIsPanelExpanded) {
-            btnPanel.setVisibility(View.GONE);
-            progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_expanded);
+            btnPanel.setVisibility(View.INVISIBLE);
+            //progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_expanded);
         } else {
             btnPanel.setVisibility(View.VISIBLE);
             if (mediaService != null && mediaService.isPlaying()) {
@@ -141,7 +141,7 @@ public class PlayFragment extends Fragment implements OnClickListener {
             } else {
                 btnPanel.setImageResource(R.drawable.ic_play);
             }
-            progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_collapsed);
+            //progressBarParams.height = (int)getResources().getDimension(R.dimen.progress_bar_height_collapsed);
         }
         progressBar.setLayoutParams(progressBarParams);
     }
@@ -215,19 +215,11 @@ public class PlayFragment extends Fragment implements OnClickListener {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    if(mediaService != null && mIsPanelExpanded) {
+                    if(mediaService != null) {
                         mediaService.seekTo(progress);
                         seekBar.setProgress(progress);
                     }
                 }
-            }
-        });
-
-        progressBar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // only handle user touch when the panel is Expanded
-                return !mIsPanelExpanded;
             }
         });
     }
