@@ -50,6 +50,7 @@ public class HomeFragment extends ContentFragment implements android.support.v7.
     }
 
     private void configureViewPager(View view) {
+        // TODO: MAYBE FIX THIS USING AN INTERFACE
         ActionBarActivity parent = (ActionBarActivity) getActivity();
         final android.support.v7.app.ActionBar actionBar = parent.getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

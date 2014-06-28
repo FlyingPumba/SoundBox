@@ -27,7 +27,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.fragment.MediaListFragment;
 
-public class MediaListActivity extends BaseActivity {
+public class MediaListActivity extends SlidingPanelActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

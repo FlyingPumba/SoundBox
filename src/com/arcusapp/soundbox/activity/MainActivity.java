@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.fragment.HomeFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends SlidingPanelActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
