@@ -33,8 +33,8 @@ import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.MediaListAdapter;
-import com.arcusapp.soundbox.drag.DragSortController;
-import com.arcusapp.soundbox.drag.DragSortListView;
+import com.arcusapp.soundbox.drag.old.DragSortController;
+import com.arcusapp.soundbox.drag.old.DragSortListView;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 
