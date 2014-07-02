@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package com.arcusapp.soundbox.drag;
+package com.arcusapp.soundbox.drag.old;
 
 import android.content.Context;
 import android.content.res.TypedArray;
