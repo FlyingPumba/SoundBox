@@ -1,21 +1,24 @@
 package com.arcusapp.soundbox.drag;
 
 import android.util.Log;
-import android.view.DragEvent;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DragSortOrchestrator implements View.OnDragListener{
+public class DragSortOrchestrator implements MultipleViewGestureDetector {
 
     private static final String TAG = "DragSortOrchestrator";
 
-    private List<DragSortListView> lists;
+    private List<DragSortListView> mLists;
+    private FloatViewManager mFloatViewManager;
 
     public DragSortOrchestrator(View rootView) {
-        lists = new ArrayList<DragSortListView>();
+        mLists = new ArrayList<DragSortListView>();
 
         //find all the DragSortListViews on the rootView and configure them
         exploreRootView(rootView);
@@ -23,53 +26,50 @@ public class DragSortOrchestrator implements View.OnDragListener{
     }
 
     private void exploreRootView(View rootView) {
-        if (rootView instanceof ViewGroup) {
+        if (rootView instanceof DragSortListView) {
+            mLists.add((DragSortListView) rootView);
+        } else if (rootView instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) rootView).getChildCount(); i++) {
                 exploreRootView(((ViewGroup) rootView).getChildAt(i));
             }
-        } else if (rootView instanceof DragSortListView) {
-            lists.add((DragSortListView) rootView);
         }
     }
 
     private void configureLists() {
-        for(DragSortListView dslv : lists) {
-            dslv.setOnDragListener(this);
+        for(DragSortListView dslv : mLists) {
+            dslv.setGestureDetectorOrchestrator(this);
         }
     }
 
-    /**
-     * Called when a drag event is dispatched to a view. This allows listeners to get a
-     * chance to override base View behavior.
-     */
     @Override
-    public boolean onDrag(View v, DragEvent event) {
-        DragSortListView dslv = (DragSortListView) v;
+    public boolean onDown(DragSortListView list, MotionEvent e) {
+        return false;
+    }
 
-        switch (event.getAction()) {
-            case DragEvent.ACTION_DRAG_STARTED:
-                Log.i(TAG, event.toString());
-                break;
-            case DragEvent.ACTION_DRAG_ENTERED:
-                Log.i(TAG, event.toString());
-                break;
-            case DragEvent.ACTION_DRAG_LOCATION:
-                Log.i(TAG, event.toString());
-                break;
-            case DragEvent.ACTION_DRAG_EXITED:
-                Log.i(TAG, event.toString());
-                break;
-            case DragEvent.ACTION_DROP:
-                Log.i(TAG, event.toString());
-                break;
-            case DragEvent.ACTION_DRAG_ENDED:
-                Log.i(TAG, event.toString());
-                break;
-        }
+    @Override
+    public void onShowPress(DragSortListView list, MotionEvent e) {
 
-        // true if the drag event was handled successfully,
-        // or false if the drag event was not handled.
-        // Note that false will trigger the View to call its onDragEvent() handler.
-        return true;
+    }
+
+    @Override
+    public boolean onSingleTapUp(DragSortListView list, MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(DragSortListView list, MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(DragSortListView list, MotionEvent e) {
+        Log.i(TAG, "onLongPress");
+
+        //View v = mFloatViewManager.onCreateFloatView(view);
+    }
+
+    @Override
+    public boolean onFling(DragSortListView list, MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
     }
 }

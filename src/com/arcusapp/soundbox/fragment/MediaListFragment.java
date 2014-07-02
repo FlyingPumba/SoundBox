@@ -33,8 +33,8 @@ import android.widget.Toast;
 
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.MediaListAdapter;
-import com.arcusapp.soundbox.drag.old.DragSortController;
-import com.arcusapp.soundbox.drag.old.DragSortListView;
+//import com.arcusapp.soundbox.drag.old.DragSortController;
+import com.arcusapp.soundbox.drag.DragSortListView;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 
@@ -96,13 +96,13 @@ public class MediaListFragment extends ContentFragment {
             }
         });
 
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /*mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.onItemLongClick(position);
                 return true;
             }
-        });
+        });*/
 
         mListView.setSelection(mAdapter.getFocusedPosition());
 
@@ -112,7 +112,7 @@ public class MediaListFragment extends ContentFragment {
     }
 
     private void configureDragSort() {
-        DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
+        /*DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
             @Override
             public void drop(int from, int to)
             {
@@ -145,7 +145,7 @@ public class MediaListFragment extends ContentFragment {
 
         mListView.setFloatViewManager(controller);
         mListView.setOnTouchListener(controller);
-        mListView.setDragEnabled(true);
+        mListView.setDragEnabled(true);*/
     }
 
     private void addRandomButton() {

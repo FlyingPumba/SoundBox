@@ -24,17 +24,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.arcusapp.soundbox.drag.old.DragSortListView
+    <com.arcusapp.soundbox.drag.DragSortListView
         android:id="@+id/mediaList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>
 
-    <!--small shadow above the list -->
+    <!--small shadow above the list
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:src="@drawable/below_shadow"/>
+        android:src="@drawable/below_shadow"/>-->
 
 </FrameLayout>
