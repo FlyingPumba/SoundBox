@@ -33,7 +33,6 @@ public class DragSortListView extends ListView {
     public void setGestureDetectorOrchestrator(MultipleViewGestureDetector detector) {
         gestureOrchestrator = detector;
     }
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         auxiliarGestureDetector.onTouchEvent(ev);
@@ -52,7 +51,9 @@ public class DragSortListView extends ListView {
 
         @Override
         public void onShowPress(MotionEvent e) {
-            gestureOrchestrator.onShowPress(DragSortListView.this, e);
+            if(gestureOrchestrator != null) {
+                gestureOrchestrator.onShowPress(DragSortListView.this, e);
+            }
         }
 
         @Override
@@ -75,7 +76,9 @@ public class DragSortListView extends ListView {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            gestureOrchestrator.onLongPress(DragSortListView.this, e);
+            if(gestureOrchestrator != null) {
+                gestureOrchestrator.onLongPress(DragSortListView.this, e);
+            }
         }
 
         @Override

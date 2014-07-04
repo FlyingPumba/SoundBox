@@ -37,7 +37,7 @@ public class SmoothAnimator implements Runnable {
         mStartTime = SystemClock.uptimeMillis();
         mCanceled = false;
         onStart();
-        mOrchestrator.getRootView().post(this);
+        //mOrchestrator.getRootView().post(this);
     }
 
     public void cancel() {
@@ -69,7 +69,7 @@ public class SmoothAnimator implements Runnable {
             onStop();
         } else {
             onUpdate(fraction, transform(fraction));
-            mOrchestrator.getRootView().post(this);
+            //mOrchestrator.getRootView().post(this);
         }
     }
 }
