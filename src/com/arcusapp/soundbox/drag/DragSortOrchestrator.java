@@ -145,9 +145,8 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
 
         int hittedPosition = viewIdHitPosition(list, e);
         if(hittedPosition != MISS){
-            int position = hittedPosition - list.getHeaderViewsCount();
 
-            View child = list.getChildAt(position + list.getHeaderViewsCount() - list.getFirstVisiblePosition());
+            View child = list.getChildAt(hittedPosition - list.getFirstVisiblePosition());
 
             mFloatView = mFloatViewManager.onCreateFloatView(child);
             mFloatLoc.x = (int) e.getRawX();

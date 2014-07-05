@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.Adapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -241,14 +243,28 @@ public class SlidingPanelActivity extends MediaServiceAwareActivity implements S
             mSlidingLayout.expandPanel();
         }
 
-        MediaListAdapter adapter = (MediaListAdapter) originList.getAdapter();
-        mediaBeingDragged = adapter.getMediaItem(position);
+        MediaListAdapter originalAdapter;
+
+        if(originList.getAdapter() instanceof HeaderViewListAdapter) {
+            originalAdapter = (MediaListAdapter)((HeaderViewListAdapter) originList.getAdapter()).getWrappedAdapter();
+        } else {
+            originalAdapter = (MediaListAdapter) originList.getAdapter();
+        }
+
+        mediaBeingDragged = originalAdapter.getMediaItem(position);
     }
 
     @Override
     public void onDragFinished(DragSortListView targetList, int position) {
-        MediaListAdapter adapter = (MediaListAdapter) targetList.getAdapter();
-        adapter.addMediaItemAtPosition(mediaBeingDragged, position);
-        adapter.notifyDataSetInvalidated();
+        MediaListAdapter originalAdapter;
+
+        if(targetList.getAdapter() instanceof HeaderViewListAdapter) {
+            originalAdapter = (MediaListAdapter)((HeaderViewListAdapter) targetList.getAdapter()).getWrappedAdapter();
+        } else {
+            originalAdapter = (MediaListAdapter) targetList.getAdapter();
+        }
+
+        originalAdapter.addMediaItemAtPosition(mediaBeingDragged, position);
+        originalAdapter.notifyDataSetInvalidated();
     }
 }
