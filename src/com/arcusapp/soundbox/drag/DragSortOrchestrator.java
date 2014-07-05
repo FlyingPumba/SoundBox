@@ -95,6 +95,32 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     }
 
     @Override
+    public void onUp(DragSortListView origin, MotionEvent e) {
+        Log.i(TAG, "onUp");
+
+        // if we were dragging, finish it and check if we can drop
+        if(mDragging) {
+
+            for(DragSortListView target : mLists) {
+                // check if we can drop in target
+                if(target.isDropEnabled()) {
+                    //check if we are droppping in a valid position
+                    int dropPosition = viewIdHitPosition(target, e);
+                    if(dropPosition != MISS) {
+                        // yeah ! dropping from origin list to target list
+                        if(mListener != null) {
+                            mListener.onDragFinished(target, dropPosition);
+                        }
+                    }
+                }
+            }
+
+            mDragging = false;
+            mRootView.invalidate();
+        }
+    }
+
+    @Override
     public void onShowPress(DragSortListView list, MotionEvent e) {
 
     }

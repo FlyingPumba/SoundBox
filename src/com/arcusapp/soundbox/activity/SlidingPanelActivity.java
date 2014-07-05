@@ -240,6 +240,6 @@ public class SlidingPanelActivity extends MediaServiceAwareActivity implements S
 
     @Override
     public void onDragFinished(DragSortListView targetList, int position) {
-
+        boolean a = false;
     }
 }

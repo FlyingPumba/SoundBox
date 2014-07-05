@@ -58,6 +58,14 @@ public class DragSortListView extends ListView {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if(mOrchestrator != null && mOrchestrator.mDragging) {
+            // check if we are finishing a dragging event
+            int action = ev.getAction() & MotionEvent.ACTION_MASK;
+            if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                mOrchestrator.onUp(this, ev);
+                return true;
+            }
+
+            // otherwise, keep dragging
             onDragTouchEvent(ev);
             return true;
         } else {
