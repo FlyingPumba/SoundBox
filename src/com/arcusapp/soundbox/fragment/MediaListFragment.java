@@ -35,6 +35,7 @@ import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.adapter.MediaListAdapter;
 //import com.arcusapp.soundbox.drag.old.DragSortController;
 import com.arcusapp.soundbox.drag.DragSortListView;
+import com.arcusapp.soundbox.drag.DragSortRootView;
 import com.arcusapp.soundbox.model.BundleExtra;
 import com.arcusapp.soundbox.model.MediaEntry;
 
@@ -109,6 +110,16 @@ public class MediaListFragment extends ContentFragment {
         configureDragSort();
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        DragSortRootView root = (DragSortRootView) getActivity().findViewById(R.id.dragSortRootView);
+        if(root!= null) {
+            root.invalidateChildViews();
+        }
     }
 
     private void configureDragSort() {

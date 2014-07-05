@@ -32,6 +32,12 @@ public class DragSortRootView extends LinearLayout {
         mOrchestrator = new DragSortOrchestrator(this);
     }
 
+    public void invalidateChildViews() {
+        if(mOrchestrator != null) {
+            mOrchestrator.invalidateChildViews();
+        }
+    }
+
     public void drawFromViewToCanvas(final View view, final Rect rect, final Canvas canvas) {
         final int widthSpec = View.MeasureSpec.makeMeasureSpec(rect.width(), View.MeasureSpec.EXACTLY);
         final int heightSpec = View.MeasureSpec.makeMeasureSpec(rect.height(), View.MeasureSpec.EXACTLY);

@@ -27,11 +27,15 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
 
     public DragSortOrchestrator(DragSortRootView rootView) {
         mRootView = rootView;
-        mLists = new ArrayList<DragSortListView>();
         mFloatViewManager = new FloatViewManager();
 
-        //find all the DragSortListViews on the rootView and configure them
-        exploreRootView(rootView);
+        invalidateChildViews();
+    }
+
+    public void invalidateChildViews() {
+        //find all the DragSortListViews on the RootView and configure them
+        mLists = new ArrayList<DragSortListView>();
+        exploreRootView(mRootView);
         configureLists();
     }
 
