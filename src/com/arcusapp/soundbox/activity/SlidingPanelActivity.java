@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.adapter.MediaListAdapter;
 import com.arcusapp.soundbox.drag.DragSortListView;
 import com.arcusapp.soundbox.drag.DragSortListener;
 import com.arcusapp.soundbox.drag.DragSortRootView;
@@ -231,15 +232,23 @@ public class SlidingPanelActivity extends MediaServiceAwareActivity implements S
 
     }
 
+
+    MediaEntry mediaBeingDragged = null;
+
     @Override
     public void onDragStarted(DragSortListView originList, int position) {
         if(!mSlidingLayout.isPanelExpanded()) {
             mSlidingLayout.expandPanel();
         }
+
+        MediaListAdapter adapter = (MediaListAdapter) originList.getAdapter();
+        mediaBeingDragged = adapter.getMediaItem(position);
     }
 
     @Override
     public void onDragFinished(DragSortListView targetList, int position) {
-        boolean a = false;
+        MediaListAdapter adapter = (MediaListAdapter) targetList.getAdapter();
+        adapter.addMediaItemAtPosition(mediaBeingDragged, position);
+        adapter.notifyDataSetInvalidated();
     }
 }

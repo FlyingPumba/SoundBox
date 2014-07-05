@@ -67,7 +67,7 @@ public class DragSortRootView extends LinearLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if(mOrchestrator.mFloatView != null) {
+        if(mOrchestrator.mFloatView != null && mOrchestrator.mDragging) {
             // draw the float view over everything
             ViewGroup.LayoutParams lp = mOrchestrator.mFloatView.getLayoutParams();
             if (lp == null) {

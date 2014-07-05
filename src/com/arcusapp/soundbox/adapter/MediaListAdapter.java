@@ -66,6 +66,20 @@ public class MediaListAdapter extends BaseAdapter {
         mFocusedID = focusedID;
     }
 
+    public MediaEntry getMediaItem(int position) {
+        if(position >= 0 && position < mMediaContent.size()) {
+            return mMediaContent.get(position);
+        } else {
+            return null;
+        }
+    }
+
+    public void addMediaItemAtPosition(MediaEntry media, int position) {
+        if(position >= 0 && position < mMediaContent.size()) {
+            mMediaContent.add(position, media);
+        }
+    }
+
     public void onItemClick(int position) {
         if (mHasHeader) {
             position = position - 1;

@@ -144,20 +144,22 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         }
 
         int hittedPosition = viewIdHitPosition(list, e);
-        int position = hittedPosition - list.getHeaderViewsCount();
+        if(hittedPosition != MISS){
+            int position = hittedPosition - list.getHeaderViewsCount();
 
-        View child = list.getChildAt(position + list.getHeaderViewsCount() - list.getFirstVisiblePosition());
+            View child = list.getChildAt(position + list.getHeaderViewsCount() - list.getFirstVisiblePosition());
 
-        mFloatView = mFloatViewManager.onCreateFloatView(child);
-        mFloatLoc.x = (int) e.getRawX();
-        mFloatLoc.y = (int) e.getRawY();
+            mFloatView = mFloatViewManager.onCreateFloatView(child);
+            mFloatLoc.x = (int) e.getRawX();
+            mFloatLoc.y = (int) e.getRawY();
 
-        mDragging = true;
-        if(mListener != null){
-            mListener.onDragStarted(list, hittedPosition);
+            mDragging = true;
+            if(mListener != null){
+                mListener.onDragStarted(list, hittedPosition);
+            }
+
+            mRootView.invalidate();
         }
-
-        mRootView.invalidate();
     }
 
     @Override
