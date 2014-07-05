@@ -29,7 +29,7 @@ import android.view.MenuItem;
 import com.arcusapp.soundbox.R;
 import com.arcusapp.soundbox.fragment.MediaListFragment;
 
-public class MediaListActivity extends DragSortActivity {
+public class MediaListActivity extends SlidingPanelActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
