@@ -113,6 +113,10 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     public void onLongPress(DragSortListView list, MotionEvent e) {
         Log.i(TAG, "onLongPress");
 
+        if(!list.isDragEnabled()){
+            return;
+        }
+
         int hittedPosition = viewIdHitPosition(list, e);
         int position = hittedPosition - list.getHeaderViewsCount();
 

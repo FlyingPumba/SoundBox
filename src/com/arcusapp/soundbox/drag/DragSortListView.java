@@ -1,10 +1,13 @@
 package com.arcusapp.soundbox.drag;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ListView;
+
+import com.arcusapp.soundbox.R;
 
 /**
  * List view that inform to the Orchestrator of the gestures applied to itself
@@ -14,24 +17,44 @@ public class DragSortListView extends ListView {
     private DragSortOrchestrator mOrchestrator;
     private GestureDetector auxiliarGestureDetector;
 
-    public DragSortListView(Context context) {
-        super(context);
-        auxiliarGestureDetector = new GestureDetector(context, gestureListener);
-    }
+    private boolean mDragEnabled = true;
+    private boolean mDropEnabled = false;
 
     public DragSortListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         auxiliarGestureDetector = new GestureDetector(context, gestureListener);
-    }
 
-    public DragSortListView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        auxiliarGestureDetector = new GestureDetector(context, gestureListener);
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs,
+                    R.styleable.DragSortListView, 0, 0);
+
+            mDragEnabled = a.getBoolean(R.styleable.DragSortListView_dragEnabled, mDragEnabled);
+            mDropEnabled = a.getBoolean(R.styleable.DragSortListView_dropEnabled, mDropEnabled);
+
+            a.recycle();
+        }
     }
 
     public void setGestureDetectorOrchestrator(DragSortOrchestrator detector) {
         mOrchestrator = detector;
     }
+
+    public boolean isDragEnabled() {
+        return mDragEnabled;
+    }
+
+    public boolean isDropEnabled() {
+        return mDropEnabled;
+    }
+
+    public void setDragEnabled(boolean enabled) {
+        mDragEnabled = enabled;
+    }
+
+    public void setDropEnabled(boolean enabled) {
+        mDropEnabled = enabled;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if(mOrchestrator != null && mOrchestrator.mDragging) {

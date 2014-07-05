@@ -18,4 +18,9 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="DragSortListView">
+        <attr name="dragEnabled" format="boolean" />
+        <attr name="dropEnabled" format="boolean" />
+    </declare-styleable>
+
 </resources>

@@ -53,16 +53,18 @@ public class SlidingPanelActivity extends MediaServiceAwareActivity implements S
         mSongTitleFragment = (SongTitleFragment) getSupportFragmentManager().findFragmentById(R.id.songTitleFragmentContainer);
         mCurrentPlaylistFragment = (MediaListFragment) getSupportFragmentManager().findFragmentById(R.id.currentPlaylistFragment);
 
-        configureDragSortRootView();
+        configureDragSort();
 
         configureSlidingLayout();
 
         configureActionBar(savedInstanceState);
     }
 
-    private void configureDragSortRootView() {
+    private void configureDragSort() {
         DragSortRootView view = (DragSortRootView) findViewById(R.id.dragSortRootView);
         view.setDragSortListener(this);
+
+        mCurrentPlaylistFragment.setDropEnabled(true);
     }
 
     private void configureActionBar(Bundle savedInstanceState) {

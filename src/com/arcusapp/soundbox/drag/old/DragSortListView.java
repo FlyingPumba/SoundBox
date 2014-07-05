@@ -447,7 +447,7 @@ public class DragSortListView extends ListView {
         int removeAnimDuration = defaultDuration; // ms
         int dropAnimDuration = defaultDuration; // ms
 
-        if (attrs != null) {
+        /*if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs,
                     R.styleable.DragSortListView, 0, 0);
 
@@ -534,7 +534,7 @@ public class DragSortListView extends ListView {
             }
 
             a.recycle();
-        }
+        }*/
 
         mDragScroller = new DragScroller();
 

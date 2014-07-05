@@ -190,4 +190,9 @@ public class MediaListFragment extends ContentFragment {
     public void onPanelStateChanged(boolean expanded) {
         mListView.setEnabled(!expanded);
     }
+
+    public void setDropEnabled(boolean enabled) {
+        DragSortListView list = (DragSortListView) getActivity().findViewById(R.id.mediaList);
+        list.setDropEnabled(enabled);
+    }
 }
