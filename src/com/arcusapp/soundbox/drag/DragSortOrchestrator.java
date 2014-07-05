@@ -23,6 +23,7 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     public View mFloatView;
     public Point mFloatLoc = new Point();
     public int mFloatViewHeight;
+    public boolean mDragging = false;
 
     public DragSortOrchestrator(DragSortRootView rootView) {
         mRootView = rootView;
@@ -32,6 +33,10 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         //find all the DragSortListViews on the rootView and configure them
         exploreRootView(rootView);
         configureLists();
+    }
+
+    public void refreshFloatViewPosition() {
+        mRootView.invalidate();
     }
 
     private void exploreRootView(View rootView) {
@@ -50,7 +55,7 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         }
     }
 
-    public int viewIdHitPosition(DragSortListView mDslv, MotionEvent ev) {
+    private int viewIdHitPosition(DragSortListView mDslv, MotionEvent ev) {
         final int x = (int) ev.getX();
         final int y = (int) ev.getY();
 
@@ -102,6 +107,8 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         mFloatView = mFloatViewManager.onCreateFloatView(child);
         mFloatLoc.x = (int) e.getRawX();
         mFloatLoc.y = (int) e.getRawY();
+
+        mDragging = true;
 
         mRootView.invalidate();
     }
