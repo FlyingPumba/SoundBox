@@ -20,6 +20,8 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     private List<DragSortListView> mLists;
     private FloatViewManager mFloatViewManager;
 
+    private DragSortListener mListener;
+
     public View mFloatView;
     public Point mFloatLoc = new Point();
     public int mFloatViewHeight;
@@ -41,6 +43,14 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
 
     public void refreshFloatViewPosition() {
         mRootView.invalidate();
+    }
+
+    public void setDragSortListener(DragSortListener listener) {
+        mListener = listener;
+    }
+
+    public void removeDragSortListener() {
+        mListener = null;
     }
 
     private void exploreRootView(View rootView) {
@@ -103,8 +113,8 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     public void onLongPress(DragSortListView list, MotionEvent e) {
         Log.i(TAG, "onLongPress");
 
-        int mHitPos = viewIdHitPosition(list, e);
-        int position = mHitPos - list.getHeaderViewsCount();
+        int hittedPosition = viewIdHitPosition(list, e);
+        int position = hittedPosition - list.getHeaderViewsCount();
 
         View child = list.getChildAt(position + list.getHeaderViewsCount() - list.getFirstVisiblePosition());
 
@@ -113,6 +123,9 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         mFloatLoc.y = (int) e.getRawY();
 
         mDragging = true;
+        if(mListener != null){
+            mListener.onDragStarted(list, hittedPosition);
+        }
 
         mRootView.invalidate();
     }

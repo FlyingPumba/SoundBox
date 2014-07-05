@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.arcusapp.soundbox.R;
+import com.arcusapp.soundbox.drag.DragSortListView;
+import com.arcusapp.soundbox.drag.DragSortListener;
+import com.arcusapp.soundbox.drag.DragSortRootView;
 import com.arcusapp.soundbox.fragment.MediaListFragment;
 import com.arcusapp.soundbox.fragment.SongTitleFragment;
 import com.arcusapp.soundbox.model.BundleExtra;
@@ -27,7 +30,8 @@ import com.nineoldandroids.view.animation.AnimatorProxy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlidingPanelActivity extends MediaServiceAwareActivity implements SlidingPanelHost {
+public class SlidingPanelActivity extends MediaServiceAwareActivity implements SlidingPanelHost,
+        DragSortListener {
 
     public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
 
@@ -49,9 +53,16 @@ public class SlidingPanelActivity extends MediaServiceAwareActivity implements S
         mSongTitleFragment = (SongTitleFragment) getSupportFragmentManager().findFragmentById(R.id.songTitleFragmentContainer);
         mCurrentPlaylistFragment = (MediaListFragment) getSupportFragmentManager().findFragmentById(R.id.currentPlaylistFragment);
 
+        configureDragSortRootView();
+
         configureSlidingLayout();
 
         configureActionBar(savedInstanceState);
+    }
+
+    private void configureDragSortRootView() {
+        DragSortRootView view = (DragSortRootView) findViewById(R.id.dragSortRootView);
+        view.setDragSortListener(this);
     }
 
     private void configureActionBar(Bundle savedInstanceState) {
@@ -215,6 +226,18 @@ public class SlidingPanelActivity extends MediaServiceAwareActivity implements S
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
+
+    }
+
+    @Override
+    public void onDragStarted(DragSortListView originList, int position) {
+        if(!mSlidingLayout.isPanelExpanded()) {
+            mSlidingLayout.expandPanel();
+        }
+    }
+
+    @Override
+    public void onDragFinished(DragSortListView targetList, int position) {
 
     }
 }
