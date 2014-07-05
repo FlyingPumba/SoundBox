@@ -62,7 +62,7 @@ public class DragSortRootView extends LinearLayout {
             int w = lp.width;
             int h = lp.height;
 
-            Rect rect = new Rect(x-w/2,y-h/2,x+w/2,y+h/2);
+            Rect rect = new Rect(x-w/2,y-h,x+w/2,y);
 
             drawFromViewToCanvas(mOrchestrator.mFloatView, rect, canvas);
         }
