@@ -2,6 +2,7 @@ package com.arcusapp.soundbox.drag;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ public class DragSortListView extends ListView {
 
     private DragSortOrchestrator mOrchestrator;
     private GestureDetector auxiliarGestureDetector;
+
+    private Point mLastTouchPos = new Point();
 
     private boolean mDragEnabled = true;
     private boolean mDropEnabled = false;
@@ -55,10 +58,18 @@ public class DragSortListView extends ListView {
         mDropEnabled = enabled;
     }
 
+    public Point getLastTouchPos() {
+        return mLastTouchPos;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        // store last touch event for the drag scroller
+        mLastTouchPos.x = (int) ev.getRawX();
+        mLastTouchPos.y = (int) ev.getRawY();
+
         if(mOrchestrator != null && mOrchestrator.mDragging) {
-            // check if we are finishing a dragging event
+            // check if we are finishing a drag event
             int action = ev.getAction() & MotionEvent.ACTION_MASK;
             if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 mOrchestrator.onUp(this, ev);
@@ -66,18 +77,12 @@ public class DragSortListView extends ListView {
             }
 
             // otherwise, keep dragging
-            onDragTouchEvent(ev);
+            mOrchestrator.onDrag(this, ev);
             return true;
         } else {
             auxiliarGestureDetector.onTouchEvent(ev);
             return super.onTouchEvent(ev);
         }
-    }
-
-    private void onDragTouchEvent(MotionEvent ev) {
-        mOrchestrator.mFloatLoc.x = (int) ev.getRawX();
-        mOrchestrator.mFloatLoc.y = (int) ev.getRawY();
-        mOrchestrator.refreshFloatViewPosition();
     }
 
     private GestureDetector.OnGestureListener gestureListener = new GestureDetector.OnGestureListener() {

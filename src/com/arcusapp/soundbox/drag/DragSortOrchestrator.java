@@ -25,6 +25,8 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     public View mFloatView;
     public Point mFloatLoc = new Point();
     public int mFloatViewHeight;
+    public int mFloatViewWidth;
+
     public boolean mDragging = false;
 
     public DragSortOrchestrator(DragSortRootView rootView) {
@@ -41,7 +43,9 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         configureLists();
     }
 
-    public void refreshFloatViewPosition() {
+    public void refreshFloatViewPosition(int x, int y) {
+        mFloatLoc.x = x;
+        mFloatLoc.y = y;
         mRootView.invalidate();
     }
 
@@ -69,15 +73,15 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         }
     }
 
-    private int viewIdHitPosition(DragSortListView mDslv, MotionEvent ev) {
+    private int viewIdHitPosition(DragSortListView list, MotionEvent ev) {
         final int x = (int) ev.getX();
         final int y = (int) ev.getY();
 
-        int touchPos = mDslv.pointToPosition(x, y); // includes headers/footers
+        int touchPos = list.pointToPosition(x, y); // includes headers/footers
 
-        final int numHeaders = mDslv.getHeaderViewsCount();
-        final int numFooters = mDslv.getFooterViewsCount();
-        final int count = mDslv.getCount();
+        final int numHeaders = list.getHeaderViewsCount();
+        final int numFooters = list.getFooterViewsCount();
+        final int count = list.getCount();
 
         // We're only interested if the touch was on an
         // item that's not a header or footer.
@@ -87,6 +91,16 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         }
 
         return MISS;
+    }
+
+    private boolean inRegion(float x, float y, View v) {
+        int[] loc = new int[2];
+        v.getLocationOnScreen(loc);
+
+        return loc[0] + v.getWidth() > x &&    // right edge
+                loc[1] + v.getHeight() > y &&   // bottom edge
+                loc[0] < x &&                   // left edge
+                loc[1] < y;                     // top edge
     }
 
     @Override
@@ -110,6 +124,7 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
                         // yeah ! dropping from origin list to target list
                         if(mListener != null) {
                             mListener.onDragFinished(target, dropPosition);
+                            break;
                         }
                     }
                 }
@@ -117,6 +132,23 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
 
             mDragging = false;
             mRootView.invalidate();
+        }
+    }
+
+    @Override
+    public void onDrag(DragSortListView list, MotionEvent e) {
+        Log.i(TAG, "onDrag");
+        refreshFloatViewPosition((int) e.getRawX(), (int) e.getRawY());
+
+        // check if we are above a droppable list, and thus can be scrolled
+        for(DragSortListView target : mLists) {
+            if(target.isDropEnabled()) {
+                boolean inside = inRegion(e.getRawX(), e.getRawY(), target);
+                if(inside) {
+                    Log.i(TAG, "found a list to scroll");
+                    DragScrollHelper.scrollList(target, mFloatView, e);
+                }
+            }
         }
     }
 
@@ -146,11 +178,26 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
         int hittedPosition = viewIdHitPosition(list, e);
         if(hittedPosition != MISS){
 
+            // get hitted child
             View child = list.getChildAt(hittedPosition - list.getFirstVisiblePosition());
 
+            // create float view of the child
             mFloatView = mFloatViewManager.onCreateFloatView(child);
+
+            // store touch position
             mFloatLoc.x = (int) e.getRawX();
             mFloatLoc.y = (int) e.getRawY();
+
+            // measure and store height and width of the float view
+
+            ViewGroup.LayoutParams lp = mFloatView.getLayoutParams();
+            if (lp == null) {
+                lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mFloatView.setLayoutParams(lp);
+            }
+
+            mFloatViewHeight = lp.height;
+            mFloatViewWidth = lp.width;
 
             mDragging = true;
             if(mListener != null){

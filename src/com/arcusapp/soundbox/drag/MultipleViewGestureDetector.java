@@ -8,6 +8,8 @@ public interface MultipleViewGestureDetector {
 
     public void onUp(DragSortListView list, MotionEvent e);
 
+    public void onDrag(DragSortListView list, MotionEvent e);
+
     public void onShowPress(DragSortListView list, MotionEvent e);
 
     public boolean onSingleTapUp(DragSortListView list, MotionEvent e);

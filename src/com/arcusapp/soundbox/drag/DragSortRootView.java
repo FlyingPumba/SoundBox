@@ -69,16 +69,11 @@ public class DragSortRootView extends LinearLayout {
         super.dispatchDraw(canvas);
         if(mOrchestrator.mFloatView != null && mOrchestrator.mDragging) {
             // draw the float view over everything
-            ViewGroup.LayoutParams lp = mOrchestrator.mFloatView.getLayoutParams();
-            if (lp == null) {
-                lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                mOrchestrator.mFloatView.setLayoutParams(lp);
-            }
 
             int x = mOrchestrator.mFloatLoc.x;
             int y = mOrchestrator.mFloatLoc.y;
-            int w = lp.width;
-            int h = lp.height;
+            int w = mOrchestrator.mFloatViewWidth;
+            int h = mOrchestrator.mFloatViewHeight;
 
             Rect rect = new Rect(x-w/2,y-h,x+w/2,y);
 
