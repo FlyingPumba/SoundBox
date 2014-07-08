@@ -19,6 +19,7 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     private DragSortRootView mRootView;
     private List<DragSortListView> mLists;
     private FloatViewManager mFloatViewManager;
+    private DragScrollHelper mScrollHelper;
 
     private DragSortListener mListener;
 
@@ -32,6 +33,7 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
     public DragSortOrchestrator(DragSortRootView rootView) {
         mRootView = rootView;
         mFloatViewManager = new FloatViewManager();
+        mScrollHelper = new DragScrollHelper();
 
         invalidateChildViews();
     }
@@ -131,6 +133,9 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
             }
 
             mDragging = false;
+            if(mScrollHelper.isScrolling()) {
+                mScrollHelper.stopScrolling(false);
+            }
             mRootView.invalidate();
         }
     }
@@ -146,7 +151,17 @@ public class DragSortOrchestrator implements MultipleViewGestureDetector {
                 boolean inside = inRegion(e.getRawX(), e.getRawY(), target);
                 if(inside) {
                     Log.i(TAG, "found a list to scroll");
-                    DragScrollHelper.scrollList(target, mFloatView, e);
+                    if(mScrollHelper.isScrolling()) {
+                        if(mScrollHelper.getScrollingList() == target) {
+                            mScrollHelper.updateLastTouchEvent(e);
+                        } else {
+                            mScrollHelper.stopScrolling(true);
+                            mScrollHelper.startScrolling(target, mFloatView, e);
+                        }
+
+                    } else {
+                        mScrollHelper.startScrolling(target, mFloatView, e);
+                    }
                 }
             }
         }

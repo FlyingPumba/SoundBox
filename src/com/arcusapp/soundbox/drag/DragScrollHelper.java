@@ -1,10 +1,12 @@
 package com.arcusapp.soundbox.drag;
 
+import android.graphics.Point;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class DragScrollHelper {
+public class DragScrollHelper implements Runnable {
     private static final String TAG = "DragScrollHelper";
 
     /*
@@ -12,16 +14,26 @@ public class DragScrollHelper {
       at the top of the ListView. Specified by a fraction
       of the ListView height, thus screen resolution agnostic.
      */
-    static float mDragUpScrollStartFrac = 1.0f / 3.0f;
+    private static float mDragUpScrollStartFrac = 1.0f / 3.0f;
 
     /*
       Determines the start of the downward drag-scroll region
       at the bottom of the ListView. Specified by a fraction
       of the ListView height, thus screen resolution agnostic.
      */
-    static float mDragDownScrollStartFrac = 1.0f - 1.0f / 3.0f;
+    private static float mDragDownScrollStartFrac = 1.0f - 1.0f / 3.0f;
 
-    public static void scrollList(DragSortListView list, View floatView, MotionEvent ev) {
+    private DragSortListView mList;
+    private View mFloatView;
+
+    private Point mLastTouchPos = new Point();
+    private long mPrevTime;
+    private long mCurrTime;
+
+    private boolean mAbort;
+    private boolean mScrolling = false;
+
+    private void scrollList(DragSortListView list, View floatView, Point touch) {
         // assuming that the float view is now in the coordinates of the MotionEvent
         // we are going to attempt to scroll the list according to the relative position of
         // this float view inside the list.
@@ -30,7 +42,7 @@ public class DragScrollHelper {
         int[] listPos = new int[2];
         list.getLocationOnScreen(listPos);
 
-        int relativeY = (int) ev.getRawY() - listPos[1];
+        int relativeY = touch.y - listPos[1];
 
         // calculate the Y position where we start to scroll up or down
         final int listHeight = list.getHeight() - list.getPaddingTop() - list.getPaddingBottom();
@@ -38,12 +50,17 @@ public class DragScrollHelper {
         int upScrollStartY = (int) (list.getPaddingTop() + mDragUpScrollStartFrac * listHeight);
         int downScrollStartY = (int) (list.getPaddingTop() + mDragDownScrollStartFrac * listHeight);
 
+        // apply some speed based on the time between updates
+        mCurrTime = SystemClock.uptimeMillis();
+        float dt = (float) (mCurrTime - mPrevTime);
+
         // check if we are going to scroll up or down
         if (relativeY <= upScrollStartY) {
             Log.i(TAG, "we have to scroll up");
             // determine the velocity of scroll according to how close we are from the top
             int deltaY = relativeY;
             int speed = listHeight / deltaY;
+            int dy = (int) Math.round(speed * dt);
 
             // get the top Y of the first visible item
             int first = list.getFirstVisiblePosition();
@@ -54,12 +71,12 @@ public class DragScrollHelper {
             int topY = firstView.getTop();
 
             // calculate the new top Y
-            int newTopY = topY - speed;
-            if(newTopY > 0) {
+            int newTopY = topY - dy;
+            //if(newTopY > 0) {
                 list.setSelectionFromTop(first, newTopY);
-            } else {
-                list.setSelection(first);
-            }
+            //} else {
+            //    list.setSelection(first);
+            //}
 
 
         } else if (relativeY >= downScrollStartY) {
@@ -67,6 +84,7 @@ public class DragScrollHelper {
             // determine the velocity of scroll according to how close we are from the bottom
             int deltaY = listHeight - relativeY;
             int speed = listHeight / deltaY;
+            int dy = (int) Math.round(speed * dt);
 
             // get the top Y of the last visible item
             int last = list.getLastVisiblePosition();
@@ -77,7 +95,7 @@ public class DragScrollHelper {
             int topY = lastView.getTop();
 
             // calculate the new top Y
-            int newTopY = topY + speed;
+            int newTopY = topY + dy;
             if(newTopY < listHeight) {
                 list.setSelectionFromTop(last, newTopY);
             } else {
@@ -86,6 +104,52 @@ public class DragScrollHelper {
 
         }
 
+        mPrevTime = mCurrTime;
         list.invalidate();
+    }
+
+    public void updateLastTouchEvent(MotionEvent ev) {
+        mLastTouchPos.x = (int) ev.getRawX();
+        mLastTouchPos.y = (int) ev.getRawY();
+    }
+
+    public void startScrolling(DragSortListView list, View floatView, MotionEvent ev) {
+        if (!mScrolling) {
+            mList = list;
+            mFloatView = floatView;
+            mPrevTime = SystemClock.uptimeMillis();
+            mAbort = false;
+            mScrolling = true;
+            updateLastTouchEvent(ev);
+            list.post(this);
+        }
+    }
+
+    public void stopScrolling(boolean now) {
+        if (now && mScrolling) {
+            mList.removeCallbacks(this);
+            mScrolling = false;
+        } else {
+            mAbort = true;
+        }
+    }
+
+    public boolean isScrolling() {
+        return mScrolling;
+    }
+
+    public DragSortListView getScrollingList() {
+        return mList;
+    }
+
+    @Override
+    public void run() {
+        if (mAbort) {
+            mScrolling = false;
+            return;
+        }
+
+        scrollList(mList, mFloatView, mLastTouchPos);
+        mList.post(this);
     }
 }
